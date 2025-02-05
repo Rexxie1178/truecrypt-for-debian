@@ -1,0 +1,572 @@
+diff --git a/Main/Forms/Forms.cpp b/Main/Forms/Forms.cpp
+index 944ed4b..fdae66a 100644
+--- a/Main/Forms/Forms.cpp
++++ b/Main/Forms/Forms.cpp
+@@ -206,7 +206,7 @@
+ 	wxStaticBoxSizer* sbSizer1;
+ 	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( MainPanel, wxID_ANY, wxEmptyString ), wxVERTICAL );
+ 	
+-	SlotListCtrl = new wxListCtrl( MainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_SORT_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES|wxSUNKEN_BORDER );
++	SlotListCtrl = new wxListCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_SORT_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES|wxSUNKEN_BORDER );
+ 	sbSizer1->Add( SlotListCtrl, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	bSizer48->Add( sbSizer1, 1, wxEXPAND, 5 );
+@@ -224,7 +224,7 @@
+ 	bSizer17 = new wxBoxSizer( wxVERTICAL );
+ 	
+ 	bSizer17->SetMinSize( wxSize( 138,34 ) ); 
+-	CreateVolumeButton = new wxButton( MainPanel, wxID_ANY, _("&Create Volume"), wxDefaultPosition, wxDefaultSize, 0 );
++	CreateVolumeButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("&Create Volume"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	bSizer17->Add( CreateVolumeButton, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	gSizer1->Add( bSizer17, 0, 0, 5 );
+@@ -233,8 +233,8 @@
+ 	bSizer18 = new wxBoxSizer( wxVERTICAL );
+ 	
+ 	bSizer18->SetMinSize( wxSize( 138,34 ) ); 
+-	VolumePropertiesButton = new wxButton( MainPanel, wxID_ANY, _("&Volume Properties..."), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer18->Add( VolumePropertiesButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
++	VolumePropertiesButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("&Volume Properties..."), wxDefaultPosition, wxDefaultSize, 0 );
++	bSizer18->Add( VolumePropertiesButton, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	gSizer1->Add( bSizer18, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+ 	
+@@ -242,40 +242,40 @@
+ 	bSizer19 = new wxBoxSizer( wxVERTICAL );
+ 	
+ 	bSizer19->SetMinSize( wxSize( 138,34 ) ); 
+-	WipeCacheButton = new wxButton( MainPanel, wxID_ANY, _("&Wipe Cache"), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer19->Add( WipeCacheButton, 1, wxALL|wxALIGN_RIGHT|wxEXPAND, 5 );
++	WipeCacheButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("&Wipe Cache"), wxDefaultPosition, wxDefaultSize, 0 );
++	bSizer19->Add( WipeCacheButton, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	gSizer1->Add( bSizer19, 0, wxALIGN_RIGHT, 5 );
+ 	
+ 	LowStaticBoxSizer->Add( gSizer1, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
+ 	
+ 	
+-	LowStaticBoxSizer->Add( 0, 0, 0, 0, 5 );
++	LowStaticBoxSizer->Add( 0, 0, 0, 0, 2 );
+ 	
+-	VolumeStaticBoxSizer = new wxStaticBoxSizer( new wxStaticBox( MainPanel, wxID_ANY, _("Volume") ), wxVERTICAL );
++	VolumeStaticBoxSizer = new wxStaticBoxSizer( new wxStaticBox( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("Volume") ), wxVERTICAL );
+ 	
+ 	VolumeGridBagSizer = new wxGridBagSizer( 0, 0 );
+ 	VolumeGridBagSizer->SetFlexibleDirection( wxBOTH );
+ 	VolumeGridBagSizer->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+ 	
+-	LogoBitmap = new wxStaticBitmap( MainPanel, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
++	LogoBitmap = new wxStaticBitmap( VolumeStaticBoxSizer->GetStaticBox(), wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
+ 	LogoBitmap->SetMinSize( wxSize( 42,52 ) );
+ 	
+ 	VolumeGridBagSizer->Add( LogoBitmap, wxGBPosition( 0, 0 ), wxGBSpan( 2, 1 ), wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+ 	
+-	VolumePathComboBox = new wxComboBox( MainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN ); 
++	VolumePathComboBox = new wxComboBox( VolumeStaticBoxSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN );
+ 	VolumeGridBagSizer->Add( VolumePathComboBox, wxGBPosition( 0, 1 ), wxGBSpan( 1, 2 ), wxEXPAND|wxALL, 5 );
+ 	
+ 	wxBoxSizer* bSizer191;
+ 	bSizer191 = new wxBoxSizer( wxVERTICAL );
+ 	
+ 	bSizer191->SetMinSize( wxSize( 138,34 ) ); 
+-	SelectFileButton = new wxButton( MainPanel, wxID_ANY, _("Select &File..."), wxDefaultPosition, wxDefaultSize, 0 );
++	SelectFileButton = new wxButton( VolumeStaticBoxSizer->GetStaticBox(), wxID_ANY, _("Select &File..."), wxDefaultPosition, wxDefaultSize, 0 );
+ 	bSizer191->Add( SelectFileButton, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	VolumeGridBagSizer->Add( bSizer191, wxGBPosition( 0, 3 ), wxGBSpan( 1, 1 ), wxEXPAND, 5 );
+ 	
+-	NoHistoryCheckBox = new wxCheckBox( MainPanel, wxID_ANY, _("&Never save history"), wxDefaultPosition, wxDefaultSize, 0 );
++	NoHistoryCheckBox = new wxCheckBox( VolumeStaticBoxSizer->GetStaticBox(), wxID_ANY, _("&Never save history"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	
+ 	VolumeGridBagSizer->Add( NoHistoryCheckBox, wxGBPosition( 1, 1 ), wxGBSpan( 1, 1 ), wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+ 	
+@@ -283,7 +283,7 @@
+ 	bSizer20 = new wxBoxSizer( wxVERTICAL );
+ 	
+ 	bSizer20->SetMinSize( wxSize( 138,34 ) ); 
+-	VolumeToolsButton = new wxButton( MainPanel, wxID_ANY, _("Volume &Tools..."), wxDefaultPosition, wxDefaultSize, 0 );
++	VolumeToolsButton = new wxButton( VolumeStaticBoxSizer->GetStaticBox(), wxID_ANY, _("Volume &Tools..."), wxDefaultPosition, wxDefaultSize, 0 );
+ 	bSizer20->Add( VolumeToolsButton, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	VolumeGridBagSizer->Add( bSizer20, wxGBPosition( 1, 2 ), wxGBSpan( 1, 1 ), wxALIGN_RIGHT, 5 );
+@@ -292,7 +292,7 @@
+ 	bSizer21 = new wxBoxSizer( wxVERTICAL );
+ 	
+ 	bSizer21->SetMinSize( wxSize( 138,34 ) ); 
+-	SelectDeviceButton = new wxButton( MainPanel, wxID_ANY, _("Select D&evice..."), wxDefaultPosition, wxDefaultSize, 0 );
++	SelectDeviceButton = new wxButton( VolumeStaticBoxSizer->GetStaticBox(), wxID_ANY, _("Select D&evice..."), wxDefaultPosition, wxDefaultSize, 0 );
+ 	bSizer21->Add( SelectDeviceButton, 1, wxEXPAND|wxALL, 5 );
+ 	
+ 	VolumeGridBagSizer->Add( bSizer21, wxGBPosition( 1, 3 ), wxGBSpan( 1, 1 ), wxEXPAND, 5 );
+@@ -302,57 +302,48 @@
+ 
+ 	VolumeStaticBoxSizer->Add( VolumeGridBagSizer, 1, wxEXPAND|wxALL, 4 );
+ 	
+-	LowStaticBoxSizer->Add( VolumeStaticBoxSizer, 1, wxEXPAND, 5 );
++	LowStaticBoxSizer->Add( VolumeStaticBoxSizer, 1, wxALL|wxEXPAND, 5 );
+ 	
+ 	
+-	LowStaticBoxSizer->Add( 0, 0, 0, 0, 5 );
++	LowStaticBoxSizer->Add( 0, 0, 0, 0, 2 );
+ 	
+ 	wxGridSizer* gSizer2;
+ 	gSizer2 = new wxGridSizer( 1, 4, 0, 0 );
+ 	
+-	wxStaticBoxSizer* sbSizer4;
+-	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( MainPanel, wxID_ANY, wxEmptyString ), wxVERTICAL );
+-	
+-	sbSizer4->SetMinSize( wxSize( 139,-1 ) ); 
+-	VolumeButton = new wxButton( MainPanel, wxID_ANY, _("&Mount"), wxDefaultPosition, wxDefaultSize, 0 );
+-	VolumeButton->SetDefault(); 
++	wxBoxSizer* bSizer4;
++	bSizer4 = new wxBoxSizer( wxVERTICAL );
++
++	VolumeButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("&Mount"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
++	VolumeButton->SetDefault();
+ 	VolumeButton->SetMinSize( wxSize( -1,32 ) );
++	bSizer4->Add( VolumeButton, 1, wxALL|wxEXPAND, 4 );
++	gSizer2->Add( bSizer4, 1, wxALL|wxEXPAND, 1 );
+ 	
+-	sbSizer4->Add( VolumeButton, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxTOP, 2 );
+-	
+-	gSizer2->Add( sbSizer4, 1, wxEXPAND, 0 );
+-	
+-	wxStaticBoxSizer* sbSizer41;
+-	sbSizer41 = new wxStaticBoxSizer( new wxStaticBox( MainPanel, wxID_ANY, wxEmptyString ), wxVERTICAL );
+-	
+-	MountAllDevicesButton = new wxButton( MainPanel, wxID_ANY, _("&Auto-Mount Devices"), wxDefaultPosition, wxDefaultSize, 0 );
++	wxBoxSizer* bSizer41;
++	bSizer41 = new wxBoxSizer( wxVERTICAL );
++
++	MountAllDevicesButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("&Auto-Mount Devices"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	MountAllDevicesButton->SetMinSize( wxSize( -1,32 ) );
++	bSizer41->Add( MountAllDevicesButton, 1, wxALL|wxEXPAND, 4 );
++	gSizer2->Add( bSizer41, 1, wxALL|wxEXPAND, 1 );
+ 	
+-	sbSizer41->Add( MountAllDevicesButton, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxTOP, 2 );
++	wxBoxSizer* bSizer42;
++	bSizer42 = new wxBoxSizer( wxVERTICAL );
+ 	
+-	gSizer2->Add( sbSizer41, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
+-	
+-	wxStaticBoxSizer* sbSizer42;
+-	sbSizer42 = new wxStaticBoxSizer( new wxStaticBox( MainPanel, wxID_ANY, wxEmptyString ), wxVERTICAL );
+-	
+-	DismountAllButton = new wxButton( MainPanel, wxID_ANY, _("Di&smount All"), wxDefaultPosition, wxDefaultSize, 0 );
++	DismountAllButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("Di&smount All"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	DismountAllButton->SetMinSize( wxSize( -1,32 ) );
++	bSizer42->Add( DismountAllButton, 1, wxALL|wxEXPAND, 4 );
++	gSizer2->Add( bSizer42, 1, wxALL|wxEXPAND, 1 );
+ 	
+-	sbSizer42->Add( DismountAllButton, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxTOP, 2 );
++	wxBoxSizer* bSizer43;
++	bSizer43 = new wxBoxSizer( wxVERTICAL );
+ 	
+-	gSizer2->Add( sbSizer42, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
+-	
+-	wxStaticBoxSizer* sbSizer43;
+-	sbSizer43 = new wxStaticBoxSizer( new wxStaticBox( MainPanel, wxID_ANY, wxEmptyString ), wxVERTICAL );
+-	
+-	ExitButton = new wxButton( MainPanel, wxID_ANY, _("E&xit"), wxDefaultPosition, wxDefaultSize, 0 );
++	ExitButton = new wxButton( LowStaticBoxSizer->GetStaticBox(), wxID_ANY, _("E&xit"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	ExitButton->SetMinSize( wxSize( -1,32 ) );
++	bSizer43->Add( ExitButton, 1, wxALL|wxEXPAND, 4 );
++	gSizer2->Add( bSizer43, 1, wxALL|wxEXPAND, 1 );
+ 	
+-	sbSizer43->Add( ExitButton, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxTOP, 2 );
+-	
+-	gSizer2->Add( sbSizer43, 1, wxALIGN_RIGHT|wxEXPAND, 5 );
+-	
+-	LowStaticBoxSizer->Add( gSizer2, 0, wxEXPAND, 5 );
++	LowStaticBoxSizer->Add( gSizer2, 0, wxALL|wxEXPAND, 5 );
+ 	
+ 	bSizer48->Add( LowStaticBoxSizer, 0, wxEXPAND, 5 );
+ 	
+@@ -365,6 +356,7 @@
+ 	
+ 	this->SetSizer( bSizer1 );
+ 	this->Layout();
++	bSizer1->Fit( this );
+ 	
+ 	this->Centre( wxBOTH );
+ 	
+@@ -463,7 +455,6 @@
+ 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnFaqMenuItemSelected ) );
+ 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnWebsiteMenuItemSelected ) );
+ 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnDownloadsMenuItemSelected ) );
+-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnNewsMenuItemSelected ) );
+ 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnVersionHistoryMenuItemSelected ) );
+ 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnContactMenuItemSelected ) );
+ 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnLegalNoticesMenuItemSelected ) );
+@@ -535,25 +526,25 @@
+ 	bSizer70->Add( 0, 0, 1, wxEXPAND, 5 );
+ 	
+ 	HelpButton = new wxButton( MainPanel, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer70->Add( HelpButton, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
++	bSizer70->Add( HelpButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+ 	
+ 	
+-	bSizer70->Add( 0, 0, 0, wxLEFT|wxALIGN_RIGHT, 5 );
++	bSizer70->Add( 0, 0, 0, wxLEFT, 5 );
+ 	
+ 	PreviousButton = new wxButton( MainPanel, wxID_ANY, _("< &Prev"), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer70->Add( PreviousButton, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
++	bSizer70->Add( PreviousButton, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
+ 	
+ 	NextButton = new wxButton( MainPanel, wxID_ANY, _("&Next >"), wxDefaultPosition, wxDefaultSize, 0|wxWANTS_CHARS );
+ 	NextButton->SetDefault(); 
+-	bSizer70->Add( NextButton, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
++	bSizer70->Add( NextButton, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+ 	
+ 	
+-	bSizer70->Add( 0, 0, 0, wxLEFT|wxALIGN_RIGHT, 5 );
++	bSizer70->Add( 0, 0, 0, wxLEFT, 5 );
+ 	
+ 	CancelButton = new wxButton( MainPanel, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer70->Add( CancelButton, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
++	bSizer70->Add( CancelButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+ 	
+-	bSizer64->Add( bSizer70, 0, wxEXPAND|wxALIGN_RIGHT|wxALL, 5 );
++	bSizer64->Add( bSizer70, 0, wxEXPAND|wxALL, 5 );
+ 	
+ 	bSizer63->Add( bSizer64, 1, wxEXPAND, 5 );
+ 	
+@@ -636,22 +627,18 @@
+ 	VersionStaticText->Wrap( -1 );
+ 	bSizer123->Add( VersionStaticText, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+ 	
+-	
+-	bSizer123->Add( 0, 0, 0, wxTOP, 3 );
++	bSizer123->Add( 0, 0, 0, wxTOP, 15 );
+ 	
+ 	CopyrightStaticText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+ 	CopyrightStaticText->Wrap( -1 );
+-	bSizer123->Add( CopyrightStaticText, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+-	
+-	
+-	bSizer123->Add( 0, 0, 0, wxTOP, 3 );
++	bSizer123->Add( CopyrightStaticText, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+ 	
+ 	WebsiteHyperlink = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("."), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+ 	
+ 	WebsiteHyperlink->SetHoverColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT ) );
+ 	WebsiteHyperlink->SetNormalColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT ) );
+ 	WebsiteHyperlink->SetVisitedColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT ) );
+-	bSizer123->Add( WebsiteHyperlink, 0, wxALL, 5 );
++	bSizer123->Add( WebsiteHyperlink, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+ 	
+ 	bSizer118->Add( bSizer123, 1, wxEXPAND|wxLEFT, 5 );
+ 	
+@@ -1647,11 +1634,9 @@
+ 	sbSizer14 = new wxStaticBoxSizer( new wxStaticBox( SecurityPage, wxID_ANY, _("Password Cache") ), wxVERTICAL );
+ 	
+ 	WipeCacheOnCloseCheckBox = new wxCheckBox( SecurityPage, wxID_ANY, _("Wipe after TrueCrypt window has been closed"), wxDefaultPosition, wxDefaultSize, 0 );
+-	
+ 	sbSizer14->Add( WipeCacheOnCloseCheckBox, 0, wxALL, 5 );
+ 	
+ 	WipeCacheOnAutoDismountCheckBox = new wxCheckBox( SecurityPage, wxID_ANY, _("Wipe after volume has been auto-dismounted"), wxDefaultPosition, wxDefaultSize, 0 );
+-	
+ 	sbSizer14->Add( WipeCacheOnAutoDismountCheckBox, 0, wxALL, 5 );
+ 	
+ 	bSizer33->Add( sbSizer14, 0, wxEXPAND|wxALL, 5 );
+@@ -1747,9 +1732,6 @@
+ 	
+ 	LogOnSizer = new wxStaticBoxSizer( new wxStaticBox( SystemIntegrationPage, wxID_ANY, _("Actions to Perform when User Logs On") ), wxVERTICAL );
+ 	
+-	ConfigureAutostartButton = new wxButton( SystemIntegrationPage, wxID_ANY, _("Configure &Autostart..."), wxDefaultPosition, wxDefaultSize, 0 );
+-	LogOnSizer->Add( ConfigureAutostartButton, 0, wxALL, 5 );
+-
+ 	StartOnLogonCheckBox = new wxCheckBox( SystemIntegrationPage, wxID_ANY, _("Start TrueCrypt Background Task"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	
+ 	LogOnSizer->Add( StartOnLogonCheckBox, 0, wxALL, 5 );
+@@ -2002,14 +1984,12 @@
+ 	PreserveTimestampsCheckBox->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPreserveTimestampsCheckBoxClick ), NULL, this );
+ 	BackgroundTaskEnabledCheckBox->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnBackgroundTaskEnabledCheckBoxClick ), NULL, this );
+ 	NoKernelCryptoCheckBox->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnNoKernelCryptoCheckBoxClick ), NULL, this );
+-	ConfigureAutostartButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnConfigureAutostartButtonClick ), NULL, this );
+ 	NoHardwareCryptoCheckBox->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnNoHardwareCryptoCheckBoxClick ), NULL, this );
+ 	SelectPkcs11ModuleButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnSelectPkcs11ModuleButtonClick ), NULL, this );
+ 	HotkeyListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( PreferencesDialogBase::OnHotkeyListItemDeselected ), NULL, this );
+ 	HotkeyListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( PreferencesDialogBase::OnHotkeyListItemSelected ), NULL, this );
+ 	AssignHotkeyButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAssignHotkeyButtonClick ), NULL, this );
+ 	RemoveHotkeyButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnRemoveHotkeyButtonClick ), NULL, this );
+-	StdButtonsCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnCancelButtonClick ), NULL, this );
+ 	StdButtonsOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnOKButtonClick ), NULL, this );
+ }
+ 
+@@ -2029,7 +2009,6 @@
+ 	HotkeyListCtrl->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( PreferencesDialogBase::OnHotkeyListItemSelected ), NULL, this );
+ 	AssignHotkeyButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAssignHotkeyButtonClick ), NULL, this );
+ 	RemoveHotkeyButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnRemoveHotkeyButtonClick ), NULL, this );
+-	StdButtonsCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnCancelButtonClick ), NULL, this );
+ 	StdButtonsOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnOKButtonClick ), NULL, this );
+ }
+ 
+@@ -2262,10 +2241,10 @@
+ 	wxArrayString EncryptionAlgorithmChoiceChoices;
+ 	EncryptionAlgorithmChoice = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, EncryptionAlgorithmChoiceChoices, 0 );
+ 	EncryptionAlgorithmChoice->SetSelection( 0 );
+-	bSizer96->Add( EncryptionAlgorithmChoice, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
++	bSizer96->Add( EncryptionAlgorithmChoice, 1, wxALL, 5 );
+ 	
+ 	TestButton = new wxButton( this, wxID_ANY, _("&Test"), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer96->Add( TestButton, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
++	bSizer96->Add( TestButton, 0, wxALL|wxEXPAND, 5 );
+ 	
+ 	sbSizer29->Add( bSizer96, 0, wxEXPAND, 5 );
+ 	
+@@ -2376,16 +2355,16 @@
+ 	bSizer137 = new wxBoxSizer( wxHORIZONTAL );
+ 	
+ 	AddFilesButton = new wxButton( this, wxID_ANY, _("Add &Files..."), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer137->Add( AddFilesButton, 0, wxEXPAND|wxTOP|wxBOTTOM|wxLEFT, 5 );
++	bSizer137->Add( AddFilesButton, 0, wxEXPAND|wxALL, 5 );
+ 	
+ 	AddDirectoryButton = new wxButton( this, wxID_ANY, _("Add &Path..."), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer137->Add( AddDirectoryButton, 0, wxEXPAND|wxTOP|wxBOTTOM|wxLEFT, 5 );
++	bSizer137->Add( AddDirectoryButton, 0, wxEXPAND|wxALL, 5 );
+ 	
+ 	AddSecurityTokenSignatureButton = new wxButton( this, wxID_ANY, _("Add &Token Files..."), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer137->Add( AddSecurityTokenSignatureButton, 0, wxEXPAND|wxTOP|wxBOTTOM|wxLEFT, 5 );
++	bSizer137->Add( AddSecurityTokenSignatureButton, 0, wxEXPAND|wxALL, 5 );
+ 	
+ 	RemoveButton = new wxButton( this, wxID_ANY, _("&Remove"), wxDefaultPosition, wxDefaultSize, 0 );
+-	bSizer137->Add( RemoveButton, 0, wxEXPAND|wxTOP|wxBOTTOM|wxLEFT, 5 );
++	bSizer137->Add( RemoveButton, 0, wxEXPAND|wxALL, 5 );
+ 	
+ 	RemoveAllButton = new wxButton( this, wxID_ANY, _("Remove &All"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	bSizer137->Add( RemoveAllButton, 0, wxEXPAND|wxALL, 5 );
+@@ -2398,6 +2377,7 @@
+ 	
+ 	this->SetSizer( bSizer19 );
+ 	this->Layout();
++	bSizer19->Fit( this );
+ 	
+ 	// Connect Events
+ 	KeyfilesListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( KeyfilesPanelBase::OnListItemDeselected ), NULL, this );
+@@ -2491,6 +2471,7 @@
+ 	
+ 	this->SetSizer( bSizer68 );
+ 	this->Layout();
++	bSizer68->Fit( this );
+ 	
+ 	// Connect Events
+ 	DirectoryTextCtrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( SelectDirectoryWizardPageBase::OnDirectoryTextChanged ), NULL, this );
+@@ -2574,7 +2555,7 @@
+ 	RandomPoolSampleStaticText->Wrap( -1 );
+ 	RandomPoolSampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier New") ) );
+ 	
+-	bSizer126->Add( RandomPoolSampleStaticText, 0, wxEXPAND|wxTOP|wxRIGHT|wxALIGN_BOTTOM, 7 );
++	bSizer126->Add( RandomPoolSampleStaticText, 0, wxEXPAND|wxTOP|wxRIGHT, 7 );
+ 	
+ 	DisplayKeysCheckBox = new wxCheckBox( this, wxID_ANY, _("Show"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	DisplayKeysCheckBox->SetValue(true);
+@@ -2633,20 +2614,20 @@
+ 	m_staticText31->Wrap( -1 );
+ 	bSizer108->Add( m_staticText31, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
+ 	
+-	m_panel12 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxSUNKEN_BORDER );
++	m_panel12 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
+ 	wxBoxSizer* bSizer115;
+ 	bSizer115 = new wxBoxSizer( wxHORIZONTAL );
+ 	
+ 	SizeDoneStaticText = new wxStaticText( m_panel12, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT|wxST_NO_AUTORESIZE );
+ 	SizeDoneStaticText->Wrap( -1 );
+-	bSizer115->Add( SizeDoneStaticText, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxALL, 3 );
++	bSizer115->Add( SizeDoneStaticText, 1, wxEXPAND|wxALL, 3 );
+ 	
+ 	m_panel12->SetSizer( bSizer115 );
+ 	m_panel12->Layout();
+ 	bSizer115->Fit( m_panel12 );
+-	bSizer108->Add( m_panel12, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
++	bSizer108->Add( m_panel12, 1, wxEXPAND|wxALL, 5 );
+ 	
+-	gSizer6->Add( bSizer108, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
++	gSizer6->Add( bSizer108, 1, wxEXPAND, 5 );
+ 	
+ 	wxBoxSizer* bSizer1081;
+ 	bSizer1081 = new wxBoxSizer( wxHORIZONTAL );
+@@ -2661,14 +2642,14 @@
+ 	
+ 	SpeedStaticText = new wxStaticText( m_panel121, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT|wxST_NO_AUTORESIZE );
+ 	SpeedStaticText->Wrap( -1 );
+-	bSizer1151->Add( SpeedStaticText, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 3 );
++	bSizer1151->Add( SpeedStaticText, 1, wxALL|wxEXPAND, 3 );
+ 	
+ 	m_panel121->SetSizer( bSizer1151 );
+ 	m_panel121->Layout();
+ 	bSizer1151->Fit( m_panel121 );
+-	bSizer1081->Add( m_panel121, 1, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
++	bSizer1081->Add( m_panel121, 1, wxALL|wxEXPAND, 5 );
+ 	
+-	gSizer6->Add( bSizer1081, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL, 5 );
++	gSizer6->Add( bSizer1081, 1, wxEXPAND, 5 );
+ 	
+ 	wxBoxSizer* bSizer1082;
+ 	bSizer1082 = new wxBoxSizer( wxHORIZONTAL );
+@@ -2677,20 +2658,20 @@
+ 	m_staticText312->Wrap( -1 );
+ 	bSizer1082->Add( m_staticText312, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
+ 	
+-	m_panel122 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
++	m_panel122 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
+ 	wxBoxSizer* bSizer1152;
+ 	bSizer1152 = new wxBoxSizer( wxHORIZONTAL );
+ 	
+ 	TimeLeftStaticText = new wxStaticText( m_panel122, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT|wxST_NO_AUTORESIZE );
+ 	TimeLeftStaticText->Wrap( -1 );
+-	bSizer1152->Add( TimeLeftStaticText, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 3 );
++	bSizer1152->Add( TimeLeftStaticText, 1, wxALL|wxEXPAND, 3 );
+ 	
+ 	m_panel122->SetSizer( bSizer1152 );
+ 	m_panel122->Layout();
+ 	bSizer1152->Fit( m_panel122 );
+ 	bSizer1082->Add( m_panel122, 1, wxALL|wxEXPAND, 5 );
+ 	
+-	gSizer6->Add( bSizer1082, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
++	gSizer6->Add( bSizer1082, 1, wxEXPAND, 5 );
+ 	
+ 	sbSizer32->Add( gSizer6, 0, wxEXPAND|wxTOP, 2 );
+ 	
+diff --git a/Main/Forms/Forms.h b/Main/Forms/Forms.h
+index 6539328..e6b1d1b 100644
+--- a/Main/Forms/Forms.h
++++ b/Main/Forms/Forms.h
+@@ -128,7 +128,6 @@
+ 			virtual void OnFaqMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnWebsiteMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnDownloadsMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+-			virtual void OnNewsMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnVersionHistoryMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnContactMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnLegalNoticesMenuItemSelected( wxCommandEvent& event ){ event.Skip(); }
+@@ -553,8 +552,6 @@
+ 			wxCheckBox* CloseBackgroundTaskOnNoVolumesCheckBox;
+ 			wxPanel* SystemIntegrationPage;
+ 			wxStaticBoxSizer* LogOnSizer;
+-			wxButton* ConfigureAutostartButton;
+-			wxCheckBox* BackgroundTaskMenuDismountItemsEnabledCheckBox;
+ 			wxCheckBox* StartOnLogonCheckBox;
+ 			wxCheckBox* MountFavoritesOnLogonCheckBox;
+ 			wxCheckBox* MountDevicesOnLogonCheckBox;
+@@ -594,7 +591,6 @@
+ 			virtual void OnForceAutoDismountCheckBoxClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnPreserveTimestampsCheckBoxClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnBackgroundTaskEnabledCheckBoxClick( wxCommandEvent& event ){ event.Skip(); }
+-			virtual void OnConfigureAutostartButtonClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnNoKernelCryptoCheckBoxClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnNoHardwareCryptoCheckBoxClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnSelectPkcs11ModuleButtonClick( wxCommandEvent& event ){ event.Skip(); }
+@@ -602,7 +598,6 @@
+ 			virtual void OnHotkeyListItemSelected( wxListEvent& event ){ event.Skip(); }
+ 			virtual void OnAssignHotkeyButtonClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnRemoveHotkeyButtonClick( wxCommandEvent& event ){ event.Skip(); }
+-			virtual void OnCancelButtonClick( wxCommandEvent& event ){ event.Skip(); }
+ 			virtual void OnOKButtonClick( wxCommandEvent& event ){ event.Skip(); }
+ 			
+ 		
+@@ -773,7 +768,7 @@
+ 			
+ 		
+ 		public:
+-			KeyfilesPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL );
++			KeyfilesPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL );
+ 			~KeyfilesPanelBase();
+ 		
+ 	};
+diff --git a/Main/Forms/MainFrame.h b/Main/Forms/MainFrame.h
+index cd43e4e..4796b99 100644
+--- a/Main/Forms/MainFrame.h
++++ b/Main/Forms/MainFrame.h
+@@ -10,7 +10,7 @@
+ #define TC_HEADER_Main_Forms_MainFrame
+ 
+ #define GSocket GlibGSocket
+-#include <libappindicator/app-indicator.h>
++#include <libayatana-appindicator3-0.1/libayatana-appindicator/app-indicator.h>
+ #undef GSocket
+ 
+ #include "Forms.h"
+@@ -117,7 +117,6 @@
+ 		void OnMountAllDevicesButtonClick (wxCommandEvent& event);
+ 		void OnMountAllFavoritesMenuItemSelected (wxCommandEvent& event);
+ 		void OnMountVolumeMenuItemSelected (wxCommandEvent& event) { MountVolume(); }
+-		void OnNewsMenuItemSelected (wxCommandEvent& event) { Gui->OpenHomepageLink (this, L"news"); }
+ 		void OnNoHistoryCheckBoxClick (wxCommandEvent& event);
+ 		void OnOnlineHelpMenuItemSelected (wxCommandEvent& event) { Gui->OpenOnlineHelp (this); }
+ 		void OnOpenVolumeMenuItemSelected (wxCommandEvent& event) { OpenSelectedVolume(); }
+diff --git a/Main/Forms/PreferencesDialog.cpp b/Main/Forms/PreferencesDialog.cpp
+index 279b67a..dfe0076 100644
+--- a/Main/Forms/PreferencesDialog.cpp
++++ b/Main/Forms/PreferencesDialog.cpp
+@@ -268,18 +268,6 @@
+ 			BackgroundTaskEnabledCheckBox->SetValue (!Gui->AskYesNo (LangString["CONFIRM_BACKGROUND_TASK_DISABLED"], false, true));
+ 	}
+ 
+-	void PreferencesDialog::OnConfigureAutostartButtonClick (wxCommandEvent& event)
+-	{
+-		// Launch "Startup Applications"
+-		try
+-		{
+-			list <string> args;
+-			Process::Execute ("gnome-session-properties", args);
+-		}
+-		// catch (TimeOut&) { }
+-		catch (exception &e) { Gui->ShowError (e); }
+-	}
+-
+ 	void PreferencesDialog::OnNoHardwareCryptoCheckBoxClick (wxCommandEvent& event)
+ 	{
+ 		if (event.IsChecked())
+diff --git a/Main/Forms/PreferencesDialog.h b/Main/Forms/PreferencesDialog.h
+index a6495b6..81c8086 100644
+--- a/Main/Forms/PreferencesDialog.h
++++ b/Main/Forms/PreferencesDialog.h
+@@ -26,8 +26,6 @@
+ 	protected:
+ 		void OnAssignHotkeyButtonClick (wxCommandEvent& event);
+ 		void OnBackgroundTaskEnabledCheckBoxClick (wxCommandEvent& event);
+-		void OnConfigureAutostartButtonClick (wxCommandEvent& event);
+-		void OnCancelButtonClick (wxCommandEvent& event) { Close(); }
+ 		void OnClose (wxCloseEvent& event);
+ 		void OnDismountOnPowerSavingCheckBoxClick (wxCommandEvent& event);
+ 		void OnDismountOnScreenSaverCheckBoxClick (wxCommandEvent& event);
+diff --git a/Main/Main.make b/Main/Main.make
+index 2a5c260..1d3679c 100644
+--- a/Main/Main.make
++++ b/Main/Main.make
+@@ -73,7 +73,7 @@
+ CXXFLAGS += -I$(BASE_DIR)/Main
+ 
+ ifndef TC_NO_GUI
+-LIBS += $(shell pkg-config --libs appindicator-0.1)
++LIBS += $(shell pkg-config --libs ayatana-appindicator3-0.1)
+ endif
+ 
+ #------ wxWidgets configuration ------
+diff --git a/Main/UserPreferences.h b/Main/UserPreferences.h
+index 36f1fb4..4641b43 100644
+--- a/Main/UserPreferences.h
++++ b/Main/UserPreferences.h
+@@ -42,7 +42,7 @@
+ 			UseKeyfiles (false),
+ 			Verbose (false),
+ 			WipeCacheOnAutoDismount (true),
+-			WipeCacheOnClose (false)
++			WipeCacheOnClose (true)
+ 		{
+ 		}
+ 
+diff --git a/Makefile b/Makefile
+index d7afc4d..2294734 100644
+--- a/Makefile
++++ b/Makefile
+@@ -67,7 +67,7 @@
+ 	C_CXX_FLAGS += -DTC_NO_GUI -DwxUSE_GUI=0
+ 	WX_CONFIGURE_FLAGS += --disable-gui
+ else
+-	C_CXX_FLAGS += $(shell pkg-config --cflags appindicator-0.1)
++	C_CXX_FLAGS += $(shell pkg-config --cflags ayatana-appindicator3-0.1)
+ endif
+ 
+ ifdef PKCS11_INC
