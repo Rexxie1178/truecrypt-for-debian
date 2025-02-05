@@ -1,27 +1,28 @@
 [Desktop Entry]
-Encoding=UTF-8
+Version=1.0
+Terminal=false
+Icon=truecrypt
+Type=Application
+Categories=Utility;
+Exec=/usr/bin/truecrypt %f
+MimeType=application/x-truecrypt
 Name=TrueCrypt
 GenericName=TrueCrypt
 Comment=TrueCrypt
-Exec=/usr/bin/truecrypt %f
-Icon=truecrypt
-Terminal=false
-Type=Application
-Categories=Utility;
-X-Ayatana-Desktop-Shortcuts=MountFavorites;DismountAll
-MimeType=application/x-truecrypt
+StartupNotify=true
+Actions=MountFavorites;MountDevices;DismountAll;
 
-[MountFavorites Shortcut Group]
+[Desktop Action MountFavorites]
 Name=Mount All Favorite Volumes
 Exec=/usr/bin/truecrypt --auto-mount=favorites
 TargetEnvironment=Unity
 
-[MountDevices Shortcut Group]
+[Desktop Action MountDevices]
 Name=Mount Devices
 Exec=/usr/bin/truecrypt --auto-mount=devices
 TargetEnvironment=Unity
 
-[DismountAll Shortcut Group]
+[Desktop Action DismountAll]
 Name=Dismount All Mounted Volumes
 Exec=/usr/bin/truecrypt --dismount
 TargetEnvironment=Unity
