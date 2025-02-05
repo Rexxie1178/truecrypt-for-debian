@@ -1,3 +1,31 @@
+truecrypt (7.1a-d12.0) bookworm; urgency=medium
+
+  * Update changelog, compat, control, copyright, readme and rules
+  * Update ./source/include-binaries and ./patches/series
+  * Remove Vagrantfile and truecrypt-autostart.desktop
+  * Fix truecrypt.desktop shortcut menu
+  * Add truecrypt-7.1a-d12-lockfile.patch
+  * Fix SingleInstanceChecker -lock- file not removed 
+  * Add truecrypt-7.1a-d12-deprecated.patch
+  * Fix deprecated code c++11 and wxwidgets 
+  * Add truecrypt-7.1a-d12-htmlhelp.patch
+  * Add htmlhelp, a local copy of truecrypt71a.com help and faq
+  * Disable rules install truecrypt-autostart.desktop
+  * Add truecrypt-7.1a-d12-gtk3-gui.patch
+  * Fix various gui issues throughout the application
+  * Remove preferences system integration autostart functionality
+  * Fix warning wxwidgets do not panic assert wxexpand
+  * Add truecrypt-7.1a-d12-gcc12.patch
+  * Fix warning missing .note.GNU-stack section implies executable stack
+  * Fix error reference to ‘byte’ is ambiguous
+  * Add truecrypt-7.1a-d12-build.patch
+  * Extend makefile with arm64 compiler support
+  * Change build to use wxwidgets static library
+  * Upgrade appindicator, libgtk, libwxgtk and wxwidgets
+  * Fix error truecrypt-7.1a-indicator.patch has fuzz
+
+ -- Rexxie #1178 <rexxie1178@proton.me>  Thu, 08 Aug 2024 21:33:36 +0700
+
 truecrypt (7.1a-15) xenial; urgency=medium
 
   * Add arm64 build.
