@@ -171,10 +171,12 @@ If the information found in this corner of the internet is invaluable, consider 
 Using this type of privacy-focused internet money supports the community and promotes financial sovereignty and freedom. Much appreciated – every bit counts.
 
 Pirate wallet address:
-> zs180upk25p5mmr5k9hklenljp2hyamyyeqct0vz3gf8kz0sqz3z46cajx67zvjlpsplw3sc9027pn<br>
+> zs180upk25p5mmr5k9hklenljp2hyamyyeqct0vz3gf8kz0sqz3z46cajx67zvjlpsplw3sc9027pn<br>![arrr-address](https://github.com/user-attachments/assets/bd063343-74ee-4aa8-8847-69d8ffc38847)
+
 
 Monero wallet address:
-> 44QU6st44kR3U5ASuk2X5wEjKyDyXoyZr5Xb2gnaEdcJaS42xFvynaD1cQ89iz1X2jRJQzwh5w4pYYizZfzYErQFEx3RTc8<br>
+> 44QU6st44kR3U5ASuk2X5wEjKyDyXoyZr5Xb2gnaEdcJaS42xFvynaD1cQ89iz1X2jRJQzwh5w4pYYizZfzYErQFEx3RTc8<br>![xmr-address](https://github.com/user-attachments/assets/4e503df6-aba3-4829-952f-8727b8604b17)
+
 
 ## References
 At the moment of writing this README.md the sources were found at the following locations.
