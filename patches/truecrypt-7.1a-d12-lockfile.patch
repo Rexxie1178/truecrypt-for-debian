@@ -1,0 +1,31 @@
+diff --git a/Main/Forms/PreferencesDialog.cpp b/Main/Forms/PreferencesDialog.cpp
+index dfe0076..5474453 100644
+--- a/Main/Forms/PreferencesDialog.cpp
++++ b/Main/Forms/PreferencesDialog.cpp
+@@ -58,7 +58,12 @@
+ 
+ 		TC_CHECK_BOX_VALIDATOR (BackgroundTaskEnabled);
+ 		TC_CHECK_BOX_VALIDATOR (CloseBackgroundTaskOnNoVolumes);
+-		CloseBackgroundTaskOnNoVolumesCheckBox->Show (!Core->IsInPortableMode());
++
++		//CloseBackgroundTaskOnNoVolumesCheckBox->Show (!Core->IsInPortableMode());
++		CloseBackgroundTaskOnNoVolumesCheckBox->Show (false);
++		// Setting CloseBackgroundTaskOnNoVolumes to false is buggy as
++		// with Linux Restart... or Power Off... will not remove the lock file,
++		// which may result in the message "TrueCrypt is already running."
+ 
+ 		// Encryption
+ 		AesHwCpuSupportedStaticText->SetLabel (
+diff --git a/Main/UserPreferences.h b/Main/UserPreferences.h
+index 4641b43..50dd88a 100644
+--- a/Main/UserPreferences.h
++++ b/Main/UserPreferences.h
+@@ -21,7 +21,7 @@
+ 			:
+ 			BackgroundTaskEnabled (true),
+ 			BeepAfterHotkeyMountDismount (false),
+-			CloseBackgroundTaskOnNoVolumes (false),
++			CloseBackgroundTaskOnNoVolumes (true),
+ 			CloseExplorerWindowsOnDismount (true),
+ 			CloseSecurityTokenSessionsAfterMount (false),
+ 			DisableKernelEncryptionModeWarning (false),
