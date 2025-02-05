@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keyfiles - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Keyfiles</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>Keyfile is a file whose content is combined with a password (for information on the method used to combine a keyfile with password, see the chapter <a href="../technical-details/index.html"><i>Technical Details</i></a>, section <a href="../technical-details/keyfiles/index.html"><i>Keyfiles</i></a>). Until the correct keyfile is provided, no volume that uses the keyfile can be mounted.</p>
+<p>You do not have to use keyfiles. However, using keyfiles has some advantages:</p>
+<ul>
+<li>May improve protection against brute force attacks (significant particularly if the volume password is not very strong).</li>
+<li>Allows the use of security tokens and smart cards (see below).</li>
+<li>Allows multiple users to mount a single volume using different user passwords or PINs. Just give each user a security token or smart card containing the same TrueCrypt keyfile and let them choose their personal password or PIN that will protect their security token or smart card.</li>
+<li>Allows managing multi-user <i>shared</i> access (all keyfile holders must present their keyfiles before a volume can be mounted).</li>
+</ul>
+<p>Any kind of file (for example, .txt, .exe, mp3<span class="s18">*</span>, .avi) can be used as a TrueCrypt keyfile (however, we recommend that you prefer compressed files, such as .mp3, .jpg, .zip, etc). Note that TrueCrypt never modifies the keyfile contents.</p>
+<p>You can select more than one keyfile; the order does not matter. You can also let TrueCrypt generate a file with random content and use it as a keyfile. To do so, select <i>Tools -&gt; Keyfile Generator</i>.</p>
+<p>Note: Keyfiles are currently not supported for system encryption.</p>
+<p class="s16">WARNING: If you lose a keyfile or if any bit of its first 1024 kilobytes changes, it will be impossible to mount volumes that use the keyfile!</p>
+<p class="s16"><b>WARNING: If password caching is enabled, the password cache also contains the processed contents of keyfiles used to successfully mount a volume. Then it is possible to remount the volume even if the keyfile is not available/accessible.</b> To prevent this, click ‘<span class="p">Wipe Cache</span>’ or disable password caching (for more information, please see the section <span class="p">Settings -&gt; Preferences,</span> subsection <span class="p">Cache passwords in driver memory).</span></p>
+<p>See also the section <a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html"><i>Choosing Passwords and Keyfiles</i></a> in the chapter <a href="../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>.</p>
+<h3>Keyfiles Dialog Window</h3>
+<p>If you want to use keyfiles (i.e. “apply” them) when creating or mounting volumes, or changing passwords, look for the ‘<i>Use keyfiles</i>’ option and the <i>Keyfiles</i> button below a password input field.</p>
+<p><a href="../wp-content/uploads/2015/07/Image_0401.gif" data-rel="lightbox-image-0" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-363" src="../wp-content/uploads/2015/07/Image_0401.gif" alt="Image_040[1]" width="415" height="108"></a></p>
+<p>These control elements appear in various dialog windows and always have the same functions. Check the <i>Use keyfiles</i> option and click <i>Keyfiles.</i> The keyfile dialog window should appear where you can specify keyfiles (to do so, click <i>Add Files</i> or <i>Add Token Files</i>) <i>or</i> keyfile search paths (click <i>Add Path</i>).</p>
+<h3>Security Tokens and Smart Cards</h3>
+<p>TrueCrypt can directly use keyfiles stored on a security token or smart card that complies with the PKCS #11 (2.0 or later) standard [23] and that allows the user to store a file (data object) on the token/card. To use such files as TrueCrypt keyfiles, click <i>Add Token Files</i> (in the keyfile dialog window).</p>
+<p>Access to a keyfile stored on a security token or smart card is typically protected by PIN codes, which can be entered either using a hardware PIN pad or via the TrueCrypt GUI. It can also be protected by other means, such as fingerprint readers.</p>
+<p>In order to allow TrueCrypt to access a security token or smart card, you need to install a PKCS #11 (2.0 or later) software library for the token or smart card first. Such a library may be supplied with the device or it may be available for download from the website of the vendor or other third parties.</p>
+<p>If your security token or smart card does not contain any file (data object) that you could use as a TrueCrypt keyfile, you can use TrueCrypt to import any file to the token or smart card (if it is supported by the device). To do so, follow these steps:</p>
+<ol>
+<li>In the keyfile dialog window, click <i>Add Token Files</i>.</li>
+<li>If the token or smart card is protected by a PIN, password, or other means (such as a fingerprint reader), authenticate yourself (for example, by entering the PIN using a hardware PIN pad).</li>
+<li>The ‘Security Token Keyfile’ dialog window should appear. In it, click <i>Import Keyfile to Token</i> and then select the file you want to import to the token or smart card.</li>
+</ol>
+<p>Note that you can import for example 512-bit keyfiles with random content generated by TrueCrypt (see <i>Tools -&gt; Keyfile Generator</i> below).</p>
+<p>To close all opened security token sessions, either select <i>Tools</i> &gt; <i>Close All Security Token Sessions</i> or define and use a hotkey combination (<i>Settings</i> &gt; <i>Hot Keys</i> &gt; <i>Close All Security Token Sessions</i>).</p>
+<h3>Keyfile Search Path</h3>
+<p>By adding a folder in the keyfile dialog window (click <i>Add Path</i>), you specify a <i>keyfile search path</i>. All files found in the keyfile search path<span class="s18">**</span> will be used as keyfiles.</p>
+<h4>Important: Note that folders (and files they contain) found in keyfile search paths are ignored.</h4>
+<p>Keyfile search paths are especially useful if you, for example, store keyfiles on a USB memory stick that you carry with you. You can set the drive letter of the USB memory stick as a default keyfile search path. To do so, select <i>Settings</i> -&gt; <i>Default Keyfiles</i>. Then click Add Path<span class="p">, browse to the drive letter assigned to the USB memory stick, and click</span> OK<span class="p">. Now each time you mount a volume (and if the option</span> Use keyfiles <span class="p">is checked in the password dialog window), TrueCrypt will scan the path and use all files that it finds on the USB memory stick as keyfiles.</span></p>
+<div class="box">
+<h4>WARNING: When you add a folder (as opposed to a file) to the list of keyfiles, only the path is remembered, not the filenames! This means e.g. that if you create a new file in the folder or if you copy an additional file to the folder, then all volumes that used keyfiles from the folder will be impossible to mount (until you remove the newly added file from the folder).</h4>
+</div>
+<h3>Empty Password & Keyfile</h3>
+<p>When a keyfile is used, the password may be empty, so the keyfile may become the only item necessary to mount the volume (which we do not recommend). If default keyfiles are set and enabled when mounting a volume, then before prompting for a password, TrueCrypt first automatically attempts to mount using an empty password plus default keyfiles (however, this does not apply to the ‘<i>Auto-Mount Devices</i>’ function). If you need to set Mount Options (e.g., mount as read-only, protect hidden volume etc.) for a volume being mounted this way, hold down the <i>Control</i> (<i>Ctrl</i>) key while clicking <i>Mount</i> (or select <i>Mount with Options</i> from the <i>Volumes</i> menu). This will open the <i>Mount Options</i> dialog.</p>
+<h3>Quick Selection</h3>
+<p>Keyfiles and keyfile search paths can be quickly selected in the following ways:</p>
+<ul>
+<li>Right-click the <i>Keyfiles</i> button in the password entry dialog window and select one of the menu items.</li>
+<li>Drag the corresponding file/folder icons to the keyfile dialog window or to the password entry dialog.</li>
+</ul>
+<h3>Volumes -&gt; Add/Remove Keyfiles to/from Volume</h3>
+<p>This function allows you to re-encrypt a volume header with a header encryption key derived from any number of keyfiles (with or without a password), or no keyfiles at all. Thus, a volume which is possible to mount using only a password can be converted to a volume that require keyfiles (in addition to the password) in order to be possible to mount. Note that the volume header contains the master encryption key with which the volume is encrypted. Therefore, the data stored on the volume will <i>not</i> be lost after you use this function.</p>
+<p>This function can also be used to change/set volume keyfiles (i.e., to remove some or all keyfiles, and to apply new ones).</p>
+<p>Remark: This function is internally equal to the Password Change function.</p>
+<p>When TrueCrypt re-encrypts a volume header, the original volume header is first overwritten 256 times with random data to prevent adversaries from using techniques such as magnetic force microscopy or magnetic force scanning tunneling microscopy [17] to recover the overwritten header (however, see also the chapter <a href="../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>).</p>
+<h3>Volumes -&gt; Remove All Keyfiles from Volume</h3>
+<p>This function allows you to re-encrypt a volume header with a header encryption key derived from a password and no keyfiles (so that it can be mounted using only a password, without any keyfiles). Note that the volume header contains the master encryption key with which the volume is encrypted. Therefore, the data stored on the volume will <i>not</i> be lost after you use this function.</p>
+<p>Remark: This function is internally equal to the Password Change function.</p>
+<p>When TrueCrypt re-encrypts a volume header, the original volume header is first overwritten 256 times with random data to prevent adversaries from using techniques such as magnetic force microscopy or magnetic force scanning tunneling microscopy [17] to recover the overwritten header (however, see also the chapter <a href="../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>).</p>
+<h3>Tools -&gt; Keyfile Generator</h3>
+<p>You can use this function to generate a file with random content, which you can use as a keyfile (recommended). This function uses the TrueCrypt Random Number Generator. Note that the resulting file size is always 64 bytes (i.e., 512 bits), which is also the maximum possible TrueCrypt password length.</p>
+<h3>Settings -&gt; Default Keyfiles</h3>
+<p>Use this function to set default keyfiles and/or default keyfile search paths. This function is particularly useful if you, for example, store keyfiles on a USB memory stick that you carry with you. You can add its drive letter to the default keyfile configuration. To do so, click <i>Add Path</i>, browse to the drive letter assigned to the USB memory stick, and click <i>OK</i>. Now each time you mount a volume (and if <i>Use keyfiles</i> is checked in the password dialog), TrueCrypt will scan the path and use all files that it finds there as keyfiles.</p>
+<h4>WARNING: When you add a folder (as opposed to a file) to your default keyfile list, only the path is remembered, not the filenames! This means e.g. that if you create a new file in the folder or if you copy an additional file to the folder, then all volumes that used keyfiles from the folder will be impossible to mount (until you remove the newly added file from the folder).</h4>
+<p class="s16">IMPORTANT: Note that when you set default keyfiles and/or default keyfile search paths, the filenames and paths are saved unencrypted in the file <span class="p">Default Keyfiles.xml</span>. For more information, please see the chapter TrueCrypt System Files & Application Data.</p>
+<p class="s19">* However, if you use an MP3 file as a keyfile, you must ensure that no program modifies the ID3 tags (e.g. song title, name of artist, etc.) within the MP3 file. Otherwise, it will be impossible to mount volumes that use the keyfile.</p>
+<p class="s19">** Found at the time when you are mounting the volume, changing its password, or performing any other operation that involves re-encryption of the volume header.</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hidden Operating System - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Hidden Operating System</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>If your system partition or system drive is encrypted using TrueCrypt, you need to enter your pre- boot authentication password in the TrueCrypt Boot Loader screen after you turn on or restart your computer. It may happen that you are forced by somebody to decrypt the operating system or to reveal the pre-boot authentication password. There are many situations where you cannot refuse to do so (for example, due to extortion). TrueCrypt allows you to create a hidden operating system whose existence should be impossible to prove (provided that certain guidelines are followed — see below). Thus, you will not have to decrypt or reveal the password for the hidden operating system.</p>
+<p>Before you continue reading this section, make sure you have read the section <a href="../hidden-volume/index.html"><i>Hidden Volume</i></a> and that you understand what a hidden TrueCrypt volume is.</p>
+<p>A <b>hidden operating system</b> is a system (for example, Windows 7 or Windows XP) that is installed in a hidden TrueCrypt volume. It should be impossible to prove that a hidden TrueCrypt volume exists (provided that certain guidelines are followed; for more information, see the section <a href="../hidden-volume/index.html"><i>Hidden Volume</i></a>) and, therefore, it should be impossible to prove that a hidden operating system exists.</p>
+<p>However, in order to boot a system encrypted by TrueCrypt, an unencrypted copy of the TrueCrypt Boot Loader has to be stored on the system drive or on a TrueCrypt Rescue Disk. Hence, the mere presence of the TrueCrypt Boot Loader can indicate that there is a system encrypted by TrueCrypt on the computer. Therefore, to provide a plausible explanation for the presence of the TrueCrypt Boot Loader, the TrueCrypt wizard helps you create a second encrypted operating system, so- called <b>decoy operating system</b>, during the process of creation of a hidden operating system. A decoy operating system must not contain any sensitive files. Its existence is not secret (it is <i>not</i> installed in a hidden volume). The password for the decoy operating system can be safely revealed to anyone forcing you to disclose your pre-boot authentication password.<span class="s18">*</span></p>
+<p>You should use the decoy operating system as frequently as you use your computer. Ideally, you should use it for all activities that do not involve sensitive data. Otherwise, plausible deniability of the hidden operating system might be adversely affected (if you revealed the password for the decoy operating system to an adversary, he could find out that the system is not used very often, which might indicate the existence of a hidden operating system on your computer). Note that you can save data to the decoy system partition anytime without any risk that the hidden volume will get damaged (because the decoy system is <i>not</i>installed in the outer volume — see below).</p>
+<p>There will be two pre-boot authentication passwords — one for the hidden system and the other for the decoy system. If you want to start the hidden system, you simply enter the password for the hidden system in the TrueCrypt Boot Loader screen (which appears after you turn on or restart your computer). Likewise, if you want to start the decoy system (for example, when asked to do so by an adversary), you just enter the password for the decoy system in the TrueCrypt Boot Loader screen.</p>
+<p>Note: When you enter a pre-boot authentication password, the TrueCrypt Boot Loader first attempts to decrypt (using the entered password) the last 512 bytes of the first logical track of the system drive (where encrypted master key data for non-hidden encrypted system partitions/drives are normally stored). If it fails and if there is a partition behind the active partition, the TrueCrypt Boot Loader (even if there is actually no hidden volume on the drive) automatically tries to decrypt (using the same entered password again) the area of the first partition behind the active partition<span class="s18">**</span> where the encrypted header of a possible hidden volume might be stored. Note that TrueCrypt never knows if there is a hidden volume in advance (the hidden volume header cannot be identified, as it appears to consist entirely of random data). If the header is successfully decrypted (for information on how TrueCrypt determines that it was successfully decrypted, see the section <a href="../../technical-details/encryption-scheme/index.html"><i>Encryption Scheme</i></a>), the information about the size of the hidden volume is retrieved from the decrypted header (which is still stored in RAM), and the hidden volume is mounted (its size also determines its offset). For further technical details, see the section <i><a href="../../technical-details/encryption-scheme/index.html">Encryption Scheme</a>&nbsp;</i>in the chapter <a href="../../technical-details/index.html"><i>Technical Details</i></a>.</p>
+<p>When running, the hidden operating system appears to be installed on the same partition as the original operating system (the decoy system). However, in reality, it is installed within the partition behind it (in a hidden volume). All read/write operations are transparently redirected from the system partition to the hidden volume. Neither the operating system nor applications will know that data written to and read from the system partition is actually written to and read from the partition behind it (from/to a hidden volume). Any such data is encrypted and decrypted on the fly as usual (with an encryption key different from the one that is used for the decoy operating system).</p>
+<p>Note that there will also be a third password — the one for the <b>outer volume</b>. It is not a pre-boot authentication password, but a regular TrueCrypt volume password. It can be safely disclosed to anyone forcing you to reveal the password for the encrypted partition where the hidden volume (containing the hidden operating system) resides. Thus, the existence of the hidden volume (and of the hidden operating system) will remain secret. If you are not sure you understand how this is possible, or what an outer volume is, please read the section <a href="../hidden-volume/index.html"><i>Hidden Volume</i></a>. The outer volume should contain some sensitive-looking files that you actually do <i>not</i> want to hide.</p>
+<p>To summarize, there will be three passwords in total. Two of them can be revealed to an attacker (for the decoy system and for the outer volume). The third password, for the hidden system, must remain secret.</p>
+<p><a href="../../wp-content/uploads/2015/07/Image_0341.png" data-rel="lightbox-image-0" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-359" src="../../wp-content/uploads/2015/07/Image_0341.png" alt="Image_034[1]" width="604" height="225"></a></p>
+<p class="s21">Example Layout of System Drive Containing Hidden Operating System</p>
+<h4>Process of Creation of Hidden Operating System</h4>
+<p>To start the process of creation of a hidden operating system, select <i>System</i> &gt; <i>Create Hidden Operating System</i> and then follow the instructions in the wizard.</p>
+<p>Initially, the wizard verifies that there is a suitable partition for a hidden operating system on the system drive. Note that before you can create a hidden operating system, you need to create a partition for it on the system drive. It must be the first partition behind the system partition and it must be at least 5% larger than the system partition (the system partition is the one where the currently running operating system is installed). However, if the outer volume (not to be confused with the system partition) is formatted as NTFS, the partition for the hidden operating system must be at least 110% (2.1 times) larger than the system partition (the reason is that the NTFS file system always stores internal data exactly in the middle of the volume and, therefore, the hidden volume, which is to contain a clone of the system partition, can reside only in the second half of the partition).</p>
+<p>In the next steps, the wizard will create two TrueCrypt volumes (outer and hidden) within the first partition behind the system partition. The hidden volume will contain the hidden operating system. The size of the hidden volume is always the same as the size of the system partition. The reason is that the hidden volume will need to contain a clone of the content of the system partition (see below). Note that the clone will be encrypted using a different encryption key than the original. Before you start copying some sensitive-looking files to the outer volume, the wizard tells you the maximum recommended size of space that the files should occupy, so that there is enough free space on the outer volume for the hidden volume.</p>
+<p>Remark: After you copy some sensitive-looking files to the outer volume, the cluster bitmap of the volume will be scanned in order to determine the size of uninterrupted area of free space whose end is aligned with the end of the outer volume. This area will accommodate the hidden volume, so it limits its maximum possible size. The maximum possible size of the hidden volume will be determined and it will be verified that it is greater than the size of the system partition (which is required, because the entire content of the system partition will need to be copied to the hidden volume — see below). This ensures that no data stored on the outer volume will be overwritten by data written to the area of the hidden volume (e.g., when the system is being copied to it). The size of the hidden volume is always the same as the size of the system partition.</p>
+<p>Then, TrueCrypt will create the hidden operating system by copying the content of the system partition to the hidden volume. Data being copied will be encrypted on the fly with an encryption key different from the one that will be used for the decoy operating system. The process of copying the system is performed in the pre-boot environment (before Windows starts) and it may take a long time to complete; several hours or even several days (depending on the size of the system partition and on the performance of the computer). You will be able to interrupt the process, shut down your computer, start the operating system and then resume the process. However, if you interrupt it, the entire process of copying the system will have to start from the beginning (because the content of the system partition must not change during cloning). The hidden operating system will initially be a clone of the operating system under which you started the wizard.</p>
+<p>Windows creates (typically, without your knowledge or consent) various log files, temporary files, etc., on the system partition. It also saves the content of RAM to hibernation and paging files located on the system partition. Therefore, if an adversary analyzed files stored on the partition where the original system (of which the hidden system is a clone) resides, he might find out, for example, that you used the TrueCrypt wizard in the hidden-system-creation mode (which might indicate the existence of a hidden operating system on your computer). To prevent such issues, TrueCrypt will securely erase the entire content of the partition where the original system resides after the hidden system has been created. Afterwards, in order to achieve plausible deniability, TrueCrypt will prompt you to install a new system on the partition and encrypt it using TrueCrypt. Thus, you will create the decoy system and the whole process of creation of the hidden operating system will be completed.</p>
+<h4>Plausible Deniability and Data Leak Protection</h4>
+<p>For security reasons, when a hidden operating system is running, TrueCrypt ensures that all local unencrypted filesystems and non-hidden TrueCrypt volumes are read-only (i.e. no files can be written to such filesystems or TrueCrypt volumes).<span class="s18">***</span> Data is allowed to be written to any filesystem that resides within a hidden TrueCrypt volume (provided that the hidden volume is not located in a container stored on an unencrypted filesystem or on any other read-only filesystem).</p>
+<p>There are three main reasons why such countermeasures have been implemented:</p>
+<ol>
+<li>It enables the creation of a secure platform for mounting of hidden TrueCrypt volumes.Note that we officially recommend that hidden volumes are mounted only when a hidden operating system is running. For more information, see the subsection <a href="../hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html"><i>Security Requirements and Precautions Pertaining to Hidden Volumes</i></a>.</li>
+<li>In some cases, it is possible to determine that, at a certain time, a particular filesystem was not mounted under (or that a particular file on the filesystem was not saved or accessed from within) a particular instance of an operating system (e.g. by analyzing and comparing filesystem journals, file timestamps, application logs, error logs, etc). This might indicate that a hidden operating system is installed on the computer. The countermeasures prevent these issues.</li>
+<li>It prevents data corruption and allows safe hibernation. When Windows resumes from hibernation, it assumes that all mounted filesystems are in the same state as when the system entered hibernation. TrueCrypt ensures this by write-protecting any filesystem accessible both from within the decoy and hidden systems. Without such protection, the filesystem could become corrupted when mounted by one system while the other system is hibernated.</li>
+</ol>
+<p>If you need to securely transfer files from the decoy system to the hidden system, follow these steps:</p>
+<ol>
+<li>Start the decoy system.</li>
+<li>Save the files to an unencrypted volume or to an outer/normal TrueCrypt volume.</li>
+<li>Start the hidden system</li>
+<li>If you saved the files to a TrueCrypt volume, mount it (it will be automatically mounted as read-only).</li>
+<li>Copy the files to the hidden system partition or to another hidden volume.</li>
+</ol>
+<h4>Possible Explanations for Existence of Two TrueCrypt Partitions on Single Drive</h4>
+<p>An adversary might ask why you created two TrueCrypt-encrypted partitions on a single drive (a system partition and a non-system partition) rather than encrypting the entire disk with a single encryption key. There are many possible reasons to do that. However, if you do not know any (other than creating a hidden operating system), you can provide, for example, one of the following explanations:</p>
+<ul>
+<li>If there are more than two partitions on a system drive and you want to encrypt only two of them (the system partition and the one behind it) and to leave the other partitions unencrypted (for example, to achieve the best possible performance when reading and writing data, which is not sensitive, to such unencrypted partitions), the only way to do that is to encrypt both partitions separately (note that, with a single encryption key, TrueCrypt could encrypt the entire system drive and <i>all</i> partitions on it, but it cannot encrypt only two of them — only one or all of the partitions can be encrypted with a single key). As a result, there will be two adjacent TrueCrypt partitions on the system drive (the first will be a system partition, the second will be a non-system one), each encrypted with a different key (which is also the case when you create a hidden operating system, and therefore it can be explained this way).If you do not know any good reason why there should be more than one partition on a system drive at all:It is generally recommended to separate non-system files (documents) from system files. One of the easiest and most reliable ways to do that is to create two partitions on the system drive; one for the operating system and the other for documents (non-system files). The reasons why this practice is recommended include:
+<ul>
+<li>If the filesystem on one of the partitions is damaged, files on the partition may get corrupted or lost, whereas files on the other partition are not affected.</li>
+<li>It is easier to reinstall the system without losing your documents (reinstallation of an operating system involves formatting the system partition, after which all files stored on it are lost). If the system is damaged, full reinstallation is often the only option.</li>
+</ul>
+</li>
+<li>A cascade encryption algorithm (e.g. AES-Twofish-Serpent) can be many times slower than a non-cascade one (e.g. AES). However, a cascade encryption algorithm may be more secure than a non-cascade one (for example, the probability that three distinct encryption algorithms will be broken, e.g. due to advances in cryptanalysis, is significantly lower than the probability that only one of them will be broken). Therefore, if you encrypt the outer volume with a cascade encryption algorithm and the decoy system with a non-cascade encryption algorithm, you can answer that you wanted the best performance (and adequate security) for the system partition, and the highest possible security (but worse performance) for the non-system partition (i.e. the outer volume), where you store the most sensitive data, which you do not need to access very often (unlike the operating system, which you use very often, and therefore you need it to have the best possible performance). On the system partition, you store data that is less sensitive (but which you need to access very often) than data you store on the non-system partition (i.e. on the outer volume).</li>
+<li>Provided that you encrypt the outer volume with a cascade encryption algorithm (e.g. AES- Twofish-Serpent) and the decoy system with a non-cascade encryption algorithm (e.g. AES), you can also answer that you wanted to prevent the problems about which TrueCrypt warns when the user attempts to choose a cascade encryption algorithm for system encryption (see below for a list of the problems). Therefore, to prevent those problems, you decided to encrypt the system partition with a non-cascade encryption algorithm. However, you still wanted to use a cascade encryption algorithm (because it is more secure than a non-cascade encryption algorithm) for the most sensitive data, so you decided to create a second partition, which those problems do <i>not</i> affect (because it is non-system) and to encrypt it with a cascade encryption algorithm. On the system partition, you store data that is less sensitive than data you store on the non-system partition (i.e. on the outer volume).Note: When the user attempts to encrypt the system partition with a cascade encryption algorithm, TrueCrypt warns him or her that it can cause the following problems (and implicitly recommends to choose a non-cascade encryption algorithm instead):
+<ul>
+<li>For cascade encryption algorithms, the TrueCrypt Boot Loader is larger than normal and, therefore, there is not enough space in the first drive track for a backup of the TrueCrypt Boot Loader. Hence, <i>whenever</i> it gets damaged (which often happens, for example, during inappropriately designed anti-piracy activation procedures of certain programs), the user must use the TrueCrypt Rescue Disk to repair the TrueCrypt Boot Loader or to boot.</li>
+<li>On some computers, resuming from hibernation takes longer.</li>
+</ul>
+</li>
+<li>In contrast to a password for a non-system TrueCrypt volume, a pre-boot authentication password needs to be typed each time the computer is turned on or restarted. Therefore, if the pre-boot authentication password is long (which is required for security purposes), it may be very tiresome to type it so frequently. Hence, you can answer that it was more convenient for you to use a short (and therefore weaker) password for the system partition (i.e. the decoy system) and that it is more convenient for you to store the most sensitive data (which you do not need to access as often) in the non-system TrueCrypt partition (i.e. in the outer volume) for which you chose a very long password.As the password for the system partition is not very strong (because it is short), you do not intentionally store sensitive data on the system partition. However, you still prefer the system partition to be encrypted, because potentially sensitive or mildly sensitive data is stored on it as a result of your everyday use of the computer (for example, passwords to online forums you visit, which can be automatically remembered by your browser, browsing history, applications you run, etc.)</li>
+<li>When an attacker gets hold of your computer when a TrueCrypt volume is mounted (for example, when you use a laptop outside), he can, in most cases, read any data stored on the volume (data is decrypted on the fly as he reads it). Therefore, it may be wise to limit the time the volume is mounted to a minimum. Obviously, this may be impossible or difficult if the sensitive data is stored on an encrypted system partition or on an entirely encrypted system drive (because you would also have to limit the time you work with the computer to a minimum). Hence, you can answer that you created a separate partition (encrypted with a different key than your system partition) for your most sensitive data and that you mount it only when necessary and dismount it as soon as possible (so as to limit the time the volume is mounted to a minimum). On the system partition, you store data that is less sensitive (but which you need to access often) than data you store on the non-system partition (i.e. on the outer volume).</li>
+</ul>
+<h4>Safety/Security Precautions and Requirements Pertaining to Hidden Operating Systems</h4>
+<p>As a hidden operating system resides in a hidden TrueCrypt volume, a user of a hidden operating system must follow all of the security requirements and precautions that apply to normal hidden TrueCrypt volumes. These requirements and precautions, as well as additional requirements and precautions pertaining specifically to hidden operating systems, are listed in the subsection <a href="../hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html"><i>Security Requirements and Precautions Pertaining to Hidden Volumes</i></a>.</p>
+<p>WARNING: If you do not protect the hidden volume (for information on how to do so, refer to the section <a href="../hidden-volume/protection-of-hidden-volumes-against-damage/index.html"><i>Protection of Hidden Volumes Against Damage</i></a>), do <i>not</i> write to the outer volume (note that the decoy operating system is <i>not</i> installed in the outer volume). Otherwise, you may overwrite and damage the hidden volume (and the hidden operating system within it)!</p>
+<p>If all the instructions in the wizard have been followed and if the security requirements and precautions listed in the subsection&nbsp;<a href="../hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html"><i>Security Requirements and Precautions Pertaining to Hidden Volumes</i></a> are followed, it should be impossible to prove that the hidden volume and hidden operating system exist, even when the outer volume is mounted or when the decoy operating system is decrypted or started.</p>
+<p class="s19">* It is not practical (and therefore is not supported) to install operating systems in two TrueCrypt volumes that are embedded within a single partition, because using the outer operating system would often require data to be written to the area of the hidden operating system (and if such write operations were prevented using the hidden volume protection feature, it would inherently cause system crashes, i.e. ‘Blue Screen’ errors).</p>
+<p class="s19">** If the size of the active partition is less than 256 MB, then the data is read from the <i>second</i> partition behind the active one (Windows 7 and later, by default, do not boot from the partition on which they are installed).</p>
+<p class="s19">*** This does not apply to filesystems on CD/DVD-like media and on custom, atypical, or non-standard devices/media.</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

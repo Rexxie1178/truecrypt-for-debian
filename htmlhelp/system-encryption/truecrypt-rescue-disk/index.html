@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrueCrypt Rescue Disk - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">TrueCrypt Rescue Disk</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>During the process of preparing the encryption of a system partition/drive, TrueCrypt requires that you create a so-called TrueCrypt Rescue Disk (CD/DVD), which serves the following purposes:</p>
+<ul>
+<li>If the TrueCrypt Boot Loader screen does not appear after you start your computer (or if Windows does not boot), the<b>TrueCrypt Boot Loader may be damaged</b>. The TrueCrypt Rescue Disk allows you restore it and thus to regain access to your encrypted system and data (however, note that you will still have to enter the correct password then). In the Rescue Disk screen, select <i>Repair Options</i> &gt; <i>Restore TrueCrypt Boot Loader</i>. Then press ‘Y’ to confirm the action, remove the Rescue Disk from your CD/DVD drive and restart your computer.</li>
+<li>If the <b>TrueCrypt Boot Loader is frequently damaged</b> (for example, by inappropriately designed activation software) or if <b>you do not want the TrueCrypt boot loader to reside on the hard drive</b> (for example, if you want to use an alternative boot loader/manager for other operating systems), you can boot directly from the TrueCrypt Rescue Disk (as it contains the TrueCrypt boot loader too) without restoring the boot loader to the hard drive. Just insert your Rescue Disk into your CD/DVD drive and then enter your password in the Rescue Disk screen.</li>
+<li>If you repeatedly enter the correct password but TrueCrypt says that the password is incorrect, it is possible that the <b>master key or other critical data are damaged</b>. The TrueCrypt Rescue Disk allows you to restore them and thus to regain access to your encrypted system and data (however, note that you will still have to enter the correct password then). In the Rescue Disk screen, select <i>Repair Options</i> &gt; <i>Restore key data</i>. Then enter your password, press ‘Y’ to confirm the action, remove the Rescue Disk from your CD/DVD drive, and restart your computer.Note: This feature cannot be used to restore the header of a hidden volume within which a hidden operating system resides (see the section <a href="../../plausible-deniability/hidden-operating-system/index.html"><i>Hidden Operating System</i></a>). To restore such a volume header, click <i>Select Device</i>, select the partition behind the decoy system partition, click <i>OK</i>, select <i>Tools</i> -&gt; <i>Restore Volume Header</i> and then follow the instructions.WARNING: By restoring key data using a TrueCrypt Rescue Disk, you also restore the password that was valid when the TrueCrypt Rescue Disk was created. Therefore, whenever you change the password, you should destroy your TrueCrypt Rescue Disk and create a new one (select <i>System</i> -&gt; <i>Create Rescue Disk</i>). Otherwise, if an attacker knows your old password (for example, captured by a keystroke logger) and if he then finds your old TrueCrypt Rescue Disk, he could use it to restore the key data (the master key encrypted with the old password) and thus decrypt your system partition/drive.</li>
+<li>If <b>Windows is damaged and cannot start</b>, the TrueCrypt Rescue Disk allows you to permanently decrypt the partition/drive before Windows starts. In the Rescue Disk screen, select <i>Repair Options</i> &gt; <i>Permanently decrypt system partition/drive</i>. Enter the correct password and wait until decryption is complete. Then you can e.g. boot your MS Windows setup CD/DVD to repair your Windows installation. Note that this feature cannot be used to decrypt a hidden volume within which a hidden operating system resides (see the section <a href="../../plausible-deniability/hidden-operating-system/index.html"><i>Hidden Operating System</i></a>).Note: Alternatively, if Windows is damaged (cannot start) and you need to repair it (or access files on it), you can avoid decrypting the system partition/drive by following these steps: If you have multiple operating systems installed on your computer, boot the one that does not require pre-boot authentication. If you do not have multiple operating systems installed on your computer, you can boot a WinPE or BartPE CD/DVD or you can connect your system drive as a secondary or external drive to another computer and then boot the operating system installed on the computer. After you boot a system, run TrueCrypt, click <i>Select Device</i>, select the affected system partition, click <i>OK</i> , select <i>System</i> &gt; <i>Mount Without Pre-Boot Authentication</i>, enter your pre-boot-authentication password and click <i>OK</i>. The partition will be mounted as a regular TrueCrypt volume (data will be on-the-fly decrypted/encrypted in RAM on access, as usual).</li>
+<li>Your TrueCrypt Rescue Disk contains a <b>backup of the original content of the first drive track</b> (made before the TrueCrypt Boot Loader was written to it) and allows you to restore it if necessary. The first track typically contains a system loader or boot manager. In the Rescue Disk screen, select <i>Repair Options</i> &gt; <i>Restore original system loader</i>.</li>
+</ul>
+<p class="s16">Note that even if you lose your TrueCrypt Rescue Disk and an attacker finds it, he or she will <b>not</b> be able to decrypt the system partition or drive without the correct password.</p>
+<p>To boot a TrueCrypt Rescue Disk, insert it into your CD/DVD drive and restart your computer. If the</p>
+<p>TrueCrypt Rescue Disk screen does not appear (or if you do not see the ‘Repair Options’ item in the ‘Keyboard Controls’ section of the screen), it is possible that your BIOS is configured to attempt to boot from hard drives before CD/DVD drives. If that is the case, restart your computer, press F2 or Delete (as soon as you see a BIOS start-up screen), and wait until a BIOS configuration screen appears. If no BIOS configuration screen appears, restart (reset) the computer again and start pressing F2 or Delete repeatedly as soon as you restart (reset) the computer. When a BIOS configuration screen appears, configure your BIOS to boot from the CD/DVD drive first (for information on how to do so, please refer to the documentation for your BIOS/motherboard or contact your computer vendor’s technical support team for assistance). Then restart your computer. The TrueCrypt Rescue Disk screen should appear now. Note: In the TrueCrypt Rescue Disk screen, you can select ‘Repair Options’ by pressing F8 on your keyboard.</p>
+<p>If your Rescue Disk is damaged, you can create a new one by selecting <i>System</i> &gt; <i>Create Rescue Disk</i>. To find out whether your TrueCrypt Rescue Disk is damaged, insert it into your CD/DVD drive and select <i>System</i> &gt; <i>Verify Rescue Disk</i>.</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

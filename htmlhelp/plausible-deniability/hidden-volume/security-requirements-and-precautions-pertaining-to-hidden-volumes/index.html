@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Requirements and Precautions Pertaining to Hidden Volumes - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../../../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Security Requirements and Precautions Pertaining to Hidden Volumes</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>If you use a hidden TrueCrypt volume, you must follow the security requirements and precautions listed below in this section. Disclaimer: This section is not guaranteed to contain a list of <i>all</i> security issues and attacks that might adversely affect or limit the ability of TrueCrypt to secure data stored in a hidden TrueCrypt volume and the ability to provide plausible deniability.</p>
+<ul>
+<li>If an adversary has access to a (dismounted) TrueCrypt volume at several points over time, he may be able to determine which sectors of the volume are changing. If you change the contents of a hidden volume (e.g., create/copy new files to the hidden volume or modify/delete/rename/move files stored on the hidden volume, etc.), the contents of sectors (ciphertext) in the hidden volume area will change. After being given the password to the outer volume, the adversary might demand an explanation why these sectors changed. Your failure to provide a plausible explanation might indicate the existence of a hidden volume within the outer volume.Note that issues similar to the one described above may also arise, for example, in the following cases:
+<ul>
+<li>The file system in which you store a file-hosted TrueCrypt container has been defragmented and a copy of the TrueCrypt container (or of its fragment) remains in the free space on the host volume (in the defragmented file system). To prevent this, do one of the following:
+<ul>
+<li>Use a partition/device-hosted TrueCrypt volume instead of file-hosted.</li>
+<li>Securely erase free space on the host volume (in the defragmented file system) after defragmenting.</li>
+<li>Do not defragment file systems in which you store TrueCrypt volumes.</li>
+</ul>
+</li>
+<li>A file-hosted TrueCrypt container is stored in a journaling file system (such as NTFS). A copy of the TrueCrypt container (or of its fragment) may remain on the host volume. To prevent this, do one the following:
+<ul>
+<li>Use a partition/device-hosted TrueCrypt volume instead of file-hosted.</li>
+<li>Store the container in a non-journaling file system (for example, FAT32).</li>
+</ul>
+</li>
+<li>A TrueCrypt volume resides on a device/filesystem that utilizes a wear-leveling mechanism (e.g. a flash-memory SSD or USB flash drive). A copy of (a fragment of) the TrueCrypt volume may remain on the device. Therefore, do not store hidden volumes on such devices/filesystems. For more information on wear-leveling, see the section<a href="../../../security-requirements-and-precautions/wear-leveling/index.html"><i>Wear-Leveling</i></a> in the chapter <a href="../../../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>.</li>
+<li>A TrueCrypt volume resides on a device/filesystem that saves data (or on a device/filesystem that is controlled or monitored by a system/device that saves data) (e.g. the value of a timer or counter) that can be used to determine that a block had been written earlier than another block and/or to determine how many times a block has been written/read. Therefore, do not store hidden volumes on such devices/filesystems. To find out whether a device/system saves such data, please refer to documentation supplied with the device/system or contact the vendor/manufacturer.</li>
+<li>A TrueCrypt volume resides on a device that is prone to wear (it is possible to determine that a block has been written/read more times than another block). Therefore, do not store hidden volumes on such devices/filesystems. To find out whether a device is prone to such wear, please refer to documentation supplied with the device or contact the vendor/manufacturer.</li>
+<li>You back up content of a hidden volume by cloning its host volume or create a new hidden volume by cloning its host volume. Therefore, you must not do so. Follow the instructions in the chapter <a href="../../../how-to-back-up-securely/index.html"><i>How to Back Up Securely</i></a> and in the section <a href="../../../security-requirements-and-precautions/volume-clones/index.html"><i>Volume Clones</i></a>.</li>
+</ul>
+</li>
+<li>Make sure that <i>Quick Format</i> is disabled when encrypting a partition/device within which you intend to create a hidden volume.</li>
+<li>On Windows, make sure you have not deleted any files within a volume within which you intend to create a hidden volume (the cluster bitmap scanner does not detect deleted files).</li>
+<li>On Linux or Mac OS X, if you intend to create a hidden volume within a file-hosted TrueCrypt volume, make sure that the volume is not sparse-file-hosted (the Windows version of TrueCrypt verifies this and disallows creation of hidden volumes within sparse files).</li>
+<li>When a hidden volume is mounted, the operating system and third-party applications may write to non-hidden volumes (typically, to the unencrypted system volume) unencrypted information about the data stored in the hidden volume (e.g. filenames and locations of recently accessed files, databases created by file indexing tools, etc.), the data itself in an unencrypted form (temporary files, etc.), unencrypted information about the filesystem residing in the hidden volume (which might be used e.g. to identify the filesystem and to determine whether it is the filesystem residing in the outer volume), the password/key for the hidden volume, or other types of sensitive data. Therefore, the following security requirements and precautions must be followed:
+<ul>
+<li><i>Windows</i>: Create a hidden operating system (for information on how to do so, see the section <a href="../../../system-encryption/hidden-operating-system/index.html"><i>Hidden Operating System</i></a>) and mount hidden volumes only when the hidden operating system is running. Note: When a hidden operating system is running, TrueCrypt ensures that all local unencrypted filesystems and non-hidden TrueCrypt volumes are read-only (i.e. no files can be written to such filesystems or TrueCrypt volumes). * Data is allowed to be written to filesystems within hidden TrueCrypt volumes. Alternatively, if a hidden operating system cannot be used, use a “live-CD” Windows PE system (entirely stored on and booted from a CD/DVD) that ensures that any data written to the system volume is written to a RAM disk. Mount hidden volumes only when such a “live-CD” system is running (if a hidden operating system cannot be used). In addition, during such a “live-CD” session, only filesystems that reside in hidden TrueCrypt volumes may be mounted in read-write mode (outer or unencrypted volumes/filesystems must be mounted as read-only or must not be mounted/accessible at all); otherwise, you must ensure that applications and the operating system do not write any sensitive data (see above) to non-hidden volumes/filesystems during the “live-CD” session.</li>
+<li><i>Linux</i>: Download or create a “live-CD” version of your operating system (i.e. a “live” Linux system entirely stored on and booted from a CD/DVD) that ensures that any data written to the system volume is written to a RAM disk. Mount hidden volumes only when such a “live-CD” system is running. During the session, only filesystems that reside in hidden TrueCrypt volumes may be mounted in read-write mode (outer or unencrypted volumes/filesystems must be mounted as read-only or must not be mounted/accessible at all). If you cannot comply with this requirement and you are not able to ensure that applications and the operating system do not write any sensitive data (see above) to non-hidden volumes/filesystems, you must not mount or create hidden TrueCrypt volumes under Linux.</li>
+<li><i>Mac OS X</i>: If you are not able to ensure that applications and the operating system do not write any sensitive data (see above) to non-hidden volumes/filesystems, you must not mount or create hidden TrueCrypt volumes under Mac OS X.</li>
+</ul>
+</li>
+<li>When an outer volume is mounted with hidden volume protection enabled (see section <a href="../protection-of-hidden-volumes-against-damage/index.html"><i>Protection of Hidden Volumes Against Damage</i></a>), you must follow the same security requirements and precautions that you are required to follow when a hidden volume is mounted (see above). The reason is that the operating system might leak the password/key for the hidden volume to a non-hidden or unencrypted volume.</li>
+<li>If you use an <b>operating system residing within a hidden volume</b> (see the section <a href="../../../system-encryption/hidden-operating-system/index.html"><i>Hidden Operating System</i></a>), then, in addition to the above, you must follow these security requirements and precautions:
+<ul>
+<li>You should use the decoy operating system as frequently as you use your computer. Ideally, you should use it for all activities that do not involve sensitive data. Otherwise, plausible deniability of the hidden operating system might be adversely affected (if you revealed the password for the decoy operating system to an adversary, he could find out that the system is not used very often, which might indicate the existence of a hidden operating system on your computer). Note that you can save data to the decoy system partition anytime without any risk that the hidden volume will get damaged (because the decoy system is not installed in the outer volume).</li>
+<li>If the operating system requires activation, it must be activated before it is cloned (cloning is part of the process of creation of a hidden operating system — see the section <a href="../../../system-encryption/hidden-operating-system/index.html"><i>Hidden Operating System</i></a>) and the hidden operating system (i.e. the clone) must never be reactivated. The reason is that the hidden operating system is created by copying the content of the system partition to a hidden volume (so if the operating system is not activated, the hidden operating system will not be activated either). If you activated or reactivated a hidden operating system, the date and time of the activation (and other data) might be logged on a Microsoft server (and on the hidden operating system) but not on the decoy operating system. Therefore, if an adversary had access to the data stored on the server or intercepted your request to the server (and if you revealed the password for the decoy operating system to him), he might find out that the decoy operating system was activated (or reactivated) at a different time, which might indicate the existence of a hidden operating system on your computer. For similar reasons, any software that requires activation must be installed and activated before you start creating the hidden operating system.</li>
+<li>When you need to shut down the hidden system and start the decoy system, do <i>not</i> restart the computer. Instead, shut it down or hibernate it and then leave it powered off for at least several minutes (the longer, the better) before turning the computer on and booting the decoy system. This is required to clear the memory, which may contain sensitive data. For more information, see the section <a href="../../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html"><i>Unencrypted Data in RAM</i></a> in the chapter <a href="../../../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>.</li>
+<li>The computer may be connected to a network (including the internet) only when the decoy operating system is running. When the hidden operating system is running, the computer should not be connected to any network, including the internet (one of the most reliable ways to ensure it is to unplug the network cable, if there is one). Note that if data is downloaded from or uploaded to a remote server, the date and time of the connection, and other data, are typically logged on the server. Various kinds of data are also logged on the operating system (e.g. Windows auto-update data, application logs, error logs, etc.) Therefore, if an adversary had access to the data stored on the server or intercepted your request to the server (and if you revealed the password for the decoy operating system to him), he might find out that the connection was not made from within the decoy operating system, which might indicate the existence of a hidden operating system on your computer. Also note that similar issues would affect you if there were any filesystem shared over a network under the hidden operating system (regardless of whether the filesystem is remote or local). Therefore, when the hidden operating system is running, there must be no filesystem shared over a network (in any direction).</li>
+<li>Any actions that can be detected by an adversary (or any actions that modify any data outside mounted hidden volumes) must be performed only when the decoy operating system is running (unless you have a plausible alternative explanation, such as using a “live-CD” system to perform such actions). For example, the option ‘<i>Auto-adjust for daylight saving time</i>‘ option may be enabled only on the decoy system.</li>
+<li>If the BIOS, EFI, or any other component logs power-down events or any other events that could indicate a hidden volume/system is used (e.g. by comparing such events with the events in the Windows event log), you must either disable such logging or ensure that the log is securely erased after each session (or otherwise avoid such an issue in an appropriate way).</li>
+</ul>
+</li>
+</ul>
+<p>In addition to the above, you must follow the security requirements and precautions listed in the following chapters:</p>
+<ul>
+<li><a href="../../../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a></li>
+<li><a href="../../../how-to-back-up-securely/index.html"><i>How to Back Up Securely</i></a></li>
+</ul>
+<p class="s19">* This does not apply to filesystems on CD/DVD-like media and on custom, untypical, or non-standard devices/media.</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../../../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../../../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../../../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../../../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../../../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../../../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../../../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../../../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../../../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../../../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../../../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../../../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../../../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../../../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../../../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../../../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../../../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../../../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../../../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../../../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../../../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../../../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../../../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../../../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../../../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../../../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../../../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../../../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../../../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../../../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../../../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../../../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../../../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../../../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../../../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../../../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

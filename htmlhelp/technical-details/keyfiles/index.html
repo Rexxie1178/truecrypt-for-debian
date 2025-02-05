@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keyfiles - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Keyfiles</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>TrueCrypt keyfile is a file whose content is combined with a password. The user can use any kind of file as a TrueCrypt keyfile. The user can also generate a keyfile using the built-in keyfile generator, which utilizes the TrueCrypt RNG to generate a file with random content (for more information, see the section <a href="../random-number-generator/index.html"><i>Random Number Generator</i></a>).</p>
+<p>The maximum size of a keyfile is not limited; however, only its first 1,048,576 bytes (1 MB) are processed (all remaining bytes are ignored due to performance issues connected with processing extremely large files). The user can supply one or more keyfiles (the number of keyfiles is not limited).</p>
+<p>Keyfiles can be stored on PKCS-11-compliant [23] security tokens and smart cards protected by multiple PIN codes (which can be entered either using a hardware PIN pad or via the TrueCrypt GUI).</p>
+<p>Keyfiles are processed and applied to a password using the following method:</p>
+<ol>
+<li>Let <i>P</i> be a TrueCrypt volume password supplied by user (may be empty)</li>
+<li>Let <i>KP</i> be the keyfile pool</li>
+<li>Let <i>kpl</i> be the size of the keyfile pool <i>KP</i>, in bytes (64, i.e., 512 bits);
+<p class="s46">kpl must be a multiple of the output size of a hash function H</p>
+</li>
+<li>Let <i>pl</i> be the length of the password <i>P</i>, in bytes (in the current version: 0 <span class="p">≤</span> <i>pl</i> <span class="p">≤</span> 64)</li>
+<li>if <i>kpl &gt; pl</i>, append (<i>kpl – pl</i>) zero bytes to the password <i>P</i> (thus <i>pl = kpl</i>)</li>
+<li>Fill the keyfile pool <i>KP</i> with <i>kpl</i> zero bytes.</li>
+<li>For each keyfile perform the following steps:
+<ol type="a">
+<li>Set the position of the keyfile pool cursor to the beginning of the pool</li>
+<li>Initialize the hash function <i>H</i></li>
+<li>Load all bytes of the keyfile one by one, and for each loaded byte perform the following steps:
+<ol type="i">
+<li>Hash the loaded byte using the hash function <i>H</i> without initializing the hash, to obtain an intermediate hash (state) <i>M.</i> Do not finalize the hash (the state is retained for next round).</li>
+<li>Divide the state <i>M</i> into individual bytes.<br>
+For example, if the hash output size is 4 bytes, (<i>T</i><span class="sub">0</span> || <i>T</i><span class="sub">1</span> || <i>T</i><span class="sub">2</span> || <i>T</i><span class="sub">3</span>) = <i>M</i></li>
+<li>Write these bytes (obtained in step 7.c.ii) individually to the keyfile pool with the modulo 2<span class="s49">8</span> addition operation (not by replacing the old values in the pool) at the position of the pool cursor. After a byte is written, the pool cursor position is advanced by one byte. When the cursor reaches the end of the pool, its position is set to the beginning of the pool.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Apply the content of the keyfile pool to the password <i>P</i> using the following method:
+<ol type="a">
+<li>Divide the password <i>P</i> into individual bytes <i>B</i><span class="sub">0</span>…<i>B</i><span class="s47">pl</span><span class="sub">-1</span>.<br>
+<span class="s19">Note that if the password was shorter than the keyfile pool, then the password was padded with zero bytes to the length of the pool in Step 5 (hence, at this point the length of the password is always greater than or equal to the length of the keyfile pool).</span></li>
+<li>Divide the keyfile pool <i>KP</i> into individual bytes <i>G</i><span class="sub">0</span>…<i>G</i><span class="s47">kpl</span><span class="sub">-1</span></li>
+<li>For 0 <span class="s48">≤</span> i <span class="s48">&lt;</span> kpl perform: B<span class="sub">i</span> = B<span class="sub">i</span> <span class="p">⊕</span> G<span class="sub">i</span></li>
+<li><i>P</i> = <i>B</i><span class="sub">0</span> || <i>B</i><span class="sub">1</span> || … || <i>B</i><span class="s47">pl</span><span class="sub">-2</span> || <i>B</i><span class="s47">pl</span><span class="sub">-1</span></li>
+</ol>
+</li>
+<li>The password <i>P</i> (after the keyfile pool content has been applied to it) is now passed to the header key derivation function PBKDF2 (PKCS #5 v2), which processes it (along with salt and other data) using a cryptographically secure hash algorithm selected by the user (e.g., SHA-512). See the section <i><a href="../header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation, Salt, and Iteration Count</a>&nbsp;</i>for more information.</li>
+</ol>
+<p>The role of the hash function <i>H</i> is merely to perform diffusion [2]. CRC-32 is used as the hash function <i>H</i>. Note that the output of CRC-32 is subsequently processed using a cryptographically secure hash algorithm: The keyfile pool content (in addition to being hashed using CRC-32) is applied to the password, which is then passed to the header key derivation function PBKDF2 (PKCS #5 v2), which processes it (along with salt and other data) using a cryptographically secure hash algorithm selected by the user (e.g., SHA-512). The resultant values are used to form the header key and the secondary header key (XTS mode).</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../../keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

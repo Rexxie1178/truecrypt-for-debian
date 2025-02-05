@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protection of Hidden Volumes Against Damage - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../../../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Protection of Hidden Volumes Against Damage</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>If you mount a TrueCrypt volume within which there is a hidden volume, you may <i>read</i> data stored on the (outer) volume without any risk. However, if you (or the operating system) need to <i>save</i> data to the outer volume, there is a risk that the hidden volume will get damaged (overwritten). To prevent this, you should protect the hidden volume in a way described in this section.</p>
+<p>When mounting an outer volume, type in its password and before clicking <i>OK,</i> click <i>Mount Options</i>:</p>
+<p><a href="../../../wp-content/uploads/2015/07/Image_0271.jpg" data-rel="lightbox-image-0" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-352" src="../../../wp-content/uploads/2015/07/Image_0271.jpg" alt="Image_027[1]" width="426" height="136"></a></p>
+<p>In the <i>Mount Options</i> dialog window, enable the option ‘<i>Protect hidden volume against damage caused by writing to outer volume</i> ‘. In the ‘<i>Password to hidden volume</i>’ input field, type the password for the hidden volume. Click <i>OK</i> and, in the main password entry dialog, click <i>OK</i>.</p>
+<p><a href="../../../wp-content/uploads/2015/07/Image_0281.jpg" data-rel="lightbox-image-1" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-353" src="../../../wp-content/uploads/2015/07/Image_0281.jpg" alt="Image_028[1]" width="422" height="305"></a></p>
+<p class="s14"><span class="p">Both passwords must be correct; otherwise, the outer volume will not be mounted. When hidden volume protection is enabled, TrueCrypt does</span> <i>not</i> <span class="p">actually mount the hidden volume. It only decrypts its header (in RAM) and retrieves information about the size of the hidden volume (from the decrypted header). Then, the outer volume is mounted and any attempt to save data to the area of the hidden volume will be rejected (until the outer volume is dismounted).</span> Note that TrueCrypt <i>never</i> modifies the filesystem (e.g., information about allocated clusters, amount of free space, etc.) within the outer volume in any way. As soon as the volume is dismounted, the protection is lost. When the volume is mounted again, it is <i>not</i> possible to determine whether the volume has used hidden volume protection or not. The hidden volume protection can be activated only by users who supply the correct password (and/or keyfiles) for the hidden volume (each time they mount the outer volume).</p>
+<p>As soon as a write operation to the hidden volume area is denied/prevented (to protect the hidden volume), the entire host volume (both the outer and the hidden volume) becomes write-protected until dismounted (the TrueCrypt driver reports the ‘invalid parameter’ error to the system upon each attempt to write data to the volume). This preserves plausible deniability (otherwise certain kinds of inconsistency within the file system could indicate that this volume has used hidden volume protection). When damage to hidden volume is prevented, a warning is displayed (provided that</p>
+<p>the TrueCrypt Background Task is enabled – see the chapter <i>TrueCrypt Background Task</i>). Furthermore, the type of the mounted outer volume displayed in the main window changes to ‘<i>Outer(!)</i>’:</p>
+<p><a href="../../../wp-content/uploads/2015/07/Image_0291.jpg" data-rel="lightbox-image-2" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-354" src="../../../wp-content/uploads/2015/07/Image_0291.jpg" alt="Image_029[1]" width="570" height="484"></a></p>
+<p>Moreover, the field <i>Hidden Volume Protected</i> in the <i>Volume Properties</i> dialog window says: ‘<i>Yes (damage prevented!)</i>’<i>.</i></p>
+<p>Note that when damage to hidden volume is prevented, <i>no</i> information about the event is written to the volume. When the outer volume is dismounted and mounted again, the volume properties will <i>not</i> display the string “<i>damage prevented</i>”.</p>
+<p>There are several ways to check that a hidden volume is being protected against damage:</p>
+<ol>
+<li>A confirmation message box saying that hidden volume is being protected is displayed after the outer volume is mounted (if it is not displayed, the hidden volume is not protected!).</li>
+<li>In the <i>Volume Properties</i> dialog, the field <i>Hidden Volume Protected</i> says ‘<i>Yes</i>’:</li>
+<li>The type of the mounted outer volume is <i>Outer</i>:</li>
+</ol>
+<p><a href="../../../wp-content/uploads/2015/07/Image_0301.jpg" data-rel="lightbox-image-3" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-355" src="../../../wp-content/uploads/2015/07/Image_0301.jpg" alt="Image_030[1]" width="570" height="190"></a></p>
+<h4>Important: When an adversary asks you to mount an outer volume, you, of course, must <span class="s14">not</span> mount the outer volume with the hidden volume protection enabled. You must mount it as a normal volume (and then TrueCrypt will not show the volume type “Outer” but “Normal”). Note that during the time when an outer volume is mounted with the hidden volume protection enabled, the adversary <span class="s14">can</span> find out that a hidden volume exists within the outer volume (he/she will be able to find it out until the volume is dismounted).</h4>
+<p class="s16">Warning<span class="p">: Note that the option ‘</span>Protect hidden volume against damage caused by writing to outer volume<span class="p">’ in the</span> Mount Options<span class="p">dialog window is automatically disabled after a mount attempt is completed, no matter whether it is successful or not (all hidden volumes that are already being protected will, of course, continue to be protected). Therefore, you need to check that option</span>each <span class="p">time you attempt to mount the outer volume (if you wish the hidden volume to be protected):</span></p>
+<p><a href="../../../wp-content/uploads/2015/07/Image_0311.jpg" data-rel="lightbox-image-4" data-rl_title="" data-rl_caption="" title=""><img loading="lazy" class="alignnone size-full wp-image-356" src="../../../wp-content/uploads/2015/07/Image_0311.jpg" alt="Image_031[1]" width="422" height="305"></a></p>
+<p>If you want to mount an outer volume and protect a hidden volume within using cached passwords, then follow these steps: Hold down the <i>Control</i> (<i>Ctrl</i>) key when clicking <i>Mount</i> (or select <i>Mount with Options</i> from the <i>Volumes</i> menu). This will open the<i>Mount Options</i> dialog. Enable the option ‘<i>Protect hidden volume against damage caused by writing to outer volume</i>’ and leave the password box empty. Then click <i>OK</i>.</p>
+<p>If you need to mount an outer volume and you know that you will not need to save any data to it, then the most comfortable way of protecting the hidden volume against damage is mounting the outer volume as read-only (see the section <a href="../../../main-program-window/mounting-truecrypt-volumes/index.html"><i>Mount Options</i></a>).</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../../../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../../../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../../../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../../../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../../../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../../../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../../../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../../../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../../../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../../../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../../../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../../../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../../../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../../../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../../../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../../../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../../../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../../../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../../../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../../../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../../../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../../../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../../../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../../../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../../../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../../../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../../../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../../../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../../../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../../../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../../../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../../../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../../../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../../../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../../../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../../../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../../../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../../../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Known Issues & Limitations - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Known Issues & Limitations</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<h3>Known Issues</h3>
+<ul>
+<li>(There were no confirmed issues when this document was created.)</li>
+</ul>
+<h3>Limitations</h3>
+<ul>
+<li>[<i>Note: This limitation does not apply to users of Windows Vista and later versions of Windows.</i>] On Windows XP/2003, TrueCrypt does not support encrypting an entire system drive that contains extended (logical) partitions. You can encrypt an entire system drive provided that it contains only primary partitions. Extended (logical) partitions must not be created on any system drive that is partially or fully encrypted (only primary partitions may be created on it). <i>Note</i>: If you need to encrypt an entire drive containing extended partitions, you can encrypt the system partition and, in addition, create partition-hosted TrueCrypt volumes within any non- system partitions on the drive. Alternatively, you may want to consider upgrading to Windows Vista or a later version of Windows.</li>
+<li>TrueCrypt currently does not support encrypting a system drive that has been converted to a dynamic disk.</li>
+<li>TrueCrypt volume passwords must consist only of printable ASCII characters. Other characters in passwords are not supported and may cause various problems (e.g., inability to mount a volume).</li>
+<li>To work around a Windows XP issue, the TrueCrypt boot loader is always automatically configured for the version of the operating system under which it is installed. When the version of the system changes (for example, the TrueCrypt boot loader is installed when Windows Vista is running but it is later used to boot Windows XP) you may encounter various known and unknown issues (for example, on some notebooks, Windows XP may fail to display the log-on screen). Note that this affects multi-boot configurations, TrueCrypt Rescue Disks, and decoy/hidden operating systems (therefore, if the hidden system is e.g. Windows XP, the decoy system should be Windows XP too).</li>
+<li>The ability to mount a partition that is within the key scope of system encryption without pre- boot authentication (for example, a partition located on the encrypted system drive of another operating system that is not running), which can be done e.g. by selecting <i>System</i> &gt; <i>Mount Without Pre-Boot Authentication,</i> is limited to primary partitions (extended/logical partitions cannot be mounted this way).</li>
+<li>Due to a Windows 2000 issue, TrueCrypt does not support the Windows Mount Manager under Windows 2000. Therefore, some Windows 2000 built-in tools, such as Disk Defragmenter, do not work on TrueCrypt volumes. Furthermore, it is not possible to use the Mount Manager services under Windows 2000, e.g., assign a mount point to a TrueCrypt volume (i.e., attach a TrueCrypt volume to a folder).</li>
+<li>TrueCrypt does not support pre-boot authentication for operating systems installed within VHD files, except when booted using appropriate virtual-machine software such as Microsoft Virtual PC.</li>
+<li>The Windows Volume Shadow Copy Service is currently supported only for partitions within the key scope of system encryption (e.g. a system partition encrypted by TrueCrypt, or a non- system partition located on a system drive encrypted by TrueCrypt, mounted when the encrypted operating system is running). Note: For other types of volumes, the Volume Shadow Copy Service is not supported because the documentation for the necessary API is not available.</li>
+<li>Windows boot settings cannot be changed from within a hidden operating system if the system does not boot from the partition on which it is installed. This is due to the fact that, for security reasons, the boot partition is mounted as read-only when the hidden system is running. To be able to change the boot settings, please start the decoy operating system.</li>
+<li>Encrypted partitions cannot be resized except partitions on an entirely encrypted system drive that are resized while the encrypted operating system is running.</li>
+<li>When the system partition/drive is encrypted, the system cannot be upgraded (for example, from Windows XP to Windows Vista) or repaired from within the pre-boot environment (using a Windows setup CD/DVD or the Windows pre-boot component). In such cases, the system partition/drive must be decrypted first. Note: A running operating system can be <i>updated</i> (security patches, service packs, etc.) without any problems even when the system partition/drive is encrypted.</li>
+<li>System encryption is supported only on drives that are connected locally via an ATA/SCSI interface (note that the term ATA also refers to SATA and eSATA).</li>
+<li>When system encryption is used (this also applies to hidden operating systems), TrueCrypt does not support multi-boot configuration changes (for example, changes to the number of operating systems and their locations). Specifically, the configuration must remain the same as it was when the TrueCrypt Volume Creation Wizard started to prepare the process of encryption of the system partition/drive (or creation of a hidden operating system).Note: The only exception is the multi-boot configuration where a running TrueCrypt-encrypted operating system is always located on drive #0, and it is the only operating system located on the drive (or there is one TrueCrypt-encrypted decoy and one TrueCrypt-encrypted hidden operating system and no other operating system on the drive), and the drive is connected or disconnected before the computer is turned on (for example, using the power switch on an external eSATA drive enclosure). There may be any additional operating systems (encrypted or unencrypted) installed on other drives connected to the computer (when drive #0 is disconnected, drive #1 becomes drive #0, etc.)</li>
+<li>When the notebook battery power is low, Windows may omit sending the appropriate messages to running applications when the computer is entering power saving mode. Therefore, TrueCrypt may fail to auto-dismount volumes in such cases.</li>
+<li>Preserving of any timestamp of any file (e.g. a container or keyfile) is not guaranteed to be reliably and securely performed (for example, due to filesystem journals, timestamps of file attributes, or the operating system failing to perform it for various documented and undocumented reasons). Note: When you write to a file-hosted hidden volume, the timestamp of the container may change. This can be plausibly explained as having been caused by changing the (outer) volume password. Also note that TrueCrypt never preserves timestamps of system favorite volumes (regardless of the settings).</li>
+<li>Special software (e.g., a low-level disk editor) that writes data to a disk drive in a way that circumvents drivers in the driver stack of the class ‘DiskDrive’ (GUID of the class is 4D36E967- E325-11CE-BFC1-08002BE10318) can write unencrypted data to a non-system drive hosting a mounted TrueCrypt volume (‘Partition0’) and to encrypted partitions/drives that are within the key scope of active system encryption (TrueCrypt does not encrypt such data written that way). Similarly, software that writes data to a disk drive circumventing drivers in the driver stack of the class ‘Storage Volume’ (GUID of the class is 71A27CDD-812A-11D0-BEC7-08002BE2092F) can write unencrypted data to TrueCrypt partition-hosted volumes (even if they are mounted).</li>
+<li>For security reasons, when a hidden operating system is running, TrueCrypt ensures that all local unencrypted filesystems and non-hidden TrueCrypt volumes are read-only. However, this does not apply to filesystems on CD/DVD-like media and on custom, atypical, or non-standard devices/media (for example, any devices/media whose class is other than the Windows device class ‘Storage Volume’ or that do not meet the requirements of this class (GUID of the class is 71A27CDD-812A-11D0-BEC7-08002BE2092F)).</li>
+<li>Device-hosted TrueCrypt volumes located on floppy disks are not supported. Note: You can still create file-hosted TrueCrypt volumes on floppy disks.</li>
+<li>Further limitations are listed in the section <a href="../security-model/index.html"><i>Security Model</i></a>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

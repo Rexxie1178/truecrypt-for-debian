@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command Line Usage - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Command Line Usage</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>Note that this section applies to the Windows version of TrueCrypt. For information on command line usage applying to the<b>Linux and Mac OS X versions</b>, please run: <span class="s22">truecrypt –h</span></p>
+<table class="tctable" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="vertical-align:top"><i>/help</i><br>or <i>/?</i></td>
+<td style="vertical-align:top"><span class="p">Display command line help.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/volume</i><br>or <i>/v</i></td>
+<td style="vertical-align:top"><span class="p">File and path name of a TrueCrypt volume to mount (do not use when dismounting).<br>To mount a partition/device-hosted volume, use, for example, /v \Device\Harddisk1\Partition3 (to determine the path to a partition/device, run TrueCrypt and click <i>Select Device</i>).<br>You can also mount a partition or dynamic volume using its volume name (for example, /v \\?\Volume{5cceb196-48bf-46ab-ad00-70965512253a}\).<br>To determine the volume name use e.g. mountvol.exe. Also note that device paths are case-sensitive.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/letter</i><br>or <i>/l</i></td>
+<td style="vertical-align:top"><span class="p">Driver letter to mount the volume as. When /l is omitted and when /a is used, the first free drive letter is used.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/explore</i><br>or <i>/e</i></td>
+<td style="vertical-align:top"><span class="p">Open an Explorer window after a volume has been mounted.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/beep</i><br>or <i>/b</i></td>
+<td style="vertical-align:top"><span class="p">Beep after a volume has been successfully mounted or dismounted.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/auto</i><br>or <i>/a</i></td>
+<td style="vertical-align:top"><span class="p">If no parameter is specified, automatically mount the volume. If devices is specified as the parameter (e.g., /a devices, auto-mount all currently accessible device/partition-hosted TrueCrypt volumes. If favorites is specified as the parameter, auto-mount favorite volumes. Note that /auto is implicit if /quit and /volume are specified. If you need to prevent the application window from appearing, use /quit</span>.<br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/dismount</i><br>or <i>/d</i></td>
+<td style="vertical-align:top"><span class="p">Dismount volume specified by drive letter (e.g., /d x). When no drive letter is specified, dismounts all currently mounted TrueCrypt volumes.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/force</i><br>or <i>/f</i></td>
+<td style="vertical-align:top"><span class="p">Forces dismount (if the volume to be dismounted contains files being used by the system or an application) and forces mounting in shared mode (i.e., without exclusive access).</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/keyfile</i><br>or <i>/k</i></td>
+<td style="vertical-align:top"><span class="p">Specifies a keyfile or a keyfile search path. For multiple keyfiles, specify e.g.: /k c:\keyfile1.dat /k d:\KeyfileFolder /k c:\kf2<br>To specify a keyfile stored on a security token or smart card, use the following syntax: token://slot/SLOT_NUMBER/file/FILE_NAME</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/tokenlib</i></td>
+<td style="vertical-align:top"><span class="p">Use the specified PKCS #11 library for security tokens and smart cards.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/cache</i><br>or <i>/c</i></td>
+<td style="vertical-align:top"><span class="p">y or no parameter: enable password cache; n: disable password cach (e.g., /c n). Note that turning the password cache off will not clear it (use /w to clear the password cache).</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/history</i><br>or <i>/h</i></td>
+<td style="vertical-align:top"><span class="p">y or no parameter: enables saving history of mounted volumes; n: disables saving history of mounted volumes (e.g., /h n).</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/wipecache</i><br>or <i>/w</i></td>
+<td style="vertical-align:top"><span class="p">Wipes any passwords cached in the driver memory.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/password</i><br>or <i>/p</i></td>
+<td style="vertical-align:top"><span class="p">The volume password. If the password contains spaces, it must be enclosed in quotation marks (e.g., /p ”My Password”. Use /p ”” to specify an empty password. <i>Warning: This method of entering a volume password may be insecure, for example, when an unencrypted command prompt history log is being saved to unencrypted disk.</i></span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/quit</i><br>or <i>/q</i></td>
+<td style="vertical-align:top"><span class="p">Automatically perform requested actions and exit (main TrueCrypt window will not be displayed). If preferences is specified as the parameter (e.g., /q preferences), then program settings are loaded/saved and they override settings specified on the command line. /q background launches the TrueCrypt Background Task (tray icon) unless it is disabled in the Preferences.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/silent</i><br>or <i>/s</i></td>
+<td style="vertical-align:top"><span class="p">If /q is specified, suppresses interaction with the user (prompts, error messages, warnings, etc.). If /q is not specified, this option has no effect.</span><br>&nbsp;</td>
+</tr>
+<tr>
+<td style="vertical-align:top"><i>/mountoption&nbsp;&nbsp;</i> or <i>/m</i></td>
+<td style="vertical-align:top"><span class="p">ro or readonly: Mount volume as read-only.<br>&nbsp;<br>rm or removable: Mount volume as removable medium (see section <a href="http://andryou.com/truecrypt/docs/volume-mounted-as-removable-medium.php"><i>Volume Mounted as Removable Medium</i></a>).<br>&nbsp;<br>ts or timestamp: Do not preserve container modification timestamp.<br>&nbsp;<br>sm or system: Without pre-boot authentication, mount a partition that is within the key scope of system encryption (for example, a partition located on the encrypted system drive of another operating system that is not running). Useful e.g. for backup or repair operations. Note: If you supply a password as a parameter of /p, make sure that the password has been typed using the standard US keyboard layout (in contrast, the GUI ensures this automatically). This is required due to the fact that the password needs to be typed in the pre-boot environment (before Windows starts) where non-US Windows keyboard layouts are not available.<br>&nbsp;<br>bk or headerbak: Mount volume using embedded backup header. Note: All volumes created by TrueCrypt 6.0 or later contain an embedded backup header (located at the end of the volume).<br>&nbsp;<br>recovery: Do not verify any checksums stored in the volume header. This option should be used only when the volume header is damaged and the volume cannot be mounted even with the mount option headerbak. Example: /m ro. To specify multiple mount options, use e.g.: /m rm /m ts</span><br>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<h4>TrueCrypt Format.exe (TrueCrypt Volume Creation Wizard):</h4>
+<table class="tctable" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="vertical-align:top"><i>/noisocheck&nbsp;&nbsp;&nbsp;</i> or <i>/n</i></td>
+<td style="vertical-align:top"><span class="p">Do not verify that TrueCrypt Rescue Disks are correctly burned. <b>WARNING</b>: Never attempt to use this option to facilitate the reuse of a previously created TrueCrypt Rescue Disk. <span class="p">Note that every time you encrypt a system partition/drive, you must create a new TrueCrypt Rescue Disk even if you use the same password. A previously created TrueCrypt Rescue Disk cannot be reused as it was created for a different master key.</span><br>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<h4>Syntax</h4>
+<pre class="s24">TrueCrypt.exe [/a [devices|favorites]] [/b] [/c [y|n]] [/d [<span class="s32">drive letter</span>]] [/e] [/f] [/h [y|n]] [/k<span class="s32">keyfile or search path</span>] [/l <span class="s32">drive letter</span>] [/m {bk|rm|recovery|ro|sm|ts}] [/p <span class="s32">password</span>] [/q [background|preferences]] [/s] [/tokenlib <span class="s32">path</span>] [/v <span class="s32">volume</span>] [/w]</pre>
+<pre class="s24">"TrueCrypt Format.exe" [/n]</pre>
+<p>Note that the order in which options are specified does not matter.<br>&nbsp;</p>
+<h4>Examples</h4>
+<p>Mount the volume <i>d:\myvolume</i> as the first free drive letter, using the password prompt (the main program window will not be displayed):</p>
+<pre class="s24">truecrypt /q /v d:\myvolume</pre>
+<p>Dismount a volume mounted as the drive letter <i>X</i> (the main program window will not be displayed):</p>
+<pre class="s24">truecrypt /q /dx</pre>
+<p>Mount a volume called <i>myvolume.tc</i> using the password <i>MyPassword</i>, as the drive letter <i>X</i>. TrueCrypt will open an explorer window and beep; mounting will be automatic:</p>
+<pre class="s24">truecrypt /v myvolume.tc /lx /a /p MyPassword /e /b</pre></div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

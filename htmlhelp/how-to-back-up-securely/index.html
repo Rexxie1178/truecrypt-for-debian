@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Back Up Securely - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">How to Back Up Securely</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>Due to hardware or software errors/malfunctions, files stored on a TrueCrypt volume may become corrupted. Therefore, we strongly recommend that you backup all your important files regularly (this, of course, applies to any important data, not just to encrypted data stored on TrueCrypt volumes).</p>
+<h3>Non-System Volumes</h3>
+<p>To back up a non-system TrueCrypt volume securely, it is recommended to follow these steps:</p>
+<ol>
+<li>Create a new TrueCrypt volume using the TrueCrypt Volume Creation Wizard (do not enable the <i>Quick Format</i> option or the <i>Dynamic</i> option). It will be your <i>backup</i> volume so its size should match (or be greater than) the size of your <i>main</i>volume.
+<p>If the <i>main</i> volume is a hidden TrueCrypt volume (see the section <a href="../plausible-deniability/hidden-volume/index.html"><i>Hidden Volume</i></a>), the <i>backup</i> volume must be a hidden TrueCrypt volume too. Before you create the hidden <i>backup</i> volume, you must create a new host (outer) volume for it without enabling the <i>Quick Format</i> option. In addition, especially if the <i>backup</i> volume is file-hosted, the hidden <i>backup</i>volume should occupy only a very small portion of the container and the outer volume should be almost completely filled with files (otherwise, the plausible deniability of the hidden volume might be adversely affected).</p>
+</li>
+<li>Mount the newly created <i>backup</i> volume.</li>
+<li>Mount the <i>main</i> volume.</li>
+<li>Copy all files from the mounted <i>main</i> volume directly to the mounted <i>backup</i> volume.</li>
+</ol>
+<h4>IMPORTANT: If you store the backup volume in any location that an adversary can repeatedly access (for example, on a device kept in a bank’s safe deposit box), you should repeat all of the above steps (including the step 1) each time you want to back up the volume (see below).</h4>
+<p>If you follow the above steps, you will help prevent adversaries from finding out:</p>
+<ul>
+<li>Which sectors of the volumes are changing (because you always follow step 1). This is particularly important, for example, if you store the backup volume on a device kept in a bank’s safe deposit box (or in any other location that an adversary can repeatedly access) and the volume contains a hidden volume (for more information, see the subsection <a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html"><i>Security Requirements and Precautions Pertaining to Hidden Volumes</i></a> in the chapter <a href="../plausible-deniability/index.html"><i>Plausible Deniability</i></a>).</li>
+<li>That one of the volumes is a backup of the other.</li>
+</ul>
+<h3>System Partitions</h3>
+<p>Note: In addition to backing up files, we recommend that you also back up your TrueCrypt Rescue Disk (select <i>System</i> &gt;<i>Create Rescue Disk</i>). For more information, see the section <i>TrueCrypt Rescue Disk</i>.</p>
+<p>To back up an encrypted system partition securely and safely, it is recommended to follow these steps:</p>
+<ol>
+<li>If you have multiple operating systems installed on your computer, boot the one that does not require pre-boot authentication.
+<p>If you do not have multiple operating systems installed on your computer, you can boot a WinPE or BartPE CD/DVD (‘live’ Windows entirely stored on and booted from a CD/DVD; for more information, search the section <a href="../frequently-asked-questions/index.html"><i>Frequently Asked Questions</i></a> for the keyword ‘BartPE’).</p>
+<p>If none of the above is possible, connect your system drive as a secondary drive to another computer and then boot the operating system installed on the computer.</p>
+<p>Note: For security reasons, if the operating system that you want to back up resides in a hidden TrueCrypt volume (see the section <a href="../plausible-deniability/hidden-operating-system/index.html"><i>Hidden Operating System</i></a>), then the operating system that you boot in this step must be either another hidden operating system or a “live- CD” operating system (see above). For more information, see the subsection <a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html"><i>Security Requirements and Precautions Pertaining to Hidden Volumes</i></a> in the chapter <a href="../plausible-deniability/index.html"><i>Plausible Deniability</i></a>.</p>
+</li>
+<li>Create a new non-system TrueCrypt volume using the TrueCrypt Volume Creation Wizard (do not enable the <i>Quick Format</i> option or the <i>Dynamic</i> option). It will be your <i>backup</i> volume so its size should match (or be greater than) the size of the system partition that you want to back up.
+<p>If the operating system that you want to back up is installed in a hidden TrueCrypt volume (see the section <i>Hidden Operating System</i>), the <i>backup</i> volume must be a hidden TrueCrypt volume too. Before you create the hidden <i>backup</i>volume, you must create a new host (outer) volume for it without enabling the <i>Quick Format</i> option. In addition, especially if the <i>backup</i> volume is file-hosted, the hidden <i>backup</i> volume should occupy only a very small portion of the container and the outer volume should be almost completely filled with files (otherwise, the plausible deniability of the hidden volume might be adversely affected).</p>
+</li>
+<li>Mount the newly created <i>backup</i> volume.</li>
+<li>Mount the system partition that you want to back up by following these steps:
+<ol type="a">
+<li>Click <i>Select Device</i> and then select the system partition that you want to back up (in case of a hidden operating system, select the partition containing the hidden volume in which the operating system is installed).</li>
+<li>Click <i>OK</i>.</li>
+<li>Select <i>System</i> &gt; <i>Mount Without Pre-Boot Authentication</i>.</li>
+<li>Enter your pre-boot authentication password and click <i>OK</i>.</li>
+</ol>
+</li>
+<li>Mount the <i>backup</i> volume and then use a third-party program or a Windows tool to create an image of the filesystem that resides on the system partition (which was mounted as a regular TrueCrypt volume in the previous step) and store the image directly on the mounted backup volume.</li>
+</ol>
+<h4>IMPORTANT: If you store the backup volume in any location that an adversary can repeatedly access (for example, on a device kept in a bank’s safe deposit box), you should repeat all of the above steps (including the step 2) each time you want to back up the volume (see below).</h4>
+<p>If you follow the above steps, you will help prevent adversaries from finding out:</p>
+<ul>
+<li>Which sectors of the volumes are changing (because you always follow step 2). This is particularly important, for example, if you store the backup volume on a device kept in a bank’s safe deposit box (or in any other location that an adversary can repeatedly access) and the volume contains a hidden volume (for more information, see the subsection<a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html"><i>Security Requirements and Precautions Pertaining to Hidden Volumes</i></a> in the chapter <a href="../plausible-deniability/index.html"><i>Plausible Deniability</i></a>).</li>
+<li>That one of the volumes is a backup of the other.</li>
+</ul>
+<h3>General Notes</h3>
+<p>If you store the backup volume in any location where an adversary can make a copy of the volume, consider encrypting the volume with a cascade of ciphers (for example, with AES-Twofish- Serpent). Otherwise, if the volume is encrypted only with a single encryption algorithm and the algorithm is later broken (for example, due to advances in cryptanalysis), the attacker might be able to decrypt his copies of the volume. The probability that three distinct encryption algorithms will be broken is significantly lower than the probability that only one of them will be broken.</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

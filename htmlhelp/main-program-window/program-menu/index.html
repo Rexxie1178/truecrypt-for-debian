@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Program Menu - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Program Menu</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p class="s25">Note: To save space, only the menu items that are not self-explanatory are described in this documentation.</p>
+<h3>Volumes -&gt; Auto-Mount All Device-Hosted Volumes</h3>
+<p>See the section <a href="../index.html"><i>Auto-Mount Devices.</i></a></p>
+<h3>Volumes -&gt; Dismount All Mounted Volumes</h3>
+<p>See the section <a href="../index.html"><i>Dismount All.</i></a></p>
+<h3>Volumes -&gt; Change Volume Password</h3>
+<p>Allows changing the password of the currently selected TrueCrypt volume (no matter whether the volume is hidden or standard). Only the header key and the secondary header key (XTS mode) are changed – the master key remains unchanged. This function re-encrypts the volume header using</p>
+<p>a header encryption key derived from a new password. Note that the volume header contains the master encryption key with which the volume is encrypted. Therefore, the data stored on the volume will <i>not</i> be lost after you use this function (password change will only take a few seconds).</p>
+<p>To change a TrueCrypt volume password, click on <i>Select File</i> or <i>Select Device</i>, then select the volume, and from the <i>Volumes</i>menu select <i>Change Volume Password</i>.</p>
+<p>Note: For information on how to change a password used for pre-boot authentication, please see the section <i>System -&gt; Change Password</i>.</p>
+<p>See also the chapter <a href="../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>.</p>
+<div>
+<h4>PKCS-5 PRF</h4>
+<p>In this field you can select the algorithm that will be used in deriving new volume header keys (for more information, see the section <a href="../../technical-details/header-key-derivation-salt-and-iteration-count/index.html"><i>Header Key Derivation, Salt, and Iteration Count</i></a>) and in generating the new salt (for more information, see the section <a href="../../technical-details/random-number-generator/index.html"><i>Random Number Generator</i></a>).</p>
+<p>Note: When TrueCrypt re-encrypts a volume header, the original volume header is first overwritten 256 times with random data to prevent adversaries from using techniques such as magnetic force microscopy or magnetic force scanning tunneling microscopy [17] to recover the overwritten header (however, see also the chapter <a href="../../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>).</p>
+</div>
+<h3>Volumes -&gt; Set Header Key Derivation Algorithm</h3>
+<p>This function allows you to re-encrypt a volume header with a header key derived using a different PRF function (for example, instead of HMAC-RIPEMD-160 you could use HMAC-Whirlpool). Note that the volume header contains the master encryption key with which the volume is encrypted. Therefore, the data stored on the volume will <i>not</i> be lost after you use this function. For more information, see the section <a href="../../technical-details/header-key-derivation-salt-and-iteration-count/index.html"><i>Header Key Derivation, Salt, and Iteration Count</i></a>.</p>
+<p>Note: When TrueCrypt re-encrypts a volume header, the original volume header is first overwritten</p>
+<p>256 times with random data to prevent adversaries from using techniques such as magnetic force microscopy or magnetic force scanning tunneling microscopy [17] to recover the overwritten header (however, see also the chapter <a href="../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>).</p>
+<h3>Volumes -&gt; Add/Remove Keyfiles to/from Volume</h3>
+<h3>Volumes -&gt; Remove All Keyfiles from Volume</h3>
+<p>See the chapter <a href="../../keyfiles/index.html"><i>Keyfiles.</i></a></p>
+<h3>Favorites -&gt; Add Mounted Volume to Favorites Favorites -&gt; Organize Favorite Volumes Favorites -&gt; Mount Favorites Volumes</h3>
+<p>See the chapter <a href="../../truecrypt-volume/favorite-volumes/index.html"><i>Favorite Volumes</i></a>.</p>
+<h3>Favorites -&gt; Add Mounted Volume to System Favorites</h3>
+<h3>Favorites -&gt; Organize System Favorite Volumes</h3>
+<p>See the chapter <a href="../../truecrypt-volume/system-favorite-volumes/index.html"><i>System Favorite Volumes</i></a>.</p>
+<h3>System -&gt; Change Password</h3>
+<p>Changes the password used for pre-boot authentication (see the chapter <i>System Encryption</i>). WARNING: Your TrueCrypt Rescue Disk allows you to restore key data if it is damaged. By doing so, you also restore the password that was valid when the TrueCrypt Rescue Disk was created. Therefore, whenever you change the password, you should destroy your TrueCrypt Rescue Disk and create a new one (select <i>System</i> -&gt; <i>Create Rescue Disk</i>). Otherwise, an attacker could decrypt your system partition/drive using the old password (if he finds the old TrueCrypt Rescue Disk and uses it to restore the key data). See also the chapter <a href="../../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>.</p>
+<p>For more information on changing a password, please see the section <i>Volumes -&gt; Change Volume Password</i> above.</p>
+<h3>System -&gt; Mount Without Pre-Boot Authentication</h3>
+<p>Check this option, if you need to mount a partition that is within the key scope of system encryption without pre-boot authentication. For example, if you need to mount a partition located on the encrypted system drive of another operating system that is not running. This can be useful e.g. when you need to back up or repair an operating system encrypted by TrueCrypt (from within another operating system).</p>
+<p>Note 1: If you need to mount multiple partitions at once, click <i>‘Auto-Mount Devices</i>’, then click ‘<i>Mount Options</i>’ and enable the option ‘<i>Mount partition using system encryption without pre-boot authentication</i>’.</p>
+<p>Please note you cannot use this function to mount extended (logical) partitions that are located on an entirely encrypted system drive.</p>
+<h3>Tools -&gt; Clear Volume History</h3>
+<p>Clears the list containing the file names (if file-hosted) and paths of the last twenty successfully mounted volumes.</p>
+<h3>Tools -&gt; Traveler Disk Setup</h3>
+<p>See the chapter <i><a href="../../portable-mode/index.html">Portable Mode</a>.</i></p>
+<h3>Tools -&gt; Keyfile Generator</h3>
+<p>See section <i>Tools -&gt; Keyfile Generator</i> in the chapter <i><a href="../../keyfiles/index.html">Keyfiles</a>.</i></p>
+<h3>Tools -&gt; Backup Volume Header</h3>
+<h3>Tools -&gt; Restore Volume Header</h3>
+<p>If the header of a TrueCrypt volume is damaged, the volume is, in most cases, impossible to mount. Therefore, each volume created by TrueCrypt 6.0 or later contains an embedded backup header, located at the end of the volume. For extra safety, you can also create external volume header backup files. To do so, click <i>Select Device</i> or <i>Select File</i>, select the volume, select<i>Tools</i> -&gt; <i>Backup Volume Header</i>, and then follow the instructions.</p>
+<p class="s15">Note: A backup header (embedded or external) is <i>not</i> a copy of the original volume header because it is encrypted with a different header key derived using a different salt (see the section <a href="../../technical-details/header-key-derivation-salt-and-iteration-count/index.html"><i>Header Key Derivation, Salt, and Iteration Count</i></a>). When the volume password and/or keyfiles are changed, or when the header is restored from the embedded (or an external) header backup, both the volume header and the backup header (embedded in the volume) are re-encrypted with header keys derived using newly generated salts (the salt for the volume header is different from the salt for the backup header). Each salt is generated by the TrueCrypt random number generator (see the section <a href="../../technical-details/random-number-generator/index.html"><i>Random Number Generator</i></a>).</p>
+<p>Both types of header backups (embedded and external) can be used to repair a damaged volume header. To do so, click<i>Select Device</i> or <i>Select File</i>, select the volume, select <i>Tools</i> -&gt; <i>Restore Volume Header</i>, and then follow the instructions.</p>
+<p>WARNING: Restoring a volume header also restores the volume password that was valid when the backup was created. Moreover, if keyfile(s) are/is necessary to mount a volume when the backup is created, the same keyfile(s) will be necessary to mount the volume again after the volume header is restored. For more information, see the section <a href="../../technical-details/encryption-scheme/index.html"><i>Encryption Scheme</i></a> in the chapter <a href="../../technical-details/index.html"><i>Technical Details</i></a>.</p>
+<p>After you create a volume header backup, you might need to create a new one only when you change the volume password and/or keyfiles. Otherwise, the volume header remains unmodified so the volume header backup remains up-to-date.</p>
+<p class="s15">Note: Apart from salt (which is a sequence of random numbers), external header backup files do not contain any unencrypted information and they cannot be decrypted without knowing the correct password and/or supplying the correct keyfile(s). For more information, see the chapter <a href="../../technical-details/index.html"><i>Technical Details</i></a>.</p>
+<p>When you create an external header backup, both the standard volume header and the area where a hidden volume header can be stored is backed up, even if there is no hidden volume within the volume (to preserve plausible deniability of hidden volumes). If there is no hidden volume within the volume, the area reserved for the hidden volume header in the backup file will be filled with random data (to preserve plausible deniability).</p>
+<p>When <i>restoring</i> a volume header, you need to choose the type of volume whose header you wish to restore (a standard or hidden volume). Only one volume header can be restored at a time. To restore both headers, you need to use the function twice (<i>Tools</i> -&gt; <i>Restore Volume Header</i>). You will need to enter the correct password (and/or to supply the correct keyfiles) that was/were valid when the volume header backup was created. The password (and/or keyfiles) will also automatically determine the type of the volume header to restore, i.e. standard or hidden (note that TrueCrypt determines the type through the process of trial and error).</p>
+<p>Note: If the user fails to supply the correct password (and/or keyfiles) twice in a row when trying to mount a volume, TrueCrypt will automatically try to mount the volume using the embedded backup header (in addition to trying to mount it using the primary header) each subsequent time that the user attempts to mount the volume (until he or she clicks <i>Cancel</i>). If TrueCrypt fails to decrypt the primary header but it successfully decrypts the embedded backup header at the same time, the volume is mounted and the user is warned that the volume header is damaged (and informed as to how to repair it).</p>
+<h3>Settings -&gt; Preferences</h3>
+<p>Invokes the Preferences dialog window, where you can change, among others, the following options:</p>
+<h4>Wipe cached passwords on exit</h4>
+<p>If enabled, passwords (which may also contain processed keyfile contents) cached in driver memory will be cleared when TrueCrypt exits.</p>
+<h4>Cache passwords in driver memory</h4>
+<p>When checked, passwords and/or processed keyfile contents for up to last four successfully mounted TrueCrypt volumes are cached. This allows mounting volumes without having to type their passwords (and selecting keyfiles) repeatedly. TrueCrypt never saves any password to a disk (however, see the chapter <a href="../../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>). Password caching can be enabled/disabled in the Preferences (<i>Settings</i> -&gt; <i>Preferences</i>)</p>
+<p>and in the password prompt window. If the system partition/drive is encrypted, caching of the pre-boot authentication password can be enabled or disabled in the system encryption settings (<i>Settings</i> &gt; ‘<i>System Encryption</i>’).</p>
+<h4>Open Explorer window for successfully mounted volume</h4>
+<p>If this option is checked, then after a TrueCrypt volume has been successfully mounted, an Explorer window showing the root directory of the volume (e.g., <span class="s22">T:\</span>) will be automatically opened.</p>
+<h4>Use a different taskbar icon when there are mounted volumes</h4>
+<p>If enabled, the appearance of the TrueCrypt taskbar icon (shown within the system tray notification area) is different while a TrueCrypt volume is mounted, except the following:</p>
+<ul>
+<li>Partitions/drives within the key scope of active system encryption (e.g., a system partition encrypted by TrueCrypt, or a non-system partition located on a system drive encrypted by TrueCrypt, mounted when the encrypted operating system is running).</li>
+<li>TrueCrypt volumes that are not fully accessible to the user account (e.g. a volume mounted from within another user account).</li>
+<li>TrueCrypt volumes that are not displayed in the TrueCrypt application window. For example, system favorite volumes attempted to be dismounted by an instance of TrueCrypt without administrator privileges when the option ‘<i>Allow only administrators to view and dismount system favorite volumes in TrueCrypt</i>‘ is enabled.</li>
+</ul>
+<h4>TrueCrypt Background Task – Enabled</h4>
+<p>See the chapter <a href="../../miscellaneous/truecrypt-background-task/index.html"><i>TrueCrypt Background Task</i></a>.</p>
+<h4>TrueCrypt Background Task – Exit when there are no mounted volumes</h4>
+<p>If this option is checked, the TrueCrypt background task automatically and silently exits as soon as there are no mounted TrueCrypt volumes. For more information, see the chapter <a href="../../miscellaneous/truecrypt-background-task/index.html"><i>TrueCrypt Background Task</i></a>. Note that this option cannot be disabled when TrueCrypt runs in portable mode.</p>
+<h4>Auto-dismount volume after no data has been read/written to it for</h4>
+<p>After no data has been written/read to/from a TrueCrypt volume for <i>n</i> minutes, the volume is automatically dismounted.</p>
+<h4>Force auto-dismount even if volume contains open files or directories</h4>
+<p>This option applies only to auto-dismount (not to regular dismount). It forces dismount (without prompting) on the volume being auto-dismounted in case it contains open files or directories (i.e., file/directories that are in use by the system or applications).</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

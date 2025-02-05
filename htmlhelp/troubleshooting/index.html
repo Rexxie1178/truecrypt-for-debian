@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Troubleshooting</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<p>This section presents possible solutions to common problems that you may run into when using TrueCrypt.</p>
+<p>Note: If your problem is not listed here, it might be listed in one of the following sections:</p>
+<ul>
+<li><i>Incompatibilities</i></li>
+<li><i>Known Issues & Limitations</i></li>
+<li><i>Frequently Asked Questions</i></li>
+</ul>
+<div class="box">
+<p>Make sure you use the latest stable version of TrueCrypt. If the problem is caused by a bug in an old version of TrueCrypt, it may have already been fixed. Note: Select <i><b>Help</b></i> &gt; <i><b>About</b></i> to find out which version you use.</p>
+</div>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>Writing/reading to/from volume is very slow even though, according to the benchmark, the speed of the cipher that I’m using is higher than the speed of the hard drive.</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>This is probably caused by an interfering application.</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>First, make sure that your TrueCrypt container does not have a file extension that is reserved for executable files (for example, .exe, .sys, or .dll). If it does, Windows and antivirus software may interfere with the container and adversely affect the performance of the volume.</p>
+<p>Second, disable or uninstall any application that might be interfering, which usually is antivirus software or automatic disk defragmentation tool, etc. In case of antivirus software, it often helps to turn off real-time (on-access) scanning in the preferences of the antivirus software. If it does not help, try temporarily disabling the virus protection software. If this does not help either, try uninstalling it completely and restarting your computer subsequently.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>A TrueCrypt volume cannot be mounted; TrueCrypt reports “<span class="p">Incorrect password or not a TrueCrypt volume</span>”.</i></p>
+<p><b>POSSIBLE CAUSE:</b></p>
+<p>The volume header may have been damaged by a third-party application or malfunctioning hardware component.</p>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<ul>
+<li>If you created your volume using TrueCrypt <b>6.0 or later</b>, you can try to restore the volume header from the backup embedded in the volume by following these steps:
+<ol>
+<li>Run TrueCrypt 6.0 or later.</li>
+<li>Click <i>Select Device</i> or <i>Select File</i> to select your volume.</li>
+<li>Select <i>Tools</i> &gt; <i>Restore Volume Header</i>.</li>
+</ol>
+</li>
+<li>If you created your volume using TrueCrypt <b>5.1a or earlier</b>, you can try to mount your volume with the command line option <span class="s22">/m recovery</span> as follows:
+<ol>
+<li>Install TrueCrypt 6.1 or later.</li>
+<li>On your keyboard, press and hold the <i>Windows</i> key and then press <i>R</i>. The Windows Run <span class="p">dialog should appear.</span></li>
+<li>Type in the following command (replace the last argument, \Device\Harddisk1\Partition0<span class="p">, with the path to your volume and if TrueCrypt is not</span> installed in <span class="s22">%ProgramFiles%</span>, replace <span class="s22">%ProgramFiles%</span> with the path to TrueCrypt):
+<p class="s22">“%ProgramFiles%\TrueCrypt\TrueCrypt.exe” /q /m recovery /v \Device\Harddisk1\Partition0</p>
+</li>
+<li>Press Enter to try to mount your volume.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>After successfully mounting a volume, Windows reports “<span class="p">This device does not contain a valid file system</span>” or a similar error.</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>The file system on the TrueCrypt volume may be corrupted (or the volume is unformatted).</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>You can use filesystem repair tools supplied with your operating system to attempt to repair the filesystem on the TrueCrypt volume. In Windows, it is the ‘<i>chkdsk</i>’ tool. TrueCrypt provides an easy way to use this tool on a TrueCrypt volume: First, make a backup copy of the TrueCrypt volume (because the ‘<i>chkdsk</i>’ tool might damage the filesystem even more) and then mount it. Right-click the mounted volume in the main TrueCrypt window (in the drive list) and from the context menu select ‘<i>Repair Filesystem</i>’.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>When trying to create a hidden volume, its maximum possible size is unexpectedly small (there is much more free space than this on the outer volume).</i></p>
+<p><b>PROBABLE CAUSES:</b></p>
+<ol>
+<li>The outer volume has been formatted as NTFS</li>
+<li>Fragmentation</li>
+<li>Too small cluster size + too many files/folders in the root directory of the outer volume.</li>
+</ol>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<p>Solutions Related to Cause 1:</p>
+<ul>
+<li>Unlike the FAT filesystem, the NTFS filesystem always stores internal data exactly in the middle of the volume. Therefore, the hidden volume can reside only in the second half of the outer volume. If this constraint is unacceptable, do one of the following:
+<ul>
+<li>Reformat the outer volume as FAT and then create a hidden volume within it.</li>
+<li>If the outer volume is too large to be formatted as FAT, split the volume to several 2- terabyte volumes (or 16-terabyte volumes if the device uses 4-kilobyte sectors) and format each of them as FAT.</li>
+</ul>
+</li>
+</ul>
+<p>Solution Related to Cause 2:</p>
+<ul>
+<li>Create a new outer volume (defragmentation is not a solution, because it would adversely affect plausible deniability – see section <a href="../security-requirements-and-precautions/defragmenting/index.html"><i>Defragmenting</i></a>).</li>
+</ul>
+<p>Solution Related to Cause 3:</p>
+<ul>
+<li>Note: The following solution applies only to hidden volumes created within FAT volumes. Defragment the outer volume (mount it, right-click its drive letter in the ‘<i>Computer</i>’ or ‘<i>My Computer</i>’ window, click <i>Properties</i>, select the <i>Tools</i> tab, and click ‘<i>Defragment Now</i>’). After the volume is defragmented, exit <i>Disk Defragmenter</i> and try to create the hidden volume again.If this does not help, delete <i>all</i> files and folders on the outer volume by pressing Shift+Delete, not by formatting, (do not forget to disable the Recycle Bin and System Restore for this drive beforehand) and try creating the hidden volume on this <i>completely empty</i> outer volume again (for testing purposes only). If the maximum possible size of the hidden volume does not change even now, the cause of the problem is very likely an extended root directory. If you did not use the ‘<i>Default</i>’ cluster size (the last step in the Wizard), reformat the outer volume and this time leave the cluster size at ‘<i>Default</i>’.If it does not help, reformat the outer volume again and copy less files/folders to its root folder than you did last time. If it does not help, keep reformatting and decreasing the number of files/folders in the root folder. If this is unacceptable or if it does not help, reformat the outer volume and select a larger cluster size. If it does not help, keep reformatting and increasing the cluster size, until the problem is solved. Alternatively, try creating a hidden volume within an NTFS volume.</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p>One of the following problems occurs:</p>
+<ul>
+<li>A TrueCrypt volume cannot be mounted.</li>
+<li>NTFS TrueCrypt volumes cannot be created.</li>
+</ul>
+<p>In addition, the following error may be reported: “<i>The process cannot access the file because it is being used by another process.</i>”</p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>This is probably caused by an interfering application. Note that this is not a bug in TrueCrypt. The operating system reports to TrueCrypt that the device is locked for an exclusive access by an application (so TrueCrypt is not allowed to access it).</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>It usually helps to disable or uninstall the interfering application, which is usually an anti-virus utility, a disk management application, etc.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>In the TrueCrypt Boot Loader screen, I’m trying to type my password and/or pressing other keys but the TrueCrypt boot loader is not responding.</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>You have a USB keyboard (not a PS/2 keyboard) and pre-boot support for USB keyboards is disabled in your BIOS settings.</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>You need to enable pre-boot support for USB keyboards in your BIOS settings. To do so, follow the below steps:</p>
+<p>Restart your computer, press F2 or Delete (as soon as you see a BIOS start-up screen), and wait until a BIOS configuration screen appears. If no BIOS configuration screen appears, restart (reset) the computer again and start pressing F2 or Delete repeatedly as soon as you restart (reset) the computer. When a BIOS configuration screen appears, enable pre-boot support for USB keyboards. This can typically be done by selecting: <i>Advanced</i> &gt; ‘<i>USB Configuration</i>’ &gt; ‘<i>Legacy USB Support</i>’ (or ‘<i>USB Legacy</i>’) &gt; <i>Enabled</i>. (Note that the word ‘legacy’ is in fact misleading, because pre-boot components of modern versions of MS Windows require this option to be enabled to allow user interaction/control.) Then save the BIOS settings (typically by pressing F10) and restart your computer. For more information, please refer to the documentation for your BIOS/motherboard or contact your computer vendor’s technical support team for assistance.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>After the system partition/drive is encrypted, the computer cannot boot after it is restarted (it is also impossible to enter the BIOS configuration screen).</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>A bug in the BIOS of your computer.</p>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<ul>
+<li>Follow these steps:
+<ol>
+<li>Disconnect the encrypted drive.</li>
+<li>Connect an unencrypted drive with an installed operating system (or install it on the drive).</li>
+<li>Upgrade the BIOS.</li>
+<li>If it does not help, please report this bug to the manufacturer or vendor of the computer.</li>
+</ol>
+</li>
+</ul>
+<p>OR</p>
+<ul>
+<li>If the BIOS/motherboard/computer manufacturer/vendor does not provide any updates that resolve the issue and you use Windows 7 or later and there is an extra boot partition (whose size is less than 1 GB) on the drive, you can try reinstalling Windows without this extra boot partition (to work around a bug in the BIOS).</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p>One of the following problems occurs:</p>
+<ul>
+<li><i>After the pre-boot authentication password is entered during the system encryption pretest, the computer hangs (after the message</i> ‘Booting<i>…’ is displayed).</i></li>
+<li><i>When the system partition/drive is encrypted (partially or fully) and the system is restarted for the first time since the process of encryption of the system partition/drive started, the computer hangs after you enter the pre-boot authentication password (after the message</i> ‘<span class="p">Booting</span>…’ is displayed).</li>
+<li><i>After the hidden operating system is cloned and the password for it entered, the computer hangs (after the message ‘</i>Booting<i>…’ is displayed).</i></li>
+</ul>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>A bug in the BIOS of your computer.</p>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<ul>
+<li>Upgrade your BIOS (for information on how to do so, please refer to the documentation for your BIOS/motherboard or contact your computer vendor’s technical support team for assistance).</li>
+<li>Use a different motherboard model/brand.</li>
+<li>If the BIOS/motherboard/computer manufacturer/vendor does not provide any updates that resolve the issue and you use Windows 7 or later and there is an extra boot partition (whose size is less than 1 GB) on the drive, you can try reinstalling Windows without this extra boot partition (to work around a bug in the BIOS).</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>When mounting or dismounting a TrueCrypt volume, the system crashes (a ‘blue screen’ error screen appears or the computer abruptly restarts).</i></p>
+<p>OR</p>
+<p><i>Since I installed TrueCrypt, the operating system has been crashing frequently.</i></p>
+<p><b>POSSIBLE CAUSES:</b></p>
+<ul>
+<li>A bug in a third-party application (e.g. antivirus, system “tweaker”, etc.)</li>
+<li>A bug in TrueCrypt</li>
+<li>A bug in Windows or a malfunctioning hardware component</li>
+</ul>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<ul>
+<li>Try disabling any antivirus tools, system “tweakers”, and any other similar applications. If it does not help, try uninstalling them and restarting Windows.If the problem persists, run TrueCrypt and select <i>Help</i> &gt; ‘<i>Analyze a System Crash</i>’. TrueCrypt will then analyze crash dump files that Windows automatically created when it crashed (if any). If TrueCrypt determines that a bug in a third party driver is likely to have caused the crash, it will show the name and provider of the driver (note that updating or uninstalling the driver might resolve the issue). Whatever the results, you will be able to choose to send us essential information about the system crash to help us determine whether it was caused by a bug in TrueCrypt.</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>When trying to encrypt the system partition/drive, during the pretest, the TrueCrypt Boot Loader always reports that the pre-boot authentication password I entered is incorrect (even though I’m sure it is correct).</i></p>
+<p><b>POSSIBLE CAUSES:</b></p>
+<ul>
+<li>Different state of the <i>Num Lock</i> and/or <i>Caps Lock</i> key</li>
+<li>Data corruption</li>
+</ul>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<ol>
+<li>When you set a pre-boot authentication password, remember whether the <i>Num Lock</i> and <i>Caps Lock</i> keys are on or off (depending on the manufacturer, the keys may have different labels, such as <i>Num LK</i>). Note: You can change the state of each of the keys as desired before you set the password, but you need to remember the states.</li>
+<li>When you enter the password in the TrueCrypt Boot Loader screen, make sure the state of each of the keys is the same as when you set the password.</li>
+</ol>
+<p>Note: For other possible solutions to this problem, see the other sections of this chapter.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>When the system partition/drive is encrypted, the operating system ‘freezes’ for approx. 10-60 seconds every 5-60 minutes (100% CPU usage may co-occur).</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>A CPU and/or motherboard issue.</p>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<ul>
+<li>Try upgrading the BIOS.</li>
+<li>Try disabling all power-saving-related features (including any special CPU enhanced halt functions) in the BIOS settings and in the ‘Power Options’ Windows control panel.</li>
+<li>Replace the processor with a different one (different type and/or brand).</li>
+<li>Replace the motherboard with a different one (different type and/or brand).</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>On Windows 7/Vista (and possibly later versions), the Microsoft Windows Backup tool cannot be used to backup data to a non-system TrueCrypt Volume.</i></p>
+<p><b>CAUSE:</b></p>
+<p>A bug in the Windows Backup tool.</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<ol>
+<li>Mount the TrueCrypt volume to which you want to back up data.</li>
+<li>Right-click a folder located on the volume (or right-click its drive letter in the ‘<i>Computer</i>’ list) and select an item from the ‘<i>Share with</i>’ submenu (on Windows Vista, select ‘<i>Share</i>’).</li>
+<li>Follow the instructions to share the folder with your user account.</li>
+<li>In the Windows Backup tool, select the shared folder (the network location/path) as the destination.</li>
+<li>Start the backup process.</li>
+</ol>
+<p>Note: The above solution does <b>not</b> apply to the <i>Starter</i> and <i>Home</i> editions of Windows 7 (and possibly later versions).</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>The label of a filesystem in a TrueCrypt volume cannot be changed from within the ‘Computer’ window under Windows Vista or a later version of Windows.</i></p>
+<p><b>CAUSE:</b></p>
+<p>A Windows issue causes the label to be written only to the Windows registry file, instead of being written to the filesystem.</p>
+<p><b>POSSIBLE SOLUTIONS:</b></p>
+<ul>
+<li>Right-click the mounted volume in the ‘Computer’ window, select Properties, and enter a new label for the volume.</li>
+</ul>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>I cannot encrypt a partition/device because TrueCrypt Volume Creation Wizard says it is in use.</i></p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>Close, disable, or uninstall all programs that might be using the partition/device in any way (for example an anti-virus utility). If it does not help, right-click the ‘<i>Computer</i>’ (or ‘<i>My Computer</i>’) icon on your desktop and select <i>Manage</i> -&gt; <i>Storage</i> -&gt; <i>Disk Management.</i> Then right-click the partition that you want to encrypt, and click <i>Change Drive Letter and Paths.</i> Then click<i>Remove</i> and <i>OK.</i> Restart the operating system.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>When creating a hidden volume, the Wizard reports that the outer volume cannot be locked.</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p>The outer volume contains files being used by one or more applications.</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>Close all applications that are using files on the outer volume. If it does not help, try disabling or uninstalling any anti-virus utility you use and restarting the system subsequently.</p>
+<hr>
+<p><b>PROBLEM:</b></p>
+<p><i>When accessing a file-hosted container shared over a network, “insufficient memory” or “not enough server storage is available” error is reported.</i></p>
+<p><b>PROBABLE CAUSE:</b></p>
+<p><i>IRPStackSize</i> in the Windows registry may have been set to a too small value.</p>
+<p><b>POSSIBLE SOLUTION:</b></p>
+<p>Locate the <i>IRPStackSize</i> key in the Windows registry and set it to a higher value. Then restart the system. If the key does not exist in the Windows registry, create it at<i>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters</i> and set its value to 16 or higher. Then restart the system. For more information, see: <a class="s23" href="http://support.microsoft.com/kb/285089/">http://support.microsoft.com/kb/285089/</a> and <a class="s23" href="http://support.microsoft.com/kb/177078/">http://support.microsoft.com/kb/177078/</a></p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

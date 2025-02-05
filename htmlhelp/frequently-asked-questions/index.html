@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frequently Asked Questions - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Frequently Asked Questions</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<h3>I forgot my password – is there any way (‘backdoor’) to recover the files from my TrueCrypt volume?</h3>
+<p>We have not implemented any ‘backdoor’ in TrueCrypt (and will never implement any even if asked to do so by a government agency), because it would defeat the purpose of the software. TrueCrypt does not allow decryption of data without knowing the correct password or key. We cannot recover your data because we do not know and cannot determine the password you chose or the key you generated using TrueCrypt. The only way to recover your files is to try to “crack” the password or the key, but it could take thousands or millions of years (depending on the length and quality of the password or keyfiles, on the software/hardware performance, algorithms, and other factors). If you find this hard to believe, consider the fact that <a href="https://g1.globo.com/English/noticia/2010/06/not-even-fbi-can-de-crypt-files-daniel-dantas.html" target="_blank">even the FBI was not able to decrypt a TrueCrypt volume after a year of trying</a>.</p>
+<h3>Is there a “Quick Start Guide” or some tutorial for beginners?</h3>
+<p>Yes. The first chapter, <b><a href="../beginners-tutorial/index.html">Beginner’s Tutorial</a></b>, in the TrueCrypt User Guide contains screenshots and step-by-step instructions on how to create, mount, and use a TrueCrypt volume.</p>
+<h3>Can I encrypt a partition/drive where Windows is installed?</h3>
+<p>Yes, see the chapter <a href="../system-encryption/index.html">System Encryption</a> in the TrueCrypt User Guide.</p>
+<h3>Can I directly play a video (.avi, .mpg, etc.) stored on a TrueCrypt volume?</h3>
+<p>Yes, TrueCrypt-encrypted volumes are like normal disks. You provide the correct password (and/or keyfile) and mount (open) the TrueCrypt volume. When you double click the icon of the video file, the operating system launches the application associated with the file type – typically a media player. The media player then begins loading a small initial portion of the video file from the TrueCrypt-encrypted volume to RAM (memory) in order to play it. While the portion is being loaded, TrueCrypt is automatically decrypting it (in RAM). The decrypted portion of the video (stored in RAM) is then played by the media player. While this portion is being played, the media player begins loading another small portion of the video file from the TrueCrypt-encrypted volume to RAM (memory) and the process repeats.</p>
+<p>The same goes for video recording: Before a chunk of a video file is written to a TrueCrypt volume, TrueCrypt encrypts it in RAM and then writes it to the disk. This process is called on-the-fly encryption/decryption and it works for all file types (not only for video files).</p>
+<h3>Will TrueCrypt be open-source and free forever?</h3>
+<p>Yes, it will. We will never create a commercial version of TrueCrypt, as we believe in open-source and free security software.</p>
+<h3>Why is TrueCrypt open-source? What are the advantages?</h3>
+<p>As the source code for TrueCrypt is publicly available, independent researchers can verify that the source code does not contain any security flaw or secret ‘backdoor’. If the source code were not available, reviewers would need to reverse-engineer the executable files. However, analyzing and understanding such reverse-engineered code is so difficult that it is practically<i>impossible</i> to do (especially when the code is as large as the TrueCrypt code).</p>
+<p>Remark: A similar problem also affects cryptographic hardware (for example, a self-encrypting storage device). It is very difficult to reverse-engineer it to verify that it does not contain any security flaw or secret ‘backdoor’.</p>
+<h3>TrueCrypt is open-source, but has anybody actually reviewed the source code?</h3>
+<p>Yes. In fact, the source code is constantly being reviewed by many independent researchers and users. We know this because many bugs and several security issues have been discovered by independent researchers (including some well-known ones) while reviewing the source code.</p>
+<h3>As TrueCrypt is open-source software, independent researchers can verify that the source code does not contain any security flaw or secret ‘backdoor’. Can they also verify that the official executable files were built from the published source code and contain no additional code?</h3>
+<p>Yes, they can. In addition to reviewing the source code, independent researchers can compile the source code and compare the resulting executable files with the official ones. They may find some differences (for example, timestamps or embedded digital signatures) but they can analyze the differences and verify that they do not form malicious code.</p>
+<h3>How can I use TrueCrypt on a USB flash drive?</h3>
+<p>You have two options:</p>
+<ol>
+<li>Encrypt the entire USB flash drive. However, you will not be able run TrueCrypt from the USB flash drive.<br>
+Note: Windows does not support multiple partitions on USB flash drives.</li>
+<li>Create a TrueCrypt file container on the USB flash drive (for information on how to do so, see the chapter <b><a href="../beginners-tutorial/index.html">Beginner’s Tutorial</a></b>, in the <a href="../index.html">TrueCrypt User Guide</a>). If you leave enough space on the USB flash drive (choose an appropriate size for the TrueCrypt container), you will also be able to store TrueCrypt on the USB flash drive (along with the container – not <i>in</i> the container) and you will be able to run TrueCrypt from the USB flash drive (see also the chapter <a href="../portable-mode/index.html">Portable Mode</a>&nbsp;in the <a href="../index.html">TrueCrypt User Guide</a>).</li>
+</ol>
+<h3>Does TrueCrypt also encrypt file names and folder names?</h3>
+<p>Yes. The entire file system within a TrueCrypt volume is encrypted (including file names, folder names, and contents of every file). This applies to both types of TrueCrypt volumes – i.e., to file containers (virtual TrueCrypt disks) and to TrueCrypt-encrypted partitions/devices.</p>
+<h3>Does TrueCrypt use parallelization?</h3>
+<p>Yes. Increase in encryption/decryption speed is directly proportional to the number of cores/processors your computer has. For more information, please see the chapter <a href="../parallelization/index.html">Parallelization</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Can data be read from and written to an encrypted volume/drive as fast as if the drive was not encrypted?</h3>
+<p>Yes, since TrueCrypt uses pipelining and parallelization. For more information, please see the chapters <a href="../pipelining/index.html">Pipelining</a> and&nbsp;<a href="../parallelization/index.html">Parallelization</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Does TrueCrypt support hardware-accelerated encryption?</h3>
+<p>Yes. For more information, please see the chapter <a href="../hardware-acceleration/index.html">Hardware Acceleration</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Is it possible to boot Windows installed in a hidden TrueCrypt volume?</h3>
+<p>Yes, it is (as of TrueCrypt 6.0). For more information, please see the section <a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Will I be able to mount my TrueCrypt volume (container) on any computer?</h3>
+<p>Yes, <a href="../main-program-window/mounting-truecrypt-volumes/index.html">TrueCrypt volumes</a> are independent of the operating system. You will be able to mount your TrueCrypt volume on any computer on which you can run TrueCrypt (see also the question ‘<i>Can I use TrueCrypt on Windows if I do not have administrator privileges?</i>‘).</p>
+<h3>Can I unplug or turn off a hot-plug device (for example, a USB flash drive or USB hard drive) when there is a mounted TrueCrypt volume on it?</h3>
+<p>Before you unplug or turn off the device, you should always dismount the TrueCrypt volume in TrueCrypt first, and then perform the ‘<i>Eject</i>‘ operation if available (right-click the device in the ‘<i>Computer</i>‘ or ‘<i>My Computer</i>‘ list), or use the ‘<i>Safely Remove Hardware</i>‘ function (built in Windows, accessible via the taskbar notification area). Otherwise, data loss may occur.</p>
+<h3>What is a hidden operating system?</h3>
+<p>See the section <a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>What is plausible deniability?</h3>
+<p>See the chapter <a href="../plausible-deniability/index.html">Plausible Deniability</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Will I be able to mount my TrueCrypt partition/container after I reinstall or upgrade the operating system?</h3>
+<p>Yes, <a href="../main-program-window/mounting-truecrypt-volumes/index.html">TrueCrypt volumes</a> are independent of the operating system. However, you need to make sure your operating system installer does not format the partition where your TrueCrypt volume resides.</p>
+<p>Note: If the system partition/drive is encrypted and you want to reinstall or upgrade Windows, you need to decrypt it first (select<i>System</i> &gt; <i>Permanently Decrypt System Partition/Drive</i>). However, a running operating system can be <i>updated</i> (security patches, service packs, etc.) without any problems even when the system partition/drive is encrypted.</p>
+<h3>Can I upgrade from an older version of TrueCrypt to the latest version without any problems?</h3>
+<p>Generally, yes. However, before upgrading, please read the <a href="../version-history/index.html">release notes</a> for all versions of TrueCrypt that have been released since your version was released. If there are any known issues or incompatibilities related to upgrading from your version to a newer one, they will be listed in the <a href="../version-history/index.html">release notes</a>.</p>
+<h3>Can I upgrade TrueCrypt if the system partition/drive is encrypted or do I have to decrypt it first?</h3>
+<p>Generally, you can upgrade to the latest version without decrypting the system partition/drive (just run the TrueCrypt installer and it will automatically upgrade TrueCrypt on the system). However, before upgrading, please read the <a href="../version-history/index.html">release notes</a> for all versions of TrueCrypt that have been released since your version was released. If there are any known issues or incompatibilities related to upgrading from your version to a newer one, they will be listed in the <a href="../version-history/index.html">release notes</a>. Note that this FAQ answer is also valid for users of a <a href="../system-encryption/hidden-operating-system/index.html">hidden operating system</a>. Also note that you cannot <i>down</i>grade TrueCrypt if the system partition/drive is encrypted.</p>
+<h3>I use pre-boot authentication. Can I prevent a person (adversary) that is watching me start my computer from knowing that I use TrueCrypt?</h3>
+<p>Yes (as of TrueCrypt 6.1). To do so, boot the encrypted system, start TrueCrypt, select <i>Settings</i> &gt; <i>System Encryption</i>, enable the option ‘<i>Do not show any texts in the pre-boot authentication screen</i>‘ and click <i>OK</i>. Then, when you start the computer, no texts will be displayed by the TrueCrypt boot loader (not even when you enter the wrong password). The computer will appear to be “frozen” while you can type your password. It is, however, important to note that if the adversary can analyze the content of the hard drive, he can still find out that it contains the TrueCrypt boot loader.</p>
+<h3>I use pre-boot authentication. Can I configure the TrueCrypt Boot Loader to display only a fake error message?</h3>
+<p>Yes (as of TrueCrypt 6.1). To do so, boot the encrypted system, start TrueCrypt, select <i>Settings</i> &gt; <i>System Encryption</i>, enable the option ‘<i>Do not show any texts in the pre-boot authentication screen</i>‘ and enter the fake error message in the corresponding field (for example, the “<i>Missing operating system</i>” message, which is normally displayed by the Windows boot loader if it finds no Windows boot partition). It is, however, important to note that if the adversary can analyze the content of the hard drive, he can still find out that it contains the TrueCrypt boot loader.</p>
+<h3>Can I configure TrueCrypt to mount automatically whenever Windows starts a non-system TrueCrypt volume that uses the same password as my system partition/drive (i.e. my pre-boot authentication password)?</h3>
+<p>Yes. To do so, follow these steps:</p>
+<ol>
+<li>Mount the volume (to the drive letter to which you want it to be mounted every time).</li>
+<li>Right-click the mounted volume in the drive list in the main TrueCrypt window and select ‘<i>Add to System Favorites</i>‘.</li>
+<li>The System Favorites Organizer window should appear now. In this window, enable the option ‘<i>Mount system favorite volumes when Windows starts</i>‘ and click <i>OK</i>.</li>
+</ol>
+<p>For more information, see the chapter <a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a>.</p>
+<h3>Can a volume be automatically mounted whenever I log on to Windows?</h3>
+<p>Yes. To do so, follow these steps:</p>
+<ol>
+<li>Mount the volume (to the drive letter to which you want it to be mounted every time).</li>
+<li>Right-click the mounted volume in the drive list in the main TrueCrypt window and select ‘<i>Add to Favorites</i>‘.</li>
+<li>The <a href="../truecrypt-volume/favorite-volumes/index.html">Favorites</a> Organizer window should appear now. In this window, enable the option ‘<i>Mount selected volume upon logon</i>‘ and click <i>OK</i>.</li>
+</ol>
+<p>Then, when you log on to Windows, you will be asked for the volume password (and/or keyfiles) and if it is correct, the volume will be mounted.</p>
+<p>Alternatively, if the volumes are partition/device-hosted and if you do not need to mount them to particular drive letters every time, you can follow these steps:</p>
+<ol>
+<li>Select <i>Settings</i> &gt; <i>Preferences.</i> The <i>Preferences</i> window should appear now.</li>
+<li>In the section ‘<i>Actions to perform upon logon to Windows</i>‘, enable the option ‘<i>Mount all devices-hosted TrueCrypt volumes</i>‘ and click <i>OK</i>.</li>
+</ol>
+<p>Note: TrueCrypt will not prompt you for a password if you have enabled caching of the <a href="../system-encryption/index.html">pre-boot authentication</a> password (<i>Settings</i> &gt; ‘<i>System Encryption</i>‘) and the volumes use the same password as the system partition/drive.</p>
+<h3>Can a volume be automatically mounted whenever its host device gets connected to the computer?</h3>
+<p>Yes. For example, if you have a TrueCrypt container on a USB flash drive and you want TrueCrypt to mount it automatically when you insert the USB flash drive into the USB port, follow these steps:</p>
+<ol>
+<li>Mount the volume (to the drive letter to which you want it to be mounted every time).</li>
+<li>Right-click the mounted volume in the drive list in the main TrueCrypt window and select ‘<i>Add to Favorites</i>‘.</li>
+<li>The <a href="../truecrypt-volume/system-favorite-volumes/index.html">Favorites</a> Organizer window should appear now. In this window, enable the option ‘<i>Mount selected volume when its host device gets connected</i>‘ and click <i>OK</i>.</li>
+</ol>
+<p>Then, when you insert the USB flash drive into the USB port, you will be asked for the volume password (and/or keyfiles) (unless it is cached) and if it is correct, the volume will be mounted.</p>
+<p>Note: TrueCrypt will not prompt you for a password if you have enabled caching of the <a href="../system-encryption/index.html">pre-boot authentication</a> password (<i>Settings</i> &gt; ‘<i>System Encryption</i>‘) and the volume uses the same password as the system partition/drive.</p>
+<h3>Can my pre-boot authentication password be cached so that I can use it mount non-system volumes during the session?</h3>
+<p>Yes. Select <i>Settings</i> &gt; ‘<i>System Encryption</i>‘ and enable the following option: ‘<i>Cache pre-boot authentication password in driver memory</i>‘.</p>
+<p><a name="notraces" id="notraces"></a></p>
+<h3>I live in a country that violates basic human rights of its people. Is it possible to use TrueCrypt without leaving any ‘traces’ on unencrypted Windows?</h3>
+<p>Yes. This can be achieved by running TrueCrypt in <a href="../portable-mode/index.html">portable mode</a> under <a href="https://en.wikipedia.org/wiki/BartPE" target="_blank">BartPE</a> or in a similar environment. BartPE stands for “Bart’s Preinstalled Environment”, which is essentially the Windows operating system prepared in a way that it can be entirely stored on and booted from a CD/DVD (registry, temporary files, etc., are stored in RAM – hard drive is not used at all and does not even have to be present). The freeware <a href="https://barts-pe-builder.en.softonic.com/" target="_blank">Bart’s PE Builder</a> can transform a Windows XP installation CD into a BartPE CD. Note that you do not even need any special TrueCrypt plug-in for BartPE. Follow these steps:</p>
+<ol>
+<li>Create a BartPE CD and boot it. (Note: You must perform each of the following steps from within BartPE.)</li>
+<li>Download the TrueCrypt self-extracting package to the RAM disk (which BartPE automatically creates).<b>Note</b>: If the adversary can intercept data you send or receive over the Internet and you need to prevent the adversary from knowing you downloaded TrueCrypt, consider downloading it via <a href="http://www.i2p2.de/index.html" target="_blank"><b>I2P</b></a>, <a href="http://www.torproject.org/index.html" target="_blank"><b>Tor</b></a>, or a similar anonymizing network.</li>
+<li>Verify the digital signatures of the downloaded file (see <a href="../miscellaneous/digital-signatures/index.html">this</a> section of the documentation for more information).</li>
+<li>Run the downloaded file, and select <i>Extract</i> (instead of <i>Install</i>) on the second page of the TrueCrypt Setup wizard. Extract the contents to the RAM disk.</li>
+<li>Run the file <i>TrueCrypt.exe</i> from the RAM disk.</li>
+</ol>
+<p>Note: You may also want to consider creating a hidden operating system (see the section <a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a> in the&nbsp;<a href="../index.html">documentation</a>). See also the chapter <a href="../plausible-deniability/index.html">Plausible Deniability</a>.</p>
+<h3>Can I encrypt my system partition/drive if I don’t have a US keyboard?</h3>
+<p>Yes, TrueCrypt supports all keyboard layouts.</p>
+<h3>Can I save data to the decoy system partition without risking damage to the hidden system partition?</h3>
+<p>Yes. You can write data to the decoy system partition anytime without any risk that the hidden volume will get damaged (because the decoy system is <i>not</i> installed within the same partition as the hidden system). For more information, see the section <a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Can I use TrueCrypt on Windows if I do not have administrator privileges?</h3>
+<p>See the chapter ‘<a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a>‘ in the <a href="../index.html">documentation</a>.</p>
+<h3>Does TrueCrypt save my password to a disk?</h3>
+<p>No.</p>
+<h3>How does TrueCrypt verify that the correct password was entered?</h3>
+<p>See the section <a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a> (chapter <a href="../technical-details/index.html">Technical Details</a>) in the <a href="../index.html">documentation</a>.</p>
+<h3>Can I encrypt a partition/drive without losing the data currently stored on it?</h3>
+<p>Yes, but the following conditions must be met:</p>
+<ul>
+<li>If you want to encrypt an entire system drive (which may contain multiple partitions) or a system partition (in other words, if you want to encrypt a drive or partition where Windows is installed), you can do so provided that you use TrueCrypt 5.0 or later and that you use Windows XP or a later version of Windows (such as Windows 7) (select ‘<i>System</i>‘ &gt; ‘<i>Encrypt System Partition/Drive</i>‘ and then follow the instructions in the wizard).</li>
+<li>If you want to encrypt a non-system partition in place, you can do so provided that it contains an NTFS filesystem, that you use TrueCrypt 6.1 or later, and that you use Windows Vista or a later version of Windows (for example, Windows 7)(click ‘<i>Create Volume</i>‘ &gt; ‘<i>Encrypt a non-system partition</i>‘ &gt; ‘<i>Standard volume</i>‘ &gt; ‘<i>Select Device</i>‘ &gt; ‘<i>Encrypt partition in place</i>‘ and then follow the instructions in the wizard).</li>
+</ul>
+<h3>Can I run TrueCrypt if I don’t install it?</h3>
+<p>Yes, see the chapter <a href="../portable-mode/index.html">Portable Mode</a> in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<p><a name="tpm" id="tpm"></a></p>
+<h3>Some encryption programs use TPM to prevent attacks. Will TrueCrypt use it too?</h3>
+<p>No. Those programs use TPM to protect against attacks that <i>require</i> the attacker to have administrator privileges, or physical access to the computer, and the attacker needs you to use the computer after such an access. <i>However, if any of these conditions is met, it is actually impossible to secure the computer</i> (see below) and, therefore, you must stop using it (instead of relying on TPM).</p>
+<p>If the attacker has administrator privileges, he can, for example, reset the TPM, capture the content of RAM (containing master keys) or content of files stored on mounted TrueCrypt volumes (decrypted on the fly), which can then be sent to the attacker over the Internet or saved to an unencrypted local drive (from which the attacker might be able to read it later, when he gains physical access to the computer).</p>
+<p>If the attacker can physically access the computer hardware (and you use it after such an access), he can, for example, attach a malicious component to it (such as a hardware keystroke logger) that will capture the password, the content of RAM (containing master keys) or content of files stored on mounted TrueCrypt volumes (decrypted on the fly), which can then be sent to the attacker over the Internet or saved to an unencrypted local drive (from which the attacker might be able to read it later, when he gains physical access to the computer again).</p>
+<p>The only thing that TPM is almost guaranteed to provide is a false sense of security (even the name itself, “Trusted Platform Module”, is misleading and creates a false sense of security). As for real security, TPM is actually redundant (and implementing redundant features is usually a way to create so-called bloatware).</p>
+<p>For more information, please see the sections <a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a> and <a href="../security-requirements-and-precautions/malware/index.html">Malware</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>Do I have to dismount TrueCrypt volumes before shutting down or restarting Windows?</h3>
+<p>No. TrueCrypt automatically dismounts all mounted TrueCrypt volumes on system shutdown/restart.</p>
+<h3>Which type of TrueCrypt volume is better – partition or file container?</h3>
+<p><a href="../truecrypt-volume/index.html">File containers</a> are normal files so you can work with them as with any normal files (file containers can be, for example, moved, renamed, and deleted the same way as normal files). <a href="../truecrypt-volume/index.html">Partitions/drives</a> may be better as regards performance. Note that reading and writing to/from a file container may take significantly longer when the container is heavily fragmented. To solve this problem, defragment the file system in which the container is stored (when the TrueCrypt volume is dismounted).</p>
+<h3>What’s the recommended way to back up a TrueCrypt volume?</h3>
+<p>See the chapter <a href="../how-to-back-up-securely/index.html">How to Back Up Securely</a> in the <a href="../index.html">documentation</a>.</p>
+<h3>What will happen if I format a TrueCrypt partition?</h3>
+<p>See the question ‘<i>Is it possible to change the file system of an encrypted volume?</i>‘</p>
+<h3><a name="changing-filesystem" id="changing-filesystem"></a>Is it possible to change the file system of an encrypted volume?</h3>
+<p>Yes, when mounted, TrueCrypt volumes can be formatted as FAT12, FAT16, FAT32, NTFS, or any other file system. TrueCrypt volumes behave as standard disk devices so you can right-click the device icon (for example in the ‘<i>Computer</i>‘ or ‘<i>My Computer</i>‘ list) and select ‘<i>Format</i>‘. The actual volume contents will be lost. However, the whole volume will remain encrypted. If you format a TrueCrypt-encrypted partition when the TrueCrypt volume that the partition hosts is not mounted, then the volume will be destroyed, and the partition will not be encrypted anymore (it will be empty).</p>
+<h3>Is it possible to mount a TrueCrypt container that is stored on a CD or DVD?</h3>
+<p>Yes. However, if you need to mount a TrueCrypt volume that is stored on a read-only medium (such as a CD or DVD) under Windows 2000, the file system within the TrueCrypt volume must be FAT (Windows 2000 cannot mount an NTFS file system on read-only media).</p>
+<h3>Is it possible to change the password for a hidden volume?</h3>
+<p>Yes, the password change dialog works both for standard and <a href="../plausible-deniability/hidden-volume/index.html">hidden volumes</a>. Just type the password for the hidden volume in the ‘Current Password’ field of the ‘Volume Password Change’ dialog.</p>
+<p>Remark: TrueCrypt first attempts to decrypt the standard <a href="../technical-details/truecrypt-volume-format-specification/index.html">volume header</a> and if it fails, it attempts to decrypt the area within the volume where the hidden volume header may be stored (if there is a hidden volume within). In case it is successful, the password change applies to the hidden volume. (Both attempts use the password typed in the ‘Current Password’ field.)</p>
+<h3>When I use HMAC-RIPEMD-160, is the size of the header encryption key only 160 bits?</h3>
+<p>No, TrueCrypt never uses an output of a hash function (nor of a HMAC algorithm) directly as an encryption key. See the section <a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation, Salt, and Iteration Count</a> in the <a href="../index.html">documentation</a> for more information.</p>
+<h3>How do I burn a TrueCrypt container larger than 2 GB onto a DVD?</h3>
+<p>The DVD burning software you use should allow you to select the format of the DVD. If it does, select the UDF format (ISO format does not support files larger than 2 GB).</p>
+<h3>Can I use tools like <i>chkdsk</i>, Disk Defragmenter, etc. on the contents of a mounted TrueCrypt volume?</h3>
+<p>Yes, TrueCrypt volumes behave like real physical disk devices, so it is possible to use any filesystem checking/repairing/defragmenting tools on the contents of a mounted TrueCrypt volume.</p>
+<h3>Does TrueCrypt support 64-bit versions of Windows?</h3>
+<p>Yes, it does. Note: 64-bit versions of Windows load only drivers that are digitally signed with a digital certificate issued by a certification authority approved for issuing kernel-mode code signing certificates. TrueCrypt complies with this requirement (the TrueCrypt driver is <a href="../miscellaneous/digital-signatures/index.html">digitally signed</a> with the digital certificate of the TrueCrypt Foundation, which was issued by the certification authority GlobalSign).</p>
+<h3>Can I mount my TrueCrypt volume under Windows, Mac OS X, and Linux?</h3>
+<p>Yes, TrueCrypt volumes are fully cross-platform.</p>
+<h3>Is there a list of all operating systems that TrueCrypt supports?</h3>
+<p>Yes, see the chapter <a href="../supported-operating-systems/index.html">Supported Operating Systems</a> in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<h3>Is it possible to install an application to a TrueCrypt volume and run it from there?</h3>
+<p>Yes.</p>
+<h3>What will happen when a part of a TrueCrypt volume becomes corrupted?</h3>
+<p>In encrypted data, one corrupted bit usually corrupts the whole ciphertext block in which it occurred. The ciphertext block size used by TrueCrypt is 16 bytes (i.e., 128 bits). The <a href="../technical-details/modes-of-operation/index.html">mode of operation</a> used by TrueCrypt ensures that if data corruption occurs within a block, the remaining blocks are not affected. See also the question ‘<i>What do I do when the encrypted filesystem on my TrueCrypt volume is corrupted?</i></p>
+<h3>What do I do when the encrypted filesystem on my TrueCrypt volume is corrupted?</h3>
+<p>File system within a TrueCrypt volume may become corrupted in the same way as any normal unencrypted file system. When that happens, you can use filesystem repair tools supplied with your operating system to fix it. In Windows, it is the ‘<i>chkdsk</i>‘ tool. TrueCrypt provides an easy way to use this tool on a TrueCrypt volume: Right-click the mounted volume in the main TrueCrypt window (in the drive list) and from the context menu select ‘<i>Repair Filesystem</i>‘.</p>
+<h3>We use TrueCrypt in a corporate/enterprise environment. Is there a way for an administrator to reset a volume password or pre-boot authentication password when a user forgets it (or loses a keyfile)?</h3>
+<p>Yes. Note that there is no “backdoor” implemented in TrueCrypt. However, there is a way to “reset” volume passwords/<a href="../keyfiles/index.html">keyfiles</a>&nbsp;and <a href="../system-encryption/index.html">pre-boot authentication</a> passwords. After you create a volume, back up its header to a file (select <i>Tools</i> -&gt; <i>Backup Volume Header</i>) before you allow a <a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">non-admin user</a> to use the volume. Note that the <a href="../technical-details/truecrypt-volume-format-specification/index.html">volume header</a> (which is encrypted with a <a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">header key</a> derived from a password/keyfile) contains the <a href="../technical-details/encryption-scheme/index.html">master key</a> with which the volume is encrypted. Then ask the user to choose a password, and set it for him/her (<i>Volumes</i> -&gt; <i>Change Volume Password</i>); or generate a user keyfile for him/her. Then you can allow the user to use the volume and to change the password/keyfiles without your assistance/permission. In case he/she forgets his/her password or loses his/her keyfile, you can “reset” the volume password/keyfiles to your original admin password/keyfiles by restoring the volume header from the backup file (<i>Tools</i> -&gt; <i>Restore Volume Header</i>).</p>
+<p>Similarly, you can reset a <a href="../system-encryption/index.html">pre-boot authentication</a> password<a href="../system-encryption/index.html">.</a> To create a backup of the master key data (that will be stored on a&nbsp;<a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a> and encrypted with your administrator password), select ‘<i>System</i>‘ &gt; ‘<a href="../system-encryption/truecrypt-rescue-disk/index.html"><i>Create Rescue Disk</i></a>‘. To set a user&nbsp;<a href="../system-encryption/index.html">pre-boot authentication</a> password, select ‘<i>System</i>‘ &gt; ‘<i>Change Password</i>‘. To restore your administrator password, boot the TrueCrypt Rescue Disk, select ‘<i>Repair Options</i>‘ &gt; ‘<i>Restore key data</i>‘ and enter your administrator password.<br>
+Note: It is not required to burn each <a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a> ISO image to a CD/DVD. You can maintain a central repository of ISO images for all workstations (rather than a repository of CDs/DVDs). For more information see the section <a href="../command-line-usage/index.html">Command Line Usage</a> (option <i>/noisocheck</i>).</p>
+<h3>Can our commercial company use TrueCrypt free of charge?</h3>
+<p>Provided that you comply with the terms and conditions of the <a href="../legal-information/index.html">TrueCrypt License</a>, you can install and run TrueCrypt free of charge on an arbitrary number of your computers.</p>
+<h3>We share a volume over a network. Is there a way to have the network share automatically restored when the system is restarted?</h3>
+<p>Please see the chapter ‘<a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a>‘ in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<h3>It is possible to access a single TrueCrypt volume simultaneously from multiple operating systems (for example, a volume shared over a network)?</h3>
+<p>Please see the chapter ‘<a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a>‘ in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<h3>Can a user access his or her TrueCrypt volume via a network?</h3>
+<p>Please see the chapter ‘<a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a>‘ in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<h3>I encrypted a non-system partition, but its original drive letter is still visible in the ‘<i>My Computer</i>‘ list. When I double click this drive letter, Windows asks if I want to format the drive. Is there a way to hide or free this drive letter?</h3>
+<p>Yes, to free the drive letter follow these steps:</p>
+<ol>
+<li>Right-click the ‘<i>Computer</i>‘ (or ‘<i>My Computer</i>‘) icon on your desktop or in the Start Menu and select <i>Manage</i>. The ‘<i>Computer Management</i>‘ window should appear.</li>
+<li>From the list on the left, select ‘<i>Disk Management</i>‘ (within the <i>Storage</i> sub-tree).</li>
+<li>Right-click the encrypted partition/device and select <i>Change Drive Letter and Paths</i>.</li>
+<li>Click <i>Remove</i>.</li>
+<li>If Windows prompts you to confirm the action, click <i>Yes</i>.</li>
+</ol>
+<h3>When I plug in my encrypted USB flash drive, Windows asks me if I want to format it. Is there a way to prevent that?</h3>
+<p>Yes, but you will need to remove the drive letter assigned to the device. For information on how to do so, see the question ‘<i>I encrypted a non-system partition, but its original drive letter is still visible in the ‘My Computer’ list.</i>‘</p>
+<h3>How do I remove or undo encryption if I do not need it anymore? How do I permanently decrypt a volume?</h3>
+<p>Please see the section ‘<a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a>‘ in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<h3>What will change when I enable the option ‘<i>Mount volumes as removable media</i>‘?</h3>
+<p>Please see the section ‘<a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a>‘ in the <a href="../index.html">TrueCrypt User Guide</a>.</p>
+<h3>Is the online documentation available for download as a single file?</h3>
+<p>Yes, the documentation is contained in the file <i>TrueCrypt User Guide.pdf</i> that is included in all official TrueCrypt distribution packages. Note that you do <i>not</i> have to install TrueCrypt to obtain the PDF documentation. Just run the self-extracting installation package and then select <i>Extract</i> (instead of <i>Install</i>) on the second page of the TrueCrypt Setup wizard. Also note that when you <i>do</i> install TrueCrypt, the PDF documentation is automatically copied to the folder to which TrueCrypt is installed, and is accessible via the TrueCrypt user interface (by pressing F1 or choosing <i>Help</i> &gt; <i>User’s Guide</i>).</p>
+<h3>Do I have to “wipe” free space and/or files on a TrueCrypt volume?</h3>
+<p>Remark: to “wipe” = to securely erase; to overwrite sensitive data in order to render them unrecoverable.</p>
+<p>If you believe that an adversary will be able to decrypt the volume (for example that he will make you reveal the password), then the answer is yes. Otherwise, it is not necessary, because the volume is entirely encrypted.</p>
+<h3>How does TrueCrypt know which encryption algorithm my TrueCrypt volume has been encrypted with?</h3>
+<p>Please see the section <a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a> (chapter <a href="../technical-details/index.html">Technical Details</a>) in the <a href="../index.html">documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="../security-model/index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

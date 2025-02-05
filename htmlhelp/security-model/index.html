@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Model - Truecrypt</title>
+<link rel='stylesheet' id='wp-block-library-group-css' href='../wp-content/plugins/bwp-minify/cache/minify-b1-wp-block-library-b4bc22b6e85c5b4ad13ac5538241afe6592e.css?ver=3' type='text/css' media='all'>
+</head>
+<body class="page-template">
+<div class="container">
+<div class="row">
+<div class="col-sm-8 blog-main-right">
+<div class="blog-post">
+<h2 class="blog-post-title">Security Model</h2>
+<p class="blog-post-meta"><br></p>
+<div class="entry clearfix">
+<div class="alert alert-info">Note to security researchers: If you intend to report a security issue or publish an attack on TrueCrypt, please make sure it does not disregard the security model of TrueCrypt described below. If it does, the attack (or security issue report) will be considered invalid/bogus.</div>
+<p>TrueCrypt is a computer software program whose primary purposes are to:</p>
+<ul>
+<li>Secure data by encrypting it before it is written to a disk.</li>
+<li>Decrypt encrypted data after it is read from the disk.</li>
+</ul>
+<p>TrueCrypt does <b>not</b>:</p>
+<ul>
+<li>Encrypt or secure any portion of RAM (the main memory of a computer).</li>
+<li>Secure any data on a computer<span class="s18">*</span> if an attacker has administrator privileges<span class="s18">†</span> under an operating system installed on the computer.</li>
+<li>Secure any data on a computer if the computer contains any malware (e.g. a virus, Trojan horse, spyware) or any other piece of software (including TrueCrypt or an operating system component) that has been altered, created, or can be controlled, by an attacker.</li>
+<li>Secure any data on a computer if an attacker has physical access to the computer before or while TrueCrypt is running on it.</li>
+<li>Secure any data on a computer if an attacker has physical access to the computer between the time when TrueCrypt is shut down and the time when the entire contents of all volatile memory modules connected to the computer (including memory modules in peripheral devices) have been permanently and irreversibly erased/lost.</li>
+<li>Secure any data on a computer if an attacker can remotely intercept emanations from the computer hardware (e.g. the monitor or cables) while TrueCrypt is running on it (or otherwise remotely monitor the hardware and its use, directly or indirectly, while TrueCrypt is running on it).</li>
+<li>Secure any data stored in a TrueCrypt volume<span class="s18">‡</span> if an attacker without administrator privileges can access the contents of the mounted volume (e.g. if file/folder/volume permissions do not prevent such an attacker from accessing it).</li>
+<li>Preserve/verify the integrity or authenticity of encrypted or decrypted data.</li>
+<li>Prevent traffic analysis when encrypted data is transmitted over a network.</li>
+<li>Prevent an attacker from determining in which sectors of the volume the content changed (and when and how many times) if he or she can observe the volume (dismounted or mounted) before and after data is written to it, or if the storage medium/device allows the attacker to determine such information (for example, the volume resides on a device that saves metadata that can be used to determine when data was written to a particular sector).</li>
+<li>Encrypt any existing unencrypted data in place (or re-encrypt or erase data) on devices/filesystems that use wear-leveling or otherwise relocate data internally.</li>
+<li>Ensure that users choose cryptographically strong passwords or keyfiles.</li>
+<li>Secure any computer hardware component or a whole computer.</li>
+<li>Secure any data on a computer where the security requirements or precautions listed in the chapter <a href="../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a> are not followed.</li>
+<li>Do anything listed in the chapter <a href="../known-issues-limitations/index.html"><i>Known Issues & Limitations</i></a>.</li>
+</ul>
+<p>Under <b>Windows</b>, a user without administrator privileges can (assuming the default TrueCrypt and operating system configurations):</p>
+<ul>
+<li>Mount any file-hosted TrueCrypt volume provided that the file permissions of the container allow it.</li>
+<li>Mount any partition/device-hosted TrueCrypt volume.</li>
+<li>Complete the pre-boot authentication process and, thus, gain access to data on an encrypted system partition/drive (and start the encrypted operating system).</li>
+<li>Skip the pre-boot authentication process (this can be prevented by disabling the option <i>Settings</i> &gt; ‘<i>System Encryption</i>’ &gt; ‘<i>Allow pre-boot authentication to be bypassed by pressing the Esc key</i>’; note that this option can be enabled or disabled only by an administrator)<span class="p">.</span></li>
+<li>Dismount, using TrueCrypt, (and, in the TrueCrypt application window, see the path to and properties of) any TrueCrypt volume mounted by him or her. However, this does not apply to ‘system favorite volumes’, which he or she can dismount (etc.) regardless of who mounted them (this can be prevented by enabling the option <i>Settings</i> &gt; ‘<i>System Favorite Volumes</i>’ &gt; ‘<i>Allow</i> only administrators to view and dismount system favorite volumes in TrueCrypt<span class="s7">’; note that this option can be enabled or disabled only by an administrator)<span class="p">.</span></span></li>
+<li>Create a file-hosted TrueCrypt volume containing a FAT or no file system (provided that the relevant folder permissions allow it).</li>
+<li>Change the password, keyfiles, and header key derivation algorithm for, and restore or back up the header of, a file-hosted TrueCrypt volume (provided that the file permissions allow it).</li>
+<li>Access the filesystem residing within a TrueCrypt volume mounted by another user on the system (however, file/folder/volume permissions can be set to prevent this).</li>
+<li>Use passwords (and processed keyfiles) stored in the password cache (note that caching can be disabled; for more information see the section <i>Settings -&gt; Preferences</i>, subsection <i>Cache passwords in</i> driver memory<span class="s7">)</span><span class="p">.</span></li>
+<li>View the basic properties (e.g. the size of the encrypted area, encryption and hash algorithms used, etc.) of the encrypted system partition/drive when the encrypted system is running.</li>
+<li>Run and use the TrueCrypt application (including the TrueCrypt Volume Creation Wizard) provided that the TrueCrypt device driver is running and that the file permissions allow it.</li>
+</ul>
+<p>Under <b>Linux</b>, a user without administrator privileges can (assuming the default TrueCrypt and operating system configurations):</p>
+<ul>
+<li>Create a file-hosted or partition/device-hosted TrueCrypt volume containing a FAT or no file system provided that the relevant folder/device permissions allow it.</li>
+<li>Change the password, keyfiles, and header key derivation algorithm for, and restore or back up the header of, a file-hosted or partition/device-hosted TrueCrypt volume provided that the file/device permissions allow it.</li>
+<li>Access the filesystem residing within a TrueCrypt volume mounted by another user on the system (however, file/folder/volume permissions can be set to prevent this).</li>
+<li>Run and use the TrueCrypt application (including the TrueCrypt Volume Creation Wizard) provided that file permissions allow it.</li>
+<li>In the TrueCrypt application window, see the path to and properties of any TrueCrypt volume mounted by him or her.</li>
+</ul>
+<p>Under <b>Mac OS X</b>, a user without administrator privileges can (assuming the default TrueCrypt and operating system configurations):</p>
+<ul>
+<li>Mount any file-hosted or partition/device-hosted TrueCrypt volume provided that the file/device permissions allow it.</li>
+<li>Dismount, using TrueCrypt, (and, in the TrueCrypt application window, see the path to and properties of) any TrueCrypt volume mounted by him or her.</li>
+<li>Create a file-hosted or partition/device-hosted TrueCrypt volume provided that the relevant folder/device permissions allow it.</li>
+<li>Change the password, keyfiles, and header key derivation algorithm for, and restore or back up the header of, a file-hosted or partition/device-hosted TrueCrypt volume (provided that the file/device permissions allow it).</li>
+<li>Access the filesystem residing within a TrueCrypt volume mounted by another user on the system (however, file/folder/volume permissions can be set to prevent this).</li>
+<li>Run and use the TrueCrypt application (including the TrueCrypt Volume Creation Wizard) provided that the file permissions allow it.</li>
+</ul>
+<p>TrueCrypt does not support the set-euid root mode of execution.</p>
+<p>Additional information and details regarding the security model are contained in the chapter <a href="../security-requirements-and-precautions/index.html"><i>Security Requirements and Precautions</i></a>.</p>
+<p class="s19">* In this section (<i>Security Model</i>), the phrase “data on a computer” means data on internal and external storage devices/media (including removable devices and network drives) connected to the computer<span class="s33">.</span></p>
+<p class="s19"><span class="s19">†</span> In this section (<i>Security Model</i>), the phrase “administrator privileges” does not necessarily refer to a valid administrator account. It may also refer to an attacker who does not have a valid administrator account but who is able (for example, due to improper configuration of the system or by exploiting a vulnerability in the operating system or a third-party application) to perform any action that only a user with a valid administrator account is normally allowed to perform (for example, to read or modify an arbitrary part of a drive or the RAM, etc.)</p>
+<p class="s19"><span class="s19">‡</span> “TrueCrypt volume” also means a TrueCrypt-encrypted system partition/drive (see the chapter <a href="../system-encryption/index.html"><i>System Encryption</i></a>).</p>
+</div>
+</div>
+</div>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar-left">
+<div id="search-4" class="sidebar-module widget widget_search"><br>
+<br>
+<br></div>
+<div id="nav_menu-2" class="sidebar-module widget widget_nav_menu">
+<div class="menu-documentation-container">
+<ul id="menu-documentation" class="menu">
+<li class="menu-item"><a href="../index.html"><strong>Introduction</strong></a></li>
+<li class="menu-item"><a href="../beginners-tutorial/index.html"><strong>Beginner’s Tutorial</strong></a></li>
+<li class="menu-item"><a href="../system-encryption/index.html"><strong>System Encryption</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../system-encryption/operating-systems-supported-for-system-encryption/index.html">Supported Systems</a></li>
+<li class="menu-item"><a href="../system-encryption/hidden-operating-system/index.html">Hidden Operating System</a></li>
+<li class="menu-item"><a href="../system-encryption/truecrypt-rescue-disk/index.html">TrueCrypt Rescue Disk</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/index.html"><strong>Plausible Deniability</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/index.html">Hidden Volume</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/protection-of-hidden-volumes-against-damage/index.html">Hidden Volume Protection</a></li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-volume/security-requirements-and-precautions-pertaining-to-hidden-volumes/index.html">Security Requirements</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../plausible-deniability/hidden-operating-system/index.html">Hidden Operating System</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../parallelization/index.html"><strong>Parallelization</strong></a></li>
+<li class="menu-item"><a href="../pipelining/index.html"><strong>Pipelining</strong></a></li>
+<li class="menu-item"><a href="../hardware-acceleration/index.html"><strong>Hardware Acceleration</strong></a></li>
+<li class="menu-item"><a href="../encryption-algorithms/index.html"><strong>Encryption Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../encryption-algorithms/aes/index.html">AES</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/serpent/index.html">Serpent</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/twofish/index.html">Twofish</a></li>
+<li class="menu-item"><a href="../encryption-algorithms/cascades/index.html">Cascades</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../hash-algorithms/index.html"><strong>Hash Algorithms</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../hash-algorithms/ripemd-160/index.html">RIPEMD-160</a></li>
+<li class="menu-item"><a href="../hash-algorithms/sha-512/index.html">SHA-512</a></li>
+<li class="menu-item"><a href="../hash-algorithms/whirlpool/index.html">Whirlpool</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../technical-details/index.html"><strong>Technical Details</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../technical-details/notation/index.html">Notation</a></li>
+<li class="menu-item"><a href="../technical-details/encryption-scheme/index.html">Encryption Scheme</a></li>
+<li class="menu-item"><a href="../technical-details/modes-of-operation/index.html">Modes of Operation</a></li>
+<li class="menu-item"><a href="../technical-details/header-key-derivation-salt-and-iteration-count/index.html">Header Key Derivation</a></li>
+<li class="menu-item"><a href="../technical-details/random-number-generator/index.html">Random Number Generator</a></li>
+<li class="menu-item"><a href="../technical-details/keyfiles/index.html">Keyfiles</a></li>
+<li class="menu-item"><a href="../technical-details/truecrypt-volume-format-specification/index.html">Volume Format Specification</a></li>
+<li class="menu-item"><a href="../technical-details/compliance-with-standards-and-specifications/index.html">Standards and Specifications</a></li>
+<li class="menu-item"><a href="../technical-details/source-code/index.html">Source Code</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../truecrypt-volume/index.html"><strong>TrueCrypt Volume</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../truecrypt-volume/creating-a-new-truecrypt-volume/index.html">Creating a New TrueCrypt Volume</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/favorite-volumes/index.html">Favorite Volumes</a></li>
+<li class="menu-item"><a href="../truecrypt-volume/system-favorite-volumes/index.html">System Favorite Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../main-program-window/index.html"><strong>Main Program Window</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../main-program-window/program-menu/index.html">Program Menu</a></li>
+<li class="menu-item"><a href="../main-program-window/mounting-truecrypt-volumes/index.html">Mounting TrueCrypt Volumes</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../supported-operating-systems/index.html"><strong>Supported Operating Systems</strong></a></li>
+<li class="menu-item"><a href="../portable-mode/index.html"><strong>Portable Mode</strong></a></li>
+<li class="menu-item"><a href="../keyfiles/index.html"><strong>Keyfiles</strong></a></li>
+<li class="menu-item"><a href="../security-tokens-smart-cards/index.html"><strong>Security Tokens & Smart Cards</strong></a></li>
+<li class="menu-item"><a href="../language-packs/index.html"><strong>Language Packs</strong></a></li>
+<li class="menu-item"><a href="../hot-keys/index.html"><strong>Hot Keys</strong></a></li>
+<li class="menu-item"><a href="index.html"><strong>Security Model</strong></a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/index.html"><strong>Security Requirements</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/index.html">Data Leaks</a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/paging-file/index.html">Paging File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/hibernation-file/index.html">Hibernation File</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/data-leaks/memory-dump-files/index.html">Memory Dump Files</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/unencrypted-data-in-ram/index.html">Unencrypted Data in RAM</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/physical-security/index.html">Physical Security</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/malware/index.html">Malware</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/multi-user-environment/index.html">Multi-User Environment</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/authenticity-and-integrity/index.html">Authenticity and Integrity</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/choosing-passwords-and-keyfiles/index.html">Choosing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/changing-passwords-and-keyfiles/index.html">Changing Passwords and Keyfiles</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/trim-operation/index.html">Trim Operation</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/wear-leveling/index.html">Wear-Leveling</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/reallocated-sectors/index.html">Reallocated Sectors</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/defragmenting/index.html">Defragmenting</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/journaling-file-systems/index.html">Journaling File Systems</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/volume-clones/index.html">Volume Clones</a></li>
+<li class="menu-item"><a href="../security-requirements-and-precautions/additional-security-requirements-and-precautions/index.html">Additional Security Requirements and Precautions</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../command-line-usage/index.html"><strong>Command Line Usage</strong></a></li>
+<li class="menu-item"><a href="../how-to-back-up-securely/index.html"><strong>How to Back Up Securely</strong></a></li>
+<li class="menu-item"><a href="../miscellaneous/index.html"><strong>Miscellaneous</strong></a>
+<ul class="sub-menu">
+<li class="menu-item"><a href="../miscellaneous/using-truecrypt-without-administrator-privileges/index.html">Using TrueCrypt Without Administrator Privileges</a></li>
+<li class="menu-item"><a href="../miscellaneous/sharing-over-network/index.html">Sharing over Network</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-background-task/index.html">TrueCrypt Background Task</a></li>
+<li class="menu-item"><a href="../miscellaneous/volume-mounted-as-removable-medium/index.html">Volume Mounted as Removable Medium</a></li>
+<li class="menu-item"><a href="../miscellaneous/truecrypt-system-files-application-data/index.html">TrueCrypt System Files & Application Data</a></li>
+<li class="menu-item"><a href="../miscellaneous/how-to-remove-encryption/index.html">How to Remove Encryption</a></li>
+<li class="menu-item"><a href="../miscellaneous/uninstalling-truecrypt/index.html">Uninstalling TrueCrypt</a></li>
+<li class="menu-item"><a href="../miscellaneous/digital-signatures/index.html">Digital Signatures</a></li>
+</ul>
+</li>
+<li class="menu-item"><a href="../troubleshooting/index.html"><strong>Troubleshooting</strong></a></li>
+<li class="menu-item"><a href="../frequently-asked-questions/index.html"><strong>Frequently Asked Questions</strong></a></li>
+<li class="menu-item"><a href="../incompatibilities/index.html"><strong>Incompatibilities</strong></a></li>
+<li class="menu-item"><a href="../known-issues-limitations/index.html"><strong>Known Issues & Limitations</strong></a></li>
+<li class="menu-item"><a href="../legal-information/index.html"><strong>Legal Information</strong></a></li>
+<li class="menu-item"><a href="../future-development/index.html"><strong>Future Development</strong></a></li>
+<li class="menu-item"><a href="../acknowledgements/index.html"><strong>Acknowledgements</strong></a></li>
+<li class="menu-item"><a href="../version-history/index.html"><strong>Version History</strong></a></li>
+<li class="menu-item"><a href="../references/index.html"><strong>References</strong></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
