@@ -9,8 +9,8 @@
 #export CXX=g++-5
 
 export PKCS11_INC=$(shell pwd)/debian/pkcs11
-VERSION=$(shell grep -m1 -oE '7.1a-[0-9a-z]+' debian/changelog)
-export TC_EXTRA_CXXFLAGS=-DVERSION_STRING='"$(VERSION)"' -DTC_STR_RELEASED_BY='"Released by Stefan Sundin"'
+VERSION=$(shell dpkg-parsechangelog -l ./debian/changelog | grep Version: | cut -d ' ' -f 2)
+export TC_EXTRA_CXXFLAGS=-DVERSION_STRING='"$(VERSION)"' -DTC_STR_RELEASED_BY='"Released by Rexxie \#1178"'
 export TC_EXTRA_LFLAGS=-Wl,--as-needed
 export TC_EXTRA_LIBS=-ldl
 
@@ -20,13 +20,15 @@ export TC_EXTRA_LIBS=-ldl
 Main/truecrypt-gui:
 	dh_testdir
 	$(MAKE) clean
-	$(MAKE)
+	$(MAKE) WX_ROOT=/usr/src/wxWidgets wxbuild
+	$(MAKE) WXSTATIC=1
 	mv Main/truecrypt Main/truecrypt-gui
 
 Main/truecrypt-cli:
 	dh_testdir
 	$(MAKE) clean
-	$(MAKE) NOGUI=1
+	$(MAKE) WX_ROOT=/usr/src/wxWidgets wxbuild
+	$(MAKE) NOGUI=1 WXSTATIC=1
 	mv Main/truecrypt Main/truecrypt-cli
 
 build: Main/truecrypt-gui Main/truecrypt-cli
@@ -38,6 +40,7 @@ clean:
 	dh_clean
 	rm -f Main/truecrypt-gui Main/truecrypt-cli
 	$(MAKE) clean
+	rm -rf wxrelease
 	rm -f Common/Language.xml.h Common/Textual_logo_96dpi.bmp.h Format/TrueCrypt_Wizard.bmp.h License.txt.h Main/SystemPrecompiled.d Mount/Drive_icon_96dpi.bmp.h Mount/Drive_icon_mask_96dpi.bmp.h Mount/Logo_96dpi.bmp.h
 
 install: build
@@ -56,11 +59,11 @@ binary: build install
 	dh_installchangelogs
 	dh_installdocs
 	dh_installdocs "Release/Setup Files/TrueCrypt User Guide.pdf"
+	dh_installdocs debian/htmlhelp
 	install -m 644 -D "Resources/Icons/TrueCrypt-48x48.xpm" debian/truecrypt/usr/share/pixmaps/truecrypt.xpm
 	install -m 644 -D debian/truecrypt-indicator.png debian/truecrypt/usr/share/pixmaps/truecrypt-indicator.png
 	install -m 644 -D debian/truecrypt.sharedmimeinfo debian/truecrypt/usr/share/mime/packages/truecrypt.xml
 	install -m 644 -D debian/truecrypt.desktop debian/truecrypt/usr/share/applications/truecrypt.desktop
-	install -m 644 -D debian/truecrypt-autostart.desktop debian/truecrypt/etc/xdg/autostart/truecrypt.desktop
 	install -m 755 -D debian/mount.truecrypt debian/truecrypt/sbin/mount.truecrypt
 	install -m 755 -D debian/mount.truecrypt debian/truecrypt-cli/sbin/mount.truecrypt
 	install -m 644 -D debian/truecrypt.bash-completion debian/truecrypt/usr/share/bash-completion/completions/truecrypt
