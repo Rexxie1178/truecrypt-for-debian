@@ -8,3 +8,9 @@ truecrypt-7.1a-helpfix.patch
 truecrypt-7.1a-xdg-open.patch
 truecrypt-7.1a-open-doc.patch
 truecrypt-7.1a-update-urls.patch
+truecrypt-7.1a-d12-build.patch
+truecrypt-7.1a-d12-gcc12.patch
+truecrypt-7.1a-d12-gtk3-gui.patch
+truecrypt-7.1a-d12-htmlhelp.patch
+truecrypt-7.1a-d12-deprecated.patch
+truecrypt-7.1a-d12-lockfile.patch
