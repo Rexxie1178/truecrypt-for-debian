@@ -1,0 +1,67 @@
+diff --git a/Makefile b/Makefile
+index 4e800dd..2e9b865 100644
+--- a/Makefile
++++ b/Makefile
+@@ -103,7 +103,7 @@
+ 	C_CXX_FLAGS += -DDEBUG
+ 	CXXFLAGS += -fno-default-inline -Wno-unused-function -Wno-unused-variable
+ 	export WX_BUILD_DIR ?= $(BASE_DIR)/wxdebug
+-	WX_CONFIGURE_FLAGS += --enable-debug_flag --disable-debug_gdb --disable-debug_info
++	WX_CONFIGURE_FLAGS += --enable-debug_flag --disable-debug_gdb --disable-debug_info --enable-debug
+ 
+ endif
+ 
+@@ -136,6 +136,9 @@
+ else ifneq (,$(filter x86_64 x86-64 amd64 x64,$(ARCH)))
+ 	CPU_ARCH = x64
+ 	ASM_OBJ_FORMAT = elf64
++else ifneq (,$(filter aarch64,$(ARCH)))
++	CPU_ARCH = arm64
++	ASM_OBJ_FORMAT = elf64
+ endif
+ 
+ ifeq "$(origin NOASM)" "command line"
+@@ -146,6 +149,8 @@
+ 	C_CXX_FLAGS += -D TC_ARCH_X86
+ else ifeq "$(CPU_ARCH)" "x64"
+ 	C_CXX_FLAGS += -D TC_ARCH_X64
++else ifeq "$(CPU_ARCH)" "arm64"
++	C_CXX_FLAGS += -D TC_ARCH_ARM64
+ endif
+ 
+ 
+@@ -246,21 +251,20 @@
+ ASFLAGS += -f $(ASM_OBJ_FORMAT)
+ LFLAGS := $(LFLAGS) $(TC_EXTRA_LFLAGS)
+ 
+-WX_CONFIGURE_FLAGS += --enable-unicode -disable-shared --disable-dependency-tracking --disable-compat26 --enable-exceptions --enable-std_string --enable-dataobj --enable-mimetype \
++WX_CONFIGURE_FLAGS += --enable-unicode -disable-shared --disable-dependency-tracking --enable-exceptions --enable-std_string --enable-dataobj --enable-mimetype \
+ 	--disable-protocol --disable-protocols --disable-url --disable-ipc --disable-sockets --disable-fs_inet --disable-ole --disable-docview --disable-clipboard \
+-	--disable-help --disable-html --disable-mshtmlhelp --disable-htmlhelp --disable-mdi --disable-metafile --disable-webkit \
+-	--disable-xrc --disable-aui --disable-postscript --disable-printarch \
+-	--disable-arcstream --disable-fs_archive --disable-fs_zip --disable-tarstream --disable-zipstream \
+-	--disable-animatectrl --disable-bmpcombobox --disable-calendar --disable-caret --disable-checklst --disable-collpane --disable-colourpicker --disable-comboctrl \
+-	--disable-datepick --disable-display --disable-dirpicker --disable-filepicker --disable-fontpicker --disable-grid  --disable-dataviewctrl \
+-	--disable-listbook --disable-odcombobox --disable-sash  --disable-searchctrl --disable-slider --disable-splitter --disable-togglebtn \
+-	--disable-toolbar --disable-tbarnative --disable-treebook --disable-toolbook --disable-tipwindow --disable-popupwin \
+-	--disable-commondlg --disable-aboutdlg --disable-coldlg --disable-finddlg --disable-fontdlg --disable-numberdlg --disable-splash \
+-	--disable-tipdlg --disable-progressdlg --disable-wizarddlg --disable-miniframe --disable-tooltips --disable-splines --disable-palette \
+-	--disable-richtext --disable-dialupman --disable-debugreport --disable-filesystem \
+-	--disable-graphics_ctx --disable-sound --disable-mediactrl --disable-joystick --disable-apple_ieee \
+-	--disable-gif --disable-pcx --disable-tga --disable-iff --disable-gif --disable-pnm \
+-	--without-expat --without-libtiff --without-libjpeg --without-libpng -without-regex --without-zlib
++	--disable-help --disable-html --disable-mshtmlhelp --disable-htmlhelp --disable-mdi --disable-metafile --disable-xrc --disable-aui --disable-postscript \
++	--disable-printarch --disable-arcstream --disable-fs_archive --disable-fs_zip --disable-tarstream --disable-zipstream --disable-animatectrl \
++	--disable-bmpcombobox --disable-calendar --disable-caret --disable-checklst --disable-collpane --disable-colourpicker --disable-comboctrl --disable-datepick \
++	--disable-display --disable-dirpicker --disable-filepicker --disable-fontpicker --disable-grid  --disable-dataviewctrl --disable-listbook \
++	--disable-odcombobox --disable-sash  --disable-searchctrl --disable-slider --disable-splitter --disable-togglebtn --disable-toolbar --disable-tbarnative \
++	--disable-treebook --disable-toolbook --disable-tipwindow --disable-popupwin --disable-commondlg --disable-aboutdlg --disable-coldlg --disable-finddlg \
++	--disable-fontdlg --disable-numberdlg --disable-splash --disable-tipdlg --disable-progressdlg --disable-wizarddlg --disable-miniframe --disable-tooltips \
++	--disable-splines --disable-palette --disable-richtext --disable-dialupman --disable-debugreport --disable-filesystem --disable-sound --disable-mediactrl \
++	--disable-joystick --disable-apple_ieee --disable-gif --disable-pcx --disable-tga --disable-iff --disable-gif --disable-pnm --without-expat \
++	--without-libtiff --without-libjpeg --without-libpng -without-regex --without-zlib --without-liblzma --without-libcurl --disable-glcanvasegl \
++	--disable-webview --disable-rearrangectrl --disable-propgrid --disable-richmsgdlg --disable-treelist --disable-webviewwebkit --disable-webviewie \
++	--disable-richtooltip --disable-svg --disable-stc --disable-addremovectrl
+ 
+ 
+ #------ Project build ------
