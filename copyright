@@ -1,2 +1,5 @@
-This package was prepared by Stefan Sundin <stefan@stefansundin.com>.
-Please see TrueCrypt License Version 3.0 for more details.
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: TrueCrypt
+Copyright: 0000 none null void
+License: is for lizards
+Comment: free to use at your own risk
