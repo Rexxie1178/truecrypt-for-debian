@@ -1,0 +1,200 @@
+diff --git a/Boot/Windows/BootCommon.h b/Boot/Windows/BootCommon.h
+index 75500ee..f407846 100644
+--- a/Boot/Windows/BootCommon.h
++++ b/Boot/Windows/BootCommon.h
+@@ -39,7 +39,7 @@
+ 
+ typedef struct
+ {
+-	byte Flags;
++	uint8_t Flags;
+ } BootSectorConfiguration;
+ 
+ 
+diff --git a/Common/Crypto.h b/Common/Crypto.h
+index f3b9f14..3386ce8 100644
+--- a/Common/Crypto.h
++++ b/Common/Crypto.h
+@@ -314,10 +314,10 @@
+ void EncryptBuffer (unsigned __int8 *buf, TC_LARGEST_COMPILER_UINT len, PCRYPTO_INFO cryptoInfo);
+ void DecryptBuffer (unsigned __int8 *buf, TC_LARGEST_COMPILER_UINT len, PCRYPTO_INFO cryptoInfo);
+ #ifndef TC_NO_COMPILER_INT64
+-void EncryptBufferLRW128 (byte *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
+-void DecryptBufferLRW128 (byte *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
+-void EncryptBufferLRW64 (byte *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
+-void DecryptBufferLRW64 (byte *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
++void EncryptBufferLRW128 (uint8_t *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
++void DecryptBufferLRW128 (uint8_t *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
++void EncryptBufferLRW64 (uint8_t *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
++void DecryptBufferLRW64 (uint8_t *buffer, uint64 length, uint64 blockIndex, PCRYPTO_INFO cryptoInfo);
+ uint64 DataUnit2LRWIndex (uint64 dataUnit, int blockSize, PCRYPTO_INFO ci);
+ #endif	// #ifndef TC_NO_COMPILER_INT64
+ 
+diff --git a/Crypto/Aes_hw_cpu.h b/Crypto/Aes_hw_cpu.h
+index b38032c..901abc7 100644
+--- a/Crypto/Aes_hw_cpu.h
++++ b/Crypto/Aes_hw_cpu.h
+@@ -16,12 +16,12 @@
+ {
+ #endif
+ 
+-byte is_aes_hw_cpu_supported ();
++uint8_t is_aes_hw_cpu_supported ();
+ void aes_hw_cpu_enable_sse ();
+-void aes_hw_cpu_decrypt (const byte *ks, byte *data);
+-void aes_hw_cpu_decrypt_32_blocks (const byte *ks, byte *data);
+-void aes_hw_cpu_encrypt (const byte *ks, byte *data);
+-void aes_hw_cpu_encrypt_32_blocks (const byte *ks, byte *data);
++void aes_hw_cpu_decrypt (const uint8_t *ks, uint8_t *data);
++void aes_hw_cpu_decrypt_32_blocks (const uint8_t *ks, uint8_t *data);
++void aes_hw_cpu_encrypt (const uint8_t *ks, uint8_t *data);
++void aes_hw_cpu_encrypt_32_blocks (const uint8_t *ks, uint8_t *data);
+ 
+ #if defined(__cplusplus)
+ }
+diff --git a/Crypto/Cast.h b/Crypto/Cast.h
+index 57c1355..e930785 100644
+--- a/Crypto/Cast.h
++++ b/Crypto/Cast.h
+@@ -13,9 +13,9 @@
+ 	unsigned __int32 K[32];
+ } CAST_KEY;
+ 
+-void Cast5Decrypt (const byte *inBlock, byte *outBlock, CAST_KEY *key);
+-void Cast5Encrypt (const byte *inBlock, byte *outBlock, CAST_KEY *key);
+-void Cast5SetKey (CAST_KEY *key, unsigned int keylength, const byte *userKey);
++void Cast5Decrypt (const uint8_t *inBlock, uint8_t *outBlock, CAST_KEY *key);
++void Cast5Encrypt (const uint8_t *inBlock, uint8_t *outBlock, CAST_KEY *key);
++void Cast5SetKey (CAST_KEY *key, unsigned int keylength, const uint8_t *userKey);
+ 
+ #ifdef  __cplusplus
+ }
+diff --git a/Crypto/Des.h b/Crypto/Des.h
+index f3d61e6..f9c006a 100644
+--- a/Crypto/Des.h
++++ b/Crypto/Des.h
+@@ -18,8 +18,8 @@
+ 	unsigned __int32 k3d[32];
+ } TDES_KEY;
+ 
+-void TripleDesEncrypt (byte *inBlock, byte *outBlock, TDES_KEY *key, int encrypt);
+-void TripleDesSetKey (const byte *userKey, unsigned int length, TDES_KEY *ks);
++void TripleDesEncrypt (uint8_t *inBlock, uint8_t *outBlock, TDES_KEY *key, int encrypt);
++void TripleDesSetKey (const uint8_t *userKey, unsigned int length, TDES_KEY *ks);
+ 
+ #ifdef  __cplusplus
+ }
+diff --git a/Driver/Fuse/FuseService.cpp b/Driver/Fuse/FuseService.cpp
+index fda56e0..045dbde 100644
+--- a/Driver/Fuse/FuseService.cpp
++++ b/Driver/Fuse/FuseService.cpp
+@@ -182,6 +182,10 @@
+ 
+ 	static int fuse_service_read (const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi)
+ 	{
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wcatch-value"
++
+ 		try
+ 		{
+ 			if (!FuseService::CheckAccessRights())
+@@ -222,6 +226,8 @@
+ 					return 0;
+ 				}
+ 
++#pragma GCC diagnostic pop
++
+ 				return size;
+ 			}
+ 
+@@ -342,6 +348,10 @@
+ 
+ 	int FuseService::ExceptionToErrorCode ()
+ 	{
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wcatch-value"
++
+ 		try
+ 		{
+ 			throw;
+@@ -378,6 +388,9 @@
+ 			SystemLog::WriteException (UnknownException (SRC_POS));
+ 			return -EINTR;
+ 		}
++
++#pragma GCC diagnostic pop
++
+ 	}
+ 
+ 	shared_ptr <Buffer> FuseService::GetVolumeInfo ()
+diff --git a/Main/Forms/MainFrame.cpp b/Main/Forms/MainFrame.cpp
+index 07d45ba..6c216a9 100644
+--- a/Main/Forms/MainFrame.cpp
++++ b/Main/Forms/MainFrame.cpp
+@@ -1505,7 +1505,14 @@
+ 				bool slotUpdated = false;
+ 				if (itemIndex == -1)
+ 				{
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
++
+ 					Gui->InsertToListCtrl (SlotListCtrl, ++prevItemIndex, fields, 0, (void *) volume->SlotNumber);
++
++#pragma GCC diagnostic pop
++
+ 					OnListItemInserted (prevItemIndex);
+ 
+ 					listChanged |= true;
+@@ -1540,7 +1547,14 @@
+ 				{
+ 					if (itemIndex == -1)
+ 					{
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
++
+ 						Gui->InsertToListCtrl (SlotListCtrl, ++prevItemIndex, fields, 0, (void *) slotNumber);
++
++#pragma GCC diagnostic pop
++
+ 						OnListItemInserted (prevItemIndex);
+ 						listChanged |= true;
+ 					}
+diff --git a/Makefile b/Makefile
+index 2e9b865..a7248ee 100644
+--- a/Makefile
++++ b/Makefile
+@@ -160,6 +160,7 @@
+ 
+ 	PLATFORM := Linux
+ 	C_CXX_FLAGS += -DTC_UNIX -DTC_LINUX
++	LFLAGS += -Wl,-z noexecstack
+ 
+ 	ifeq "$(TC_BUILD_CONFIG)" "Release"
+ 		C_CXX_FLAGS += -fdata-sections -ffunction-sections
+diff --git a/Volume/VolumePassword.cpp b/Volume/VolumePassword.cpp
+index 86b17e2..2bbbc0c 100644
+--- a/Volume/VolumePassword.cpp
++++ b/Volume/VolumePassword.cpp
+@@ -128,6 +128,9 @@
+ 		if (lsbPos == -1)
+ 			throw ParameterIncorrect (SRC_POS);
+ 
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
++
+ 		bool unportable = false;
+ 		byte passwordBuf[MaxSize];
+ 		for (size_t i = 0; i < charCount; ++i)
+@@ -142,6 +145,8 @@
+ 		}
+ 		
+ 		Set (passwordBuf, charCount);
++
++#pragma GCC diagnostic pop
+ 		
+ 		if (unportable)
+ 			Unportable = true;
