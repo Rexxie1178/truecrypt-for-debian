@@ -1,0 +1,647 @@
+diff --git a/Common/BaseCom.cpp b/Common/BaseCom.cpp
+index 767a475..f7a3748 100644
+--- a/Common/BaseCom.cpp
++++ b/Common/BaseCom.cpp
+@@ -115,7 +115,7 @@
+ 
+ 	try
+ 	{
+-		auto_ptr <File> file (device ? new Device (string (CW2A (filePath)), !write) : new File (string (CW2A (filePath)), !write));
++		unique_ptr <File> file (device ? new Device (string (CW2A (filePath)), !write) : new File (string (CW2A (filePath)), !write));
+ 		file->SeekAt (offset);
+ 
+ 		if (write)
+diff --git a/Common/Dlgcode.c b/Common/Dlgcode.c
+index 8293d06..f2a9fa3 100644
+--- a/Common/Dlgcode.c
++++ b/Common/Dlgcode.c
+@@ -9316,7 +9316,7 @@
+ 
+ 	try
+ 	{
+-		SecurityToken::InitLibrary (SecurityTokenLibraryPath, auto_ptr <GetPinFunctor> (new PinRequestHandler), auto_ptr <SendExceptionFunctor> (new WarningHandler));
++		SecurityToken::InitLibrary (SecurityTokenLibraryPath, unique_ptr <GetPinFunctor> (new PinRequestHandler), unique_ptr <SendExceptionFunctor> (new WarningHandler));
+ 	}
+ 	catch (Exception &e)
+ 	{
+diff --git a/Common/SecurityToken.cpp b/Common/SecurityToken.cpp
+index 4788023..c256dab 100644
+--- a/Common/SecurityToken.cpp
++++ b/Common/SecurityToken.cpp
+@@ -481,7 +481,7 @@
+ 
+ 					finally_do_arg (string*, &pin, { burn ((void *) finally_arg->c_str(), finally_arg->size()); });
+ 
+-					(*PinCallback) (pin);
++					(*mPinCallback) (pin);
+ 					Login (slotId, pin);
+ 				}
+ 
+@@ -497,7 +497,7 @@
+ 				}
+ 				else if (error == CKR_PIN_INCORRECT && !(tokenInfo.Flags & CKF_PROTECTED_AUTHENTICATION_PATH))
+ 				{
+-					(*WarningCallback) (Pkcs11Exception (CKR_PIN_INCORRECT));
++					(*mWarningCallback) (Pkcs11Exception (CKR_PIN_INCORRECT));
+ 					continue;
+ 				}
+ 
+@@ -506,7 +506,7 @@
+ 		}
+ 	}
+ 
+-	void SecurityToken::InitLibrary (const string &pkcs11LibraryPath, auto_ptr <GetPinFunctor> pinCallback, auto_ptr <SendExceptionFunctor> warningCallback)
++	void SecurityToken::InitLibrary (const string &pkcs11LibraryPath, unique_ptr <GetPinFunctor> pinCallback, unique_ptr <SendExceptionFunctor> warningCallback)
+ 	{
+ 		if (Initialized)
+ 			CloseLibrary();
+@@ -536,8 +536,8 @@
+ 		if (status != CKR_OK)
+ 			throw Pkcs11Exception (status);
+ 
+-		PinCallback = pinCallback;
+-		WarningCallback = warningCallback;
++		mPinCallback = move(pinCallback);
++		mWarningCallback = move(warningCallback);
+ 
+ 		Initialized = true;
+ 	}
+@@ -716,8 +716,8 @@
+ 	}
+ #endif // TC_HEADER_Common_Exception
+ 
+-	auto_ptr <GetPinFunctor> SecurityToken::PinCallback;
+-	auto_ptr <SendExceptionFunctor> SecurityToken::WarningCallback;
++	unique_ptr <GetPinFunctor> SecurityToken::mPinCallback;
++	unique_ptr <SendExceptionFunctor> SecurityToken::mWarningCallback;
+ 
+ 	bool SecurityToken::Initialized;
+ 	CK_FUNCTION_LIST_PTR SecurityToken::Pkcs11Functions;
+diff --git a/Common/SecurityToken.h b/Common/SecurityToken.h
+index 3ef85c5..a8c58ba 100644
+--- a/Common/SecurityToken.h
++++ b/Common/SecurityToken.h
+@@ -184,7 +184,7 @@
+ 		static void GetKeyfileData (const SecurityTokenKeyfile &keyfile, vector <byte> &keyfileData);
+ 		static list <SecurityTokenInfo> GetAvailableTokens ();
+ 		static SecurityTokenInfo GetTokenInfo (CK_SLOT_ID slotId);
+-		static void InitLibrary (const string &pkcs11LibraryPath, auto_ptr <GetPinFunctor> pinCallback, auto_ptr <SendExceptionFunctor> warningCallback);
++		static void InitLibrary (const string &pkcs11LibraryPath, unique_ptr <GetPinFunctor> pinCallback, unique_ptr <SendExceptionFunctor> warningCallback);
+ 		static bool IsInitialized () { return Initialized; }
+ 		static bool IsKeyfilePathValid (const wstring &securityTokenKeyfilePath);
+ 	
+@@ -201,7 +201,7 @@
+ 		static void CheckLibraryStatus ();
+ 
+ 		static bool Initialized;
+-		static auto_ptr <GetPinFunctor> PinCallback;
++		static unique_ptr <GetPinFunctor> mPinCallback;
+ 		static CK_FUNCTION_LIST_PTR Pkcs11Functions;
+ #ifdef TC_WINDOWS
+ 		static HMODULE Pkcs11LibraryHandle;
+@@ -209,7 +209,7 @@
+ 		static void *Pkcs11LibraryHandle;
+ #endif
+ 		static map <CK_SLOT_ID, Pkcs11Session> Sessions;
+-		static auto_ptr <SendExceptionFunctor> WarningCallback;
++		static unique_ptr <SendExceptionFunctor> mWarningCallback;
+ 	};
+ }
+ 
+diff --git a/Core/Core.h b/Core/Core.h
+index 37bbb98..6069a81 100644
+--- a/Core/Core.h
++++ b/Core/Core.h
+@@ -13,8 +13,8 @@
+ 
+ namespace TrueCrypt
+ {
+-	extern auto_ptr <CoreBase> Core;
+-	extern auto_ptr <CoreBase> CoreDirect;
++	extern unique_ptr <CoreBase> Core;
++	extern unique_ptr <CoreBase> CoreDirect;
+ }
+ 
+ #endif // TC_HEADER_Core_Core
+diff --git a/Core/Unix/CoreService.cpp b/Core/Unix/CoreService.cpp
+index 0ec636c..464be84 100644
+--- a/Core/Unix/CoreService.cpp
++++ b/Core/Unix/CoreService.cpp
+@@ -23,9 +23,9 @@
+ namespace TrueCrypt
+ {
+ 	template <class T>
+-	auto_ptr <T> CoreService::GetResponse ()
++	unique_ptr <T> CoreService::GetResponse ()
+ 	{
+-		auto_ptr <Serializable> deserializedObject (Serializable::DeserializeNew (ServiceOutputStream));
++		unique_ptr <Serializable> deserializedObject (Serializable::DeserializeNew (ServiceOutputStream));
+ 		
+ 		Exception *deserializedException = dynamic_cast <Exception*> (deserializedObject.get());
+ 		if (deserializedException)
+@@ -34,7 +34,7 @@
+ 		if (dynamic_cast <T *> (deserializedObject.get()) == nullptr)
+ 			throw ParameterIncorrect (SRC_POS);
+ 
+-		return auto_ptr <T> (dynamic_cast <T *> (deserializedObject.release()));
++		return unique_ptr <T> (dynamic_cast <T *> (deserializedObject.release()));
+ 	}
+ 
+ 	void CoreService::ProcessElevatedRequests ()
+@@ -85,7 +85,7 @@
+ 	{
+ 		try
+ 		{
+-			Core = CoreDirect;
++			Core = move(CoreDirect);
+ 
+ 			shared_ptr <Stream> inputStream (new FileStream (inputFD != -1 ? inputFD : InputPipe->GetReadFD()));
+ 			shared_ptr <Stream> outputStream (new FileStream (outputFD != -1 ? outputFD : OutputPipe->GetWriteFD()));
+@@ -273,7 +273,7 @@
+ 	}
+ 
+ 	template <class T>
+-	auto_ptr <T> CoreService::SendRequest (CoreServiceRequest &request)
++	unique_ptr <T> CoreService::SendRequest (CoreServiceRequest &request)
+ 	{
+ 		static Mutex mutex;
+ 		ScopeLock lock (mutex);
+@@ -289,7 +289,7 @@
+ 				try
+ 				{
+ 					request.Serialize (ServiceInputStream);
+-					auto_ptr <T> response (GetResponse <T>());
++					unique_ptr <T> response (GetResponse <T>());
+ 					ElevatedServiceAvailable = true;
+ 					return response;
+ 				}
+@@ -338,8 +338,8 @@
+ 
+ 	void CoreService::StartElevated (const CoreServiceRequest &request)
+ 	{
+-		auto_ptr <Pipe> inPipe (new Pipe());
+-		auto_ptr <Pipe> outPipe (new Pipe());
++		unique_ptr <Pipe> inPipe (new Pipe());
++		unique_ptr <Pipe> outPipe (new Pipe());
+ 		Pipe errPipe;
+ 
+ 		int forkedPid = fork();
+@@ -479,7 +479,7 @@
+ 
+ 		if (!errOutput.empty())
+ 		{
+-			auto_ptr <Serializable> deserializedObject;
++			unique_ptr <Serializable> deserializedObject;
+ 			Exception *deserializedException = nullptr;
+ 
+ 			try
+@@ -519,8 +519,8 @@
+ 		byte sync[] = { 0, 0x11, 0x22 };
+ 		ServiceInputStream->Write (ConstBufferPtr (sync, array_capacity (sync)));
+ 
+-		AdminInputPipe = inPipe;
+-		AdminOutputPipe = outPipe;
++		AdminInputPipe = move(inPipe);
++		AdminOutputPipe = move(outPipe);
+ 	}
+ 
+ 	void CoreService::Stop ()
+@@ -531,11 +531,11 @@
+ 	
+ 	shared_ptr <GetStringFunctor> CoreService::AdminPasswordCallback;
+ 
+-	auto_ptr <Pipe> CoreService::AdminInputPipe;
+-	auto_ptr <Pipe> CoreService::AdminOutputPipe;
++	unique_ptr <Pipe> CoreService::AdminInputPipe;
++	unique_ptr <Pipe> CoreService::AdminOutputPipe;
+ 
+-	auto_ptr <Pipe> CoreService::InputPipe;
+-	auto_ptr <Pipe> CoreService::OutputPipe;
++	unique_ptr <Pipe> CoreService::InputPipe;
++	unique_ptr <Pipe> CoreService::OutputPipe;
+ 	shared_ptr <Stream> CoreService::ServiceInputStream;
+ 	shared_ptr <Stream> CoreService::ServiceOutputStream;
+ 
+diff --git a/Core/Unix/CoreService.h b/Core/Unix/CoreService.h
+index 9702dc7..a68397b 100644
+--- a/Core/Unix/CoreService.h
++++ b/Core/Unix/CoreService.h
+@@ -35,17 +35,17 @@
+ 		static void Stop ();
+ 
+ 	protected:
+-		template <class T> static auto_ptr <T> GetResponse ();
+-		template <class T> static auto_ptr <T> SendRequest (CoreServiceRequest &request);
++		template <class T> static unique_ptr <T> GetResponse ();
++		template <class T> static unique_ptr <T> SendRequest (CoreServiceRequest &request);
+ 		static void StartElevated (const CoreServiceRequest &request);
+ 
+ 		static shared_ptr <GetStringFunctor> AdminPasswordCallback;
+ 
+-		static auto_ptr <Pipe> AdminInputPipe;
+-		static auto_ptr <Pipe> AdminOutputPipe;
++		static unique_ptr <Pipe> AdminInputPipe;
++		static unique_ptr <Pipe> AdminOutputPipe;
+ 
+-		static auto_ptr <Pipe> InputPipe;
+-		static auto_ptr <Pipe> OutputPipe;
++		static unique_ptr <Pipe> InputPipe;
++		static unique_ptr <Pipe> OutputPipe;
+ 		static shared_ptr <Stream> ServiceInputStream;
+ 		static shared_ptr <Stream> ServiceOutputStream;
+ 
+diff --git a/Core/Unix/Linux/CoreLinux.cpp b/Core/Unix/Linux/CoreLinux.cpp
+index 634a3a2..c6727d9 100644
+--- a/Core/Unix/Linux/CoreLinux.cpp
++++ b/Core/Unix/Linux/CoreLinux.cpp
+@@ -472,6 +472,6 @@
+ 		}
+ 	}
+ 
+-	auto_ptr <CoreBase> Core (new CoreServiceProxy <CoreLinux>);
+-	auto_ptr <CoreBase> CoreDirect (new CoreLinux);
++	unique_ptr <CoreBase> Core (new CoreServiceProxy <CoreLinux>);
++	unique_ptr <CoreBase> CoreDirect (new CoreLinux);
+ }
+diff --git a/Driver/Fuse/FuseService.cpp b/Driver/Fuse/FuseService.cpp
+index 045dbde..c26c1cd 100644
+--- a/Driver/Fuse/FuseService.cpp
++++ b/Driver/Fuse/FuseService.cpp
+@@ -601,5 +601,5 @@
+ 	VolumeSlotNumber FuseService::SlotNumber;
+ 	uid_t FuseService::UserId;
+ 	gid_t FuseService::GroupId;
+-	auto_ptr <Pipe> FuseService::SignalHandlerPipe;
++	unique_ptr <Pipe> FuseService::SignalHandlerPipe;
+ }
+diff --git a/Driver/Fuse/FuseService.h b/Driver/Fuse/FuseService.h
+index 5ff2dd7..447444f 100644
+--- a/Driver/Fuse/FuseService.h
++++ b/Driver/Fuse/FuseService.h
+@@ -66,7 +66,7 @@
+ 		static VolumeSlotNumber SlotNumber;
+ 		static uid_t UserId;
+ 		static gid_t GroupId;
+-		static auto_ptr <Pipe> SignalHandlerPipe;
++		static unique_ptr <Pipe> SignalHandlerPipe;
+ 	};
+ }
+ 
+diff --git a/Main/CommandLineInterface.cpp b/Main/CommandLineInterface.cpp
+index 181e3a8..3ce8db8 100644
+--- a/Main/CommandLineInterface.cpp
++++ b/Main/CommandLineInterface.cpp
+@@ -579,5 +579,5 @@
+ 		return filteredVolumes;
+ 	}
+ 
+-	auto_ptr <CommandLineInterface> CmdLine;
++	unique_ptr <CommandLineInterface> CmdLine;
+ }
+diff --git a/Main/CommandLineInterface.h b/Main/CommandLineInterface.h
+index 50f98f6..4bdb4af 100644
+--- a/Main/CommandLineInterface.h
++++ b/Main/CommandLineInterface.h
+@@ -88,7 +88,7 @@
+ 		CommandLineInterface &operator= (const CommandLineInterface &);
+ 	};
+ 
+-	extern auto_ptr <CommandLineInterface> CmdLine;
++	extern unique_ptr <CommandLineInterface> CmdLine;
+ }
+ 
+ #endif // TC_HEADER_Main_CommandInterface
+diff --git a/Main/Forms/Forms.cpp b/Main/Forms/Forms.cpp
+index fdae66a..2ad754b 100644
+--- a/Main/Forms/Forms.cpp
++++ b/Main/Forms/Forms.cpp
+@@ -505,7 +505,7 @@
+ 	
+ 	PageTitleStaticText = new wxStaticText( MainPanel, wxID_ANY, _("Page Title"), wxDefaultPosition, wxDefaultSize, 0 );
+ 	PageTitleStaticText->Wrap( -1 );
+-	PageTitleStaticText->SetFont( wxFont( 16, 70, 90, 90, false, wxT("Times New Roman") ) );
++	PageTitleStaticText->SetFont( wxFont( 16, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	bSizer126->Add( PageTitleStaticText, 0, wxALL, 5 );
+ 	
+@@ -901,7 +901,7 @@
+ 	sbSizer38 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Key (hexadecimal)") ), wxVERTICAL );
+ 	
+ 	KeyTextCtrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+-	KeyTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier") ) );
++	KeyTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	sbSizer38->Add( KeyTextCtrl, 1, wxALL|wxEXPAND, 5 );
+ 	
+@@ -930,7 +930,7 @@
+ 	sbSizer39->Add( m_staticText45, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+ 	
+ 	SecondaryKeyTextCtrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+-	SecondaryKeyTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier") ) );
++	SecondaryKeyTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	sbSizer39->Add( SecondaryKeyTextCtrl, 0, wxEXPAND|wxALL, 5 );
+ 	
+@@ -956,7 +956,7 @@
+ 	sbSizer40 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Plaintext (hexadecimal)") ), wxVERTICAL );
+ 	
+ 	PlainTextTextCtrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+-	PlainTextTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier") ) );
++	PlainTextTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	sbSizer40->Add( PlainTextTextCtrl, 0, wxALL|wxEXPAND, 5 );
+ 	
+@@ -966,7 +966,7 @@
+ 	sbSizer41 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Ciphertext (hexadecimal)") ), wxVERTICAL );
+ 	
+ 	CipherTextTextCtrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+-	CipherTextTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier") ) );
++	CipherTextTextCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	sbSizer41->Add( CipherTextTextCtrl, 0, wxALL|wxEXPAND, 5 );
+ 	
+@@ -1234,7 +1234,7 @@
+ 	
+ 	RandomPoolStaticText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+ 	RandomPoolStaticText->Wrap( -1 );
+-	RandomPoolStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier New") ) );
++	RandomPoolStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	bSizer147->Add( RandomPoolStaticText, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+ 	
+@@ -2055,7 +2055,7 @@
+ 	
+ 	RandomPoolStaticText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+ 	RandomPoolStaticText->Wrap( -1 );
+-	RandomPoolStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier New") ) );
++	RandomPoolStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	bSizer147->Add( RandomPoolStaticText, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+ 	
+@@ -2553,7 +2553,7 @@
+ 	
+ 	RandomPoolSampleStaticText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+ 	RandomPoolSampleStaticText->Wrap( -1 );
+-	RandomPoolSampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier New") ) );
++	RandomPoolSampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	bSizer126->Add( RandomPoolSampleStaticText, 0, wxEXPAND|wxTOP|wxRIGHT, 7 );
+ 	
+@@ -2571,7 +2571,7 @@
+ 	
+ 	HeaderKeySampleStaticText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+ 	HeaderKeySampleStaticText->Wrap( -1 );
+-	HeaderKeySampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier New") ) );
++	HeaderKeySampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	fgSizer5->Add( HeaderKeySampleStaticText, 0, wxALIGN_BOTTOM|wxEXPAND|wxTOP|wxRIGHT, 2 );
+ 	
+@@ -2582,7 +2582,7 @@
+ 	
+ 	MasterKeySampleStaticText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+ 	MasterKeySampleStaticText->Wrap( -1 );
+-	MasterKeySampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxT("Courier New") ) );
++	MasterKeySampleStaticText->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+ 	
+ 	fgSizer5->Add( MasterKeySampleStaticText, 0, wxEXPAND|wxALIGN_BOTTOM|wxTOP|wxRIGHT, 2 );
+ 	
+diff --git a/Main/Forms/MainFrame.cpp b/Main/Forms/MainFrame.cpp
+index 6c216a9..cb82e72 100644
+--- a/Main/Forms/MainFrame.cpp
++++ b/Main/Forms/MainFrame.cpp
+@@ -484,7 +484,7 @@
+ 
+ 			wxMenu *CreatePopupMenu ()
+ 			{ 
+-				auto_ptr <wxMenu> popup (new wxMenu);
++				unique_ptr <wxMenu> popup (new wxMenu);
+ 
+ 				Gui->AppendToMenu (*popup, LangString[Gui->IsInBackgroundMode() ? "SHOW_TC" : "HIDE_TC"], this, wxCommandEventHandler (TaskBarIcon::OnShowHideMenuItemSelected));
+ 				
+diff --git a/Main/Forms/MainFrame.h b/Main/Forms/MainFrame.h
+index 4796b99..fe64688 100644
+--- a/Main/Forms/MainFrame.h
++++ b/Main/Forms/MainFrame.h
+@@ -173,8 +173,8 @@
+ 		map <int, FavoriteVolume> FavoriteVolumesMenuMap;
+ 		bool ListItemRightClickEventPending;
+ 		VolumeInfoList MountedVolumes;
+-		auto_ptr <wxTaskBarIcon> mTaskBarIcon;
+-		auto_ptr <wxTimer> mTimer;
++		unique_ptr <wxTaskBarIcon> mTaskBarIcon;
++		unique_ptr <wxTimer> mTimer;
+ 		long SelectedItemIndex;
+ 		VolumeSlotNumber SelectedSlotNumber;
+ 		int ShowRequestFifo;
+diff --git a/Main/Forms/PreferencesDialog.h b/Main/Forms/PreferencesDialog.h
+index 81c8086..3522953 100644
+--- a/Main/Forms/PreferencesDialog.h
++++ b/Main/Forms/PreferencesDialog.h
+@@ -49,7 +49,7 @@
+ 
+ 		KeyfilesPanel *DefaultKeyfilesPanel;
+ 		int LastVirtualKeyPressed; 
+-		auto_ptr <wxTimer> mTimer;
++		unique_ptr <wxTimer> mTimer;
+ 		UserPreferences Preferences;
+ 		HotkeyList UnregisteredHotkeys;
+ 	};
+diff --git a/Main/Forms/ProgressWizardPage.h b/Main/Forms/ProgressWizardPage.h
+index 541edd6..f0df955 100644
+--- a/Main/Forms/ProgressWizardPage.h
++++ b/Main/Forms/ProgressWizardPage.h
+@@ -32,7 +32,7 @@
+ 		void OnAbortButtonClick (wxCommandEvent& event);
+ 		void OnTimer ();
+ 
+-		auto_ptr <wxTimer> mTimer;
++		unique_ptr <wxTimer> mTimer;
+ 		int PreviousGaugeValue;
+ 		uint64 ProgressBarRange;
+ 		int RealProgressBarRange;
+diff --git a/Main/Forms/VolumeCreationProgressWizardPage.h b/Main/Forms/VolumeCreationProgressWizardPage.h
+index a33b362..7d32abf 100644
+--- a/Main/Forms/VolumeCreationProgressWizardPage.h
++++ b/Main/Forms/VolumeCreationProgressWizardPage.h
+@@ -43,7 +43,7 @@
+ 
+ 		int PreviousGaugeValue;
+ 		uint64 ProgressBarRange;
+-		auto_ptr <wxTimer> RandomPoolTimer;
++		unique_ptr <wxTimer> RandomPoolTimer;
+ 		int RealProgressBarRange;
+ 		wxLongLong StartTime;
+ 		bool VolumeCreatorRunning;
+diff --git a/Main/Forms/VolumeCreationWizard.h b/Main/Forms/VolumeCreationWizard.h
+index fb2a8dd..06dc302 100644
+--- a/Main/Forms/VolumeCreationWizard.h
++++ b/Main/Forms/VolumeCreationWizard.h
+@@ -54,12 +54,12 @@
+ 		volatile bool AbortConfirmationPending;
+ 		volatile bool AbortRequested;
+ 		volatile bool CreationAborted;
+-		auto_ptr <VolumeCreator> Creator;
++		unique_ptr <VolumeCreator> Creator;
+ 		bool CrossPlatformSupport;
+ 		static bool DeviceWarningConfirmed;
+ 		bool DisplayKeyInfo;
+-		auto_ptr <wxTimer> ProgressTimer;
+-		auto_ptr <wxTimer> RandomPoolUpdateTimer;
++		unique_ptr <wxTimer> ProgressTimer;
++		unique_ptr <wxTimer> RandomPoolUpdateTimer;
+ 		shared_ptr <KeyfileList> Keyfiles;
+ 		bool LargeFilesSupport;
+ 		uint64 MaxHiddenVolumeSize;
+diff --git a/Main/GraphicUserInterface.cpp b/Main/GraphicUserInterface.cpp
+index 1279edb..58c2d87 100644
+--- a/Main/GraphicUserInterface.cpp
++++ b/Main/GraphicUserInterface.cpp
+@@ -286,7 +286,7 @@
+ 
+ 	void GraphicUserInterface::BeginInteractiveBusyState (wxWindow *window)
+ 	{
+-		static auto_ptr <wxCursor> arrowWaitCursor;
++		static unique_ptr <wxCursor> arrowWaitCursor;
+ 
+ 		if (arrowWaitCursor.get() == nullptr)
+ 			arrowWaitCursor.reset (new wxCursor (wxCURSOR_ARROWWAIT));
+@@ -351,7 +351,7 @@
+ 	
+ 	void GraphicUserInterface::EndInteractiveBusyState (wxWindow *window) const
+ 	{
+-		static auto_ptr <wxCursor> arrowCursor;
++		static unique_ptr <wxCursor> arrowCursor;
+ 
+ 		if (arrowCursor.get() == nullptr)
+ 			arrowCursor.reset (new wxCursor (wxCURSOR_ARROW));
+@@ -537,7 +537,7 @@
+ 
+ 		try
+ 		{
+-			SecurityToken::InitLibrary (Preferences.SecurityTokenModule, auto_ptr <GetPinFunctor> (new PinRequestHandler), auto_ptr <SendExceptionFunctor> (new WarningHandler));
++			SecurityToken::InitLibrary (Preferences.SecurityTokenModule, unique_ptr <GetPinFunctor> (new PinRequestHandler), unique_ptr <SendExceptionFunctor> (new WarningHandler));
+ 		}
+ 		catch (Exception &e)
+ 		{
+@@ -825,8 +825,8 @@
+ 					wxConnectionBase *OnMakeConnection () { return new Connection; }
+ 				};
+ 
+-				auto_ptr <wxDDEClient> client (new Client);
+-				auto_ptr <wxConnectionBase> connection (client->MakeConnection (L"localhost", serverName, L"raise"));
++				unique_ptr <wxDDEClient> client (new Client);
++				unique_ptr <wxConnectionBase> connection (client->MakeConnection (L"localhost", serverName, L"raise"));
+ 
+ 				if (connection.get() && connection->Execute (nullptr))
+ 				{
+@@ -1095,7 +1095,7 @@
+ #endif
+ 
+ 			wxFileName docFile = docPath;
+-			docFile.Normalize();
++			docFile.Normalize (wxPATH_NORM_DOTS|wxPATH_NORM_TILDE|wxPATH_NORM_ABSOLUTE|wxPATH_NORM_LONG);
+ 
+ 			try
+ 			{
+diff --git a/Main/GraphicUserInterface.h b/Main/GraphicUserInterface.h
+index dfc9e9e..70de738 100644
+--- a/Main/GraphicUserInterface.h
++++ b/Main/GraphicUserInterface.h
+@@ -119,10 +119,10 @@
+ 		wxFrame *ActiveFrame;
+ 		bool BackgroundMode;
+ #ifdef TC_WINDOWS
+-		auto_ptr <wxDDEServer> DDEServer;
++		unique_ptr <wxDDEServer> DDEServer;
+ #endif
+ 		wxFrame *mMainFrame;
+-		auto_ptr <wxSingleInstanceChecker> SingleInstanceChecker;
++		unique_ptr <wxSingleInstanceChecker> SingleInstanceChecker;
+ 
+ 	private:
+ 		GraphicUserInterface (const GraphicUserInterface &);
+diff --git a/Main/TextUserInterface.cpp b/Main/TextUserInterface.cpp
+index 1f2431c..df944dc 100644
+--- a/Main/TextUserInterface.cpp
++++ b/Main/TextUserInterface.cpp
+@@ -1021,7 +1021,7 @@
+ 
+ 		try
+ 		{
+-			SecurityToken::InitLibrary (Preferences.SecurityTokenModule, auto_ptr <GetPinFunctor> (new PinRequestHandler (this)), auto_ptr <SendExceptionFunctor> (new WarningHandler (this)));
++			SecurityToken::InitLibrary (Preferences.SecurityTokenModule, unique_ptr <GetPinFunctor> (new PinRequestHandler (this)), unique_ptr <SendExceptionFunctor> (new WarningHandler (this)));
+ 		}
+ 		catch (Exception &e)
+ 		{
+diff --git a/Main/TextUserInterface.h b/Main/TextUserInterface.h
+index 942c45f..49d9479 100644
+--- a/Main/TextUserInterface.h
++++ b/Main/TextUserInterface.h
+@@ -64,8 +64,8 @@
+ 		virtual void ReadInputStreamLine (wxString &line) const;
+ 		virtual wxString ReadInputStreamLine () const;
+ 
+-		auto_ptr <wxFFileInputStream> FInputStream;
+-		auto_ptr <wxTextInputStream> TextInputStream;
++		unique_ptr <wxFFileInputStream> FInputStream;
++		unique_ptr <wxTextInputStream> TextInputStream;
+ 
+ 	private:
+ 		TextUserInterface (const TextUserInterface &);
+diff --git a/Main/Xml.h b/Main/Xml.h
+index 9f615af..fd87729 100644
+--- a/Main/Xml.h
++++ b/Main/Xml.h
+@@ -62,8 +62,8 @@
+ 
+ 	protected:
+ 		int CurrentIndentLevel;
+-		auto_ptr <wxMemoryOutputStream> MemOutStream;
+-		auto_ptr <wxTextOutputStream> TextOutStream;
++		unique_ptr <wxMemoryOutputStream> MemOutStream;
++		unique_ptr <wxTextOutputStream> TextOutStream;
+ 		File OutFile;
+ 
+ 	private:
+diff --git a/Platform/Unix/Process.cpp b/Platform/Unix/Process.cpp
+index 07874a0..d21281b 100644
+--- a/Platform/Unix/Process.cpp
++++ b/Platform/Unix/Process.cpp
+@@ -186,7 +186,7 @@
+ 
+ 		if (!exOutput.empty())
+ 		{
+-			auto_ptr <Serializable> deserializedObject;
++			unique_ptr <Serializable> deserializedObject;
+ 			Exception *deserializedException = nullptr;
+ 
+ 			try
+diff --git a/Volume/EncryptionThreadPool.cpp b/Volume/EncryptionThreadPool.cpp
+index dbcc1b3..8fa9110 100644
+--- a/Volume/EncryptionThreadPool.cpp
++++ b/Volume/EncryptionThreadPool.cpp
+@@ -121,9 +121,9 @@
+ 
+ 		firstFragmentWorkItem->ItemCompletedEvent.Wait();
+ 		
+-		auto_ptr <Exception> itemException;
++		unique_ptr <Exception> itemException;
+ 		if (firstFragmentWorkItem->ItemException.get())
+-			itemException = firstFragmentWorkItem->ItemException;
++			itemException = move(firstFragmentWorkItem->ItemException);
+ 
+ 		firstFragmentWorkItem->State.Set (WorkItem::State::Free);
+ 		WorkItemCompletedEvent.Signal();
+diff --git a/Volume/EncryptionThreadPool.h b/Volume/EncryptionThreadPool.h
+index 70d8702..854ab78 100644
+--- a/Volume/EncryptionThreadPool.h
++++ b/Volume/EncryptionThreadPool.h
+@@ -40,7 +40,7 @@
+ 			};
+ 
+ 			struct WorkItem *FirstFragment;
+-			auto_ptr <Exception> ItemException;
++			unique_ptr <Exception> ItemException;
+ 			SyncEvent ItemCompletedEvent;
+ 			SharedVal <size_t> OutstandingFragmentCount;
+ 			SharedVal <State::Enum> State;
