@@ -68,7 +68,7 @@ Which shall return:
 Install the package.
 ```shell
 sudo apt update 
-sudo dpkg -i truecrypt_7.1a-d12.0_amd64.deb
+sudo apt install ./truecrypt_7.1a-d12.0_amd64.deb
 ```
 ## Build DIY
 The project is build on a Debian 12 (Bookworm) system running in a Proxmox Virtual Environment 8.2.2. For Proxmox download and installation instructions visit [https://www.proxmox.com](https://www.proxmox.com/en/proxmox-virtual-environment/overview). To setup the Debian 12 (Bookworm) system in Proxmox follow the instructions from [proxmox-vm.md](https://github.com/rexxie1178/truecrypt-for-debian/blob/master/proxmox-vm.md).
